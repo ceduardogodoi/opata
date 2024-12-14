@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { Animal } from "./animal";
 import {
   animalFixture,
-  animalInstanceFixture,
   createAnimalFixture,
 } from "@/app/fixtures/animal.fixtures";
 import { uuidRegex } from "@/app/utils/constants";
@@ -23,9 +22,10 @@ describe("entities / animal", () => {
   });
 
   it("should return serialized animal", () => {
-    const animal = Animal.toJSON(animalInstanceFixture);
+    const animal = Animal.with(animalFixture);
+    const json = animal.toJSON();
 
-    expect(animal).not.toBeInstanceOf(Animal);
-    expect(animal.id).toBe(animalFixture.id);
+    expect(json).not.toBeInstanceOf(Animal);
+    expect(json.id).toBe(animalFixture.id);
   });
 });

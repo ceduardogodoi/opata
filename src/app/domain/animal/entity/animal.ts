@@ -89,16 +89,16 @@ export class Animal {
     );
   }
 
-  public static toJSON(animal: Animal): AnimalLike {
+  public toJSON(): AnimalLike {
     return {
-      id: animal.id,
-      name: animal.name,
-      isAdopted: animal.isAdopted,
-      createdAt: animal.createdAt,
-      updatedAt: animal.updatedAt,
-      age: animal.age,
-      history: animal.history,
-      observations: animal.observations,
+      id: this.#id,
+      name: this.#name,
+      isAdopted: this.#isAdopted,
+      createdAt: this.#createdAt,
+      updatedAt: this.#updatedAt,
+      age: this.#age,
+      history: this.#history,
+      observations: this.#observations,
     };
   }
 }
