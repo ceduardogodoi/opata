@@ -4,7 +4,7 @@ import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repo
 export class AnimalInMemoryRepository implements AnimalRepositoryGateway {
   #animals: Animal[] = [];
 
-  private constructor() {}
+  constructor() {}
 
   public static create(): AnimalInMemoryRepository {
     return new AnimalInMemoryRepository();
