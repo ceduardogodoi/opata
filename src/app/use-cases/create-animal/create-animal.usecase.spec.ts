@@ -8,7 +8,7 @@ import { uuidRegex } from "@/app/utils/constants";
 describe("use-cases / create-animal", () => {
   let animalRepository: AnimalRepositoryGateway;
   beforeEach(() => {
-    animalRepository = container.resolve("AnimalRepositoryGatewayUnit");
+    animalRepository = container.resolve("AnimalRepositoryGateway");
   });
 
   it("should create an animal and confirm present its data", async () => {

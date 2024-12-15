@@ -6,12 +6,9 @@ class VitestSetup {
   private constructor() {}
 
   static #setupDependencies(): void {
-    container.register("AnimalRepositoryGatewayUnit", {
+    container.register("AnimalRepositoryGateway", {
       useValue: AnimalInMemoryRepository.create(),
     });
-    // .register("AnimalRepositoryGatewayIntegration", {
-    //   useValue: AnimalInMemoryRepository.create(),
-    // });
   }
 
   public static init(): void {

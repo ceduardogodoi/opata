@@ -11,7 +11,7 @@ import { uuidRegex } from "@/app/utils/constants";
 describe("repositories / animal", () => {
   let animalRepository: AnimalRepositoryGateway;
   beforeEach(() => {
-    animalRepository = container.resolve("AnimalRepositoryGatewayUnit");
+    animalRepository = container.resolve("AnimalRepositoryGateway");
   });
 
   it("should save an animal", async () => {
