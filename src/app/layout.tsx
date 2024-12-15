@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 // Dependency Injection Container
-import "./container";
+import "@/app/infra/container";
 
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";

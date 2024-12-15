@@ -1,5 +1,5 @@
 // Dependency Injection Container
-import "@/app/container";
+import "@/app/infra/container";
 
 import { container } from "tsyringe";
 import { CreateAnimalRouteHandler } from "@/app/infra/http/route-handlers/create-animal.route-handler";

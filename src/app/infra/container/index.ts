@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { AnimalInMemoryRepository } from "../infra/repositories/animal/animal-inmemory.repository";
+import { AnimalInMemoryRepository } from "../repositories/animal/animal-inmemory.repository";
 
 export class DependencyInjectionContainerSetup {
   public static init(): void {
