@@ -2,7 +2,7 @@
 import "@/app/infra/container";
 
 import { container } from "tsyringe";
-import { CreateAnimalRouteHandler } from "@/app/infra/http/route-handlers/create-animal.route-handler";
+import { CreateAnimalRoute } from "@/app/infra/http/routes/create-animal.route";
 import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
 import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway";
 
@@ -11,6 +11,6 @@ const animalRepository = container.resolve<AnimalRepositoryGateway>(
 );
 const createAnimalUseCase = CreateAnimalUseCase.create(animalRepository);
 const createAnimalRouteHandler =
-  CreateAnimalRouteHandler.create(createAnimalUseCase);
+  CreateAnimalRoute.create(createAnimalUseCase);
 
 export const POST = createAnimalRouteHandler.handle;

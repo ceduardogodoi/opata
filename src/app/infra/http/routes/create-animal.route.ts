@@ -1,7 +1,8 @@
 import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
 import { CreateAnimalPresenter } from "../presenters/create-animal/create-animal.presenter";
+import { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
 
-export class CreateAnimalRouteHandler {
+export class CreateAnimalRoute {
   readonly #createAnimalUseCase: CreateAnimalUseCase;
 
   constructor(createAnimalUseCase: CreateAnimalUseCase) {
@@ -12,12 +13,13 @@ export class CreateAnimalRouteHandler {
 
   public static create(
     createAnimalUseCase: CreateAnimalUseCase
-  ): CreateAnimalRouteHandler {
-    return new CreateAnimalRouteHandler(createAnimalUseCase);
+  ): CreateAnimalRoute {
+    return new CreateAnimalRoute(createAnimalUseCase);
   }
 
   public async handle(request: Request): Promise<Response> {
-    const data = await request.json();
+    // fix with zod
+    const data: CreateAnimalInputDto = await request.json();
 
     const animal = await this.#createAnimalUseCase.execute(data);
     const output = CreateAnimalPresenter.present(animal);
