@@ -34,4 +34,22 @@ describe("routes / create-animal", () => {
     expect(response.status).toBe(201);
     expect(output.id).toMatch(uuidRegex);
   });
+
+  it("should have a validation error when name is not provided", async () => {
+    const request = {
+      json: async (): Promise<Partial<CreateAnimalInputDto>> => {
+        return {
+          age: 10,
+          history: "Turtle history",
+          observations: "Turtle observations",
+        };
+      },
+    } as Request;
+
+    const response = await createAnimalRoute.handle(request);
+    expect(response.status).toBe(400);
+    const output = await response.json();
+    expect(output.error).toBe("validation_error");
+    expect(output.messages).toContain("Name is required");
+  });
 });
