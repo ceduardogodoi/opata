@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ErrorCode } from "../../errors/error-code";
-import { ValidationError, ValidationResult } from "../validation";
+import type { Validation } from "../validation";
+import { ValidationResult, ValidationErrorOutput } from "../types";
 
 const createAnimalSchema = z.object({
   name: z
@@ -15,8 +16,14 @@ const createAnimalSchema = z.object({
 
 type CreateAnimalSchema = z.infer<typeof createAnimalSchema>;
 
-export class CreateAnimalValidation {
-  public static validate(data: unknown): ValidationResult<CreateAnimalSchema> {
+export class CreateAnimalValidation implements Validation<CreateAnimalSchema> {
+  private constructor() {}
+
+  public static create(): CreateAnimalValidation {
+    return new CreateAnimalValidation();
+  }
+
+  public validate(data: unknown): ValidationResult<CreateAnimalSchema> {
     const result = createAnimalSchema.safeParse(data);
 
     if (!result.success) {
@@ -35,9 +42,9 @@ export class CreateAnimalValidation {
     };
   }
 
-  public static present(
+  public present(
     input: Record<string, string[] | undefined>
-  ): Omit<ValidationError, "statusCode"> {
+  ): ValidationErrorOutput {
     return {
       error: ErrorCode.VALIDATION_ERROR,
       message: "Invalid input data.",

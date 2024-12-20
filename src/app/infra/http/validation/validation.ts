@@ -1,18 +1,6 @@
-import { ErrorCode } from "../errors/error-code";
+import { ValidationResult, ValidationErrorOutput } from "./types";
 
-export type ValidationError = {
-  error: ErrorCode.VALIDATION_ERROR;
-  statusCode: number;
-  message: string;
-  data: Record<string, string[] | undefined>;
-};
-
-export type ValidationSuccess<InferedSchema> = {
-  error: undefined;
-  statusCode: 201;
-  data: InferedSchema;
-};
-
-export type ValidationResult<InferedSchema> =
-  | ValidationError
-  | ValidationSuccess<InferedSchema>;
+export interface Validation<Schema> {
+  validate(data: unknown): ValidationResult<Schema>;
+  present(input: Record<string, string[] | undefined>): ValidationErrorOutput;
+}

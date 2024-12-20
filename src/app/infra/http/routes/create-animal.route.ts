@@ -20,9 +20,10 @@ export class CreateAnimalRoute {
   public async handle(request: Request): Promise<Response> {
     const data = await request.json();
 
-    const result = CreateAnimalValidation.validate(data);
+    const createAnimalValidation = CreateAnimalValidation.create();
+    const result = createAnimalValidation.validate(data);
     if (result.error != null) {
-      const output = CreateAnimalValidation.present(result.data);
+      const output = createAnimalValidation.present(result.data);
       return Response.json(output, {
         status: result.statusCode,
       });
