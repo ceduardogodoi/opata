@@ -6,6 +6,7 @@ import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repo
 import { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
 import { CreateAnimalOutput } from "../presenters/create-animal/create-animal.presenter.dto";
 import { uuidRegex } from "@/app/utils/constants";
+import { ErrorCode } from "../errors/error-code";
 
 describe("routes / create-animal", () => {
   let animalRepository: AnimalRepositoryGateway;
@@ -48,8 +49,12 @@ describe("routes / create-animal", () => {
 
     const response = await createAnimalRoute.handle(request);
     expect(response.status).toBe(400);
+
     const output = await response.json();
-    expect(output.error).toBe("validation_error");
-    expect(output.messages).toContain("Name is required");
+    expect(output.error).toBe(ErrorCode.VALIDATION_ERROR);
+    expect(output.message).toContain("Invalid input data.");
+    expect(output.data).toEqual({
+      name: ["Name is required"],
+    });
   });
 });
