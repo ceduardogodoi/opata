@@ -2,7 +2,7 @@ import { ErrorCode } from "../errors/error-code";
 
 export type ValidationError = {
   error: ErrorCode.VALIDATION_ERROR;
-  statusCode: number;
+  statusCode: 400;
   message: string;
   data: Record<string, string[] | undefined>;
 };
