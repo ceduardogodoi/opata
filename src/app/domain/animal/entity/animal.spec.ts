@@ -12,6 +12,7 @@ describe("entities / animal", () => {
 
     expect(animal).toBeInstanceOf(Animal);
     expect(animal.id).toMatch(uuidRegex);
+    expect(false).toBe(true);
   });
 
   it("should create an animal with predefined data", () => {
