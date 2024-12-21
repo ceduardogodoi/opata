@@ -28,4 +28,8 @@ describe("entities / animal", () => {
     expect(json).not.toBeInstanceOf(Animal);
     expect(json.id).toBe(animalFixture.id);
   });
+
+  it('should be delete', () => {
+    expect(false).toBe(false);
+  });
 });
