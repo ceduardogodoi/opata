@@ -4,4 +4,4 @@
 - [X] Set up Github actions
   - [X] Unit tests
   - [X] TypeScript compiler (Next.js build)
-  - [ ] Add test coverage
+  - [X] Add test coverage
