@@ -1,5 +1,5 @@
 import { Animal } from "@/app/domain/animal/entity/animal";
-import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.types";
+import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 
 export class AnimalInMemoryRepository implements AnimalRepositoryGateway {
   #animals: Animal[] = [];
