@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import type { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.types";
+import type { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 import type { UseCase } from "../use-case.interface";
 import type {
   CreateAnimalInputDto,

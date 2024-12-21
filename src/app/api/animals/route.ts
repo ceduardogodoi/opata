@@ -4,7 +4,7 @@ import "@/app/infra/container";
 import { container } from "tsyringe";
 import { CreateAnimalRoute } from "@/app/infra/http/routes/create-animal.route";
 import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
-import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.types";
+import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 
 const animalRepository = container.resolve<AnimalRepositoryGateway>(
   "AnimalRepositoryGateway"
