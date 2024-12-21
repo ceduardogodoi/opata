@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { container } from "tsyringe";
 import { CreateAnimalRoute } from "./create-animal.route";
 import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
-import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway";
+import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.types";
 import { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
 import { CreateAnimalOutput } from "../presenters/create-animal/create-animal.presenter.dto";
 import { uuidRegex } from "@/app/utils/constants";

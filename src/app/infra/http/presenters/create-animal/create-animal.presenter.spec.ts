@@ -4,6 +4,12 @@ import { CreateAnimalPresenter } from "./create-animal.presenter";
 import { CreateAnimalOutput } from "./create-animal.presenter.dto";
 
 describe("presenters / create-animal", () => {
+  it("should throw an error if the constructor is called", () => {
+    expect(() => new CreateAnimalPresenter()).toThrowError(
+      "CreateAnimalPresenter constructor is private"
+    );
+  });
+
   it("should return the created animal json representation", () => {
     const response = CreateAnimalPresenter.present(animalInstanceFixture);
 

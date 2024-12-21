@@ -4,7 +4,7 @@ import {
   createAnimalFixture,
   inexistentAnimalId,
 } from "@/app/fixtures/animal.fixtures";
-import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway";
+import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.types";
 import { Animal } from "@/app/domain/animal/entity/animal";
 import { uuidRegex } from "@/app/utils/constants";
 

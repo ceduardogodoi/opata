@@ -1,4 +1,4 @@
-import { ValidationResult, ValidationErrorOutput } from "./types";
+import { ValidationResult, ValidationErrorOutput } from "./validation.types";
 
 export interface Validation<Schema> {
   validate(data: unknown): ValidationResult<Schema>;

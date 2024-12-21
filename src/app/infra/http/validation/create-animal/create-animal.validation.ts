@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ErrorCode } from "../../errors/error-code";
-import type { Validation } from "../validation";
-import { ValidationResult, ValidationErrorOutput } from "../types";
+import type { Validation } from "../validation.interface";
+import { ValidationResult, ValidationErrorOutput } from "../validation.types";
 
 const createAnimalSchema = z.object({
   name: z
