@@ -64,12 +64,14 @@ export class Animal {
   }
 
   public static create(animal: CreateAnimal): Animal {
+    const date = new Date();
+
     return new Animal(
       crypto.randomUUID(),
       animal.name,
       false,
-      new Date(),
-      new Date(),
+      date,
+      date,
       animal.age,
       animal.history,
       animal.observations
