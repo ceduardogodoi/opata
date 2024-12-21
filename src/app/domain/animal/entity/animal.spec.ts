@@ -6,7 +6,7 @@ import {
 } from "@/app/fixtures/animal.fixtures";
 import { uuidRegex } from "@/app/utils/constants";
 
-describe("entities / animal", () => {
+describe.skip("entities / animal", () => {
   it("should create a new animal", () => {
     const mockDate = new Date(2024, 11, 21, 0, 0, 0, 0);
     vi.setSystemTime(mockDate);

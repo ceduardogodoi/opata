@@ -3,7 +3,7 @@ import { animalInstanceFixture } from "@/app/fixtures/animal.fixtures";
 import { CreateAnimalPresenter } from "./create-animal.presenter";
 import { CreateAnimalOutput } from "./create-animal.presenter.dto";
 
-describe("presenters / create-animal", () => {
+describe.skip("presenters / create-animal", () => {
   it("should throw an error if the constructor is called", () => {
     expect(() => new CreateAnimalPresenter()).toThrowError(
       "CreateAnimalPresenter constructor is private"

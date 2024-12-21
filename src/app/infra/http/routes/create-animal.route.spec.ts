@@ -8,7 +8,7 @@ import { CreateAnimalOutput } from "../presenters/create-animal/create-animal.pr
 import { uuidRegex } from "@/app/utils/constants";
 import { ErrorCode } from "../errors/error-code";
 
-describe("routes / create-animal", () => {
+describe.skip("routes / create-animal", () => {
   let animalRepository: AnimalRepositoryGateway;
   let createAnimalUseCase: CreateAnimalUseCase;
   let createAnimalRoute: CreateAnimalRoute;

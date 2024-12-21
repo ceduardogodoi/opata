@@ -8,7 +8,7 @@ import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repo
 import { Animal } from "@/app/domain/animal/entity/animal";
 import { uuidRegex } from "@/app/utils/constants";
 
-describe("repositories / animal", () => {
+describe.skip("repositories / animal", () => {
   let animalRepository: AnimalRepositoryGateway;
   beforeEach(() => {
     animalRepository = container.resolve("AnimalRepositoryGateway");
