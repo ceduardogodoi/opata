@@ -4,7 +4,7 @@ import {
   animalFixture,
   createAnimalFixture,
 } from "@/app/fixtures/animal.fixtures";
-import { uuidRegex } from "@/app/utils/constants";
+import { UUID_REGEX } from "@/app/globals/constants";
 
 describe("entities / animal", () => {
   it("should create a new animal", () => {
@@ -14,7 +14,7 @@ describe("entities / animal", () => {
     const animal = Animal.create(createAnimalFixture);
 
     expect(animal).toBeInstanceOf(Animal);
-    expect(animal.id).toMatch(uuidRegex);
+    expect(animal.id).toMatch(UUID_REGEX);
     expect(animal.name).toBe(createAnimalFixture.name);
     expect(animal.isAdopted).toBe(false);
     expect(animal.createdAt).toEqual(mockDate);
