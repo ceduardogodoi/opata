@@ -6,7 +6,7 @@ import {
 } from "@/app/fixtures/animal.fixtures";
 import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 import { Animal } from "@/app/domain/animal/entity/animal";
-import { uuidRegex } from "@/app/utils/constants";
+import { UUID_REGEX } from "@/app/globals/constants";
 
 describe("repositories / animal", () => {
   let animalRepository: AnimalRepositoryGateway;
@@ -17,7 +17,7 @@ describe("repositories / animal", () => {
   it("should save an animal", async () => {
     const animal1 = Animal.create(createAnimalFixture);
     const animalSaved = await animalRepository.save(animal1);
-    expect(animalSaved.id).toMatch(uuidRegex);
+    expect(animalSaved.id).toMatch(UUID_REGEX);
   });
 
   it("should get null when find by inexistent id", async () => {

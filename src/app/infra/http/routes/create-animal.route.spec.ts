@@ -5,7 +5,7 @@ import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal
 import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 import { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
 import { CreateAnimalOutput } from "../presenters/create-animal/create-animal.presenter.dto";
-import { uuidRegex } from "@/app/utils/constants";
+import { UUID_REGEX } from "@/app/globals/constants";
 import { ErrorCode } from "../errors/error-code";
 
 describe("routes / create-animal", () => {
@@ -33,7 +33,7 @@ describe("routes / create-animal", () => {
     const response = await createAnimalRoute.handle(request);
     const output: CreateAnimalOutput = await response.json();
     expect(response.status).toBe(201);
-    expect(output.id).toMatch(uuidRegex);
+    expect(output.id).toMatch(UUID_REGEX);
   });
 
   it("should have a validation error when name is not provided", async () => {

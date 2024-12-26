@@ -3,7 +3,7 @@ import { container } from "tsyringe";
 import { CreateAnimalUseCase } from "./create-animal.usecase";
 import { createAnimalFixture } from "@/app/fixtures/animal.fixtures";
 import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
-import { uuidRegex } from "@/app/utils/constants";
+import { UUID_REGEX } from "@/app/globals/constants";
 
 describe("use-cases / create-animal", () => {
   let animalRepository: AnimalRepositoryGateway;
@@ -15,6 +15,6 @@ describe("use-cases / create-animal", () => {
     const createAnimalUsecase = CreateAnimalUseCase.create(animalRepository);
 
     const animal = await createAnimalUsecase.execute(createAnimalFixture);
-    expect(animal.id).toMatch(uuidRegex);
+    expect(animal.id).toMatch(UUID_REGEX);
   });
 });
