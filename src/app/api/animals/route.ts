@@ -10,7 +10,6 @@ const animalRepository = container.resolve<AnimalRepositoryGateway>(
   "AnimalRepositoryGateway"
 );
 const createAnimalUseCase = CreateAnimalUseCase.create(animalRepository);
-const createAnimalRouteHandler =
-  CreateAnimalRoute.create(createAnimalUseCase);
+const createAnimalRouteHandler = CreateAnimalRoute.create(createAnimalUseCase);
 
 export const POST = createAnimalRouteHandler.handle;

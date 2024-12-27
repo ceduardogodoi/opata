@@ -8,3 +8,4 @@
 - [X] Make test coverage 100% (when possible)
 - [X] Add environment variables guard function
 - [ ] Deploy to Vercel preview and production
+- [ ] Add linting to CI
