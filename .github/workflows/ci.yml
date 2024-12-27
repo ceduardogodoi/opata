@@ -4,7 +4,6 @@
 name: Continuous Integration
 
 env:
-  NODE_OPTIONS: ${{ vars.NODE_OPTIONS }}
   NODE_ENV: ${{ vars.NODE_ENV }}
 
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
