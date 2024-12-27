@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { container } from "tsyringe";
 import { AnimalInMemoryRepository } from "../repositories/animal/animal-inmemory.repository";
 
