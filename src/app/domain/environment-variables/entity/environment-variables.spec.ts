@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EnvironmentVariables } from "./environment-variables";
 import { EnvironmentVariablesError } from "./environment-variables.error";
 
-describe.skip("entities / environment-variables / invalid", () => {
+describe("entities / environment-variables / invalid", () => {
   it("should have one singleton instance", () => {
     const instance = EnvironmentVariables.getInstance();
     const anotherInstance = EnvironmentVariables.getInstance();
