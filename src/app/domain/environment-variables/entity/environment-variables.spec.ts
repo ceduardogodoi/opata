@@ -16,6 +16,16 @@ describe("entities / environment-variables / invalid", () => {
     );
   });
 
+  beforeEach(() => {
+    vi.stubEnv("VERCEL_ORG_ID", undefined);
+    vi.stubEnv("VERCEL_PROJECT_ID", undefined);
+    vi.stubEnv("VERCEL_TOKEN", undefined);
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("should return an error when the environment variables are invalid", () => {
     const instance = EnvironmentVariables.getInstance();
     const [error, data] = instance.validateEnv();
@@ -26,11 +36,11 @@ describe("entities / environment-variables / invalid", () => {
   });
 
   it("should only print to the console when in 'development' mode", () => {
+    vi.stubEnv("NODE_ENV", "development");
+
     const consoleErrorSpy = vi
       .spyOn(console, "error")
       .mockImplementationOnce(() => {});
-
-    vi.stubEnv("NODE_ENV", "development");
 
     const instance = EnvironmentVariables.getInstance();
     const [error] = instance.validateEnv();
@@ -39,8 +49,6 @@ describe("entities / environment-variables / invalid", () => {
     expect(error).toBeInstanceOf(EnvironmentVariablesError);
 
     expect(consoleErrorSpy).toHaveBeenCalledOnce();
-
-    vi.unstubAllEnvs();
   });
 });
 
