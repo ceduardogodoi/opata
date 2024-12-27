@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EnvironmentVariables } from "./environment-variables";
 import { EnvironmentVariablesError } from "./environment-variables.error";
 
-describe("entities / environment-variables / invalid", () => {
+describe("entities / environment-variables", () => {
   it("should have one singleton instance", () => {
     const instance = EnvironmentVariables.getInstance();
     const anotherInstance = EnvironmentVariables.getInstance();
@@ -15,7 +15,9 @@ describe("entities / environment-variables / invalid", () => {
       "EnvironmentVariables is a singleton class. Use EnvironmentVariables.getInstance() instead."
     );
   });
+});
 
+describe("entities / environment-variables / invalid", () => {
   beforeEach(() => {
     vi.stubEnv("VERCEL_ORG_ID", undefined);
     vi.stubEnv("VERCEL_PROJECT_ID", undefined);
