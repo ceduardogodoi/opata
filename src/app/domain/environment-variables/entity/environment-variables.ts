@@ -37,6 +37,7 @@ export class EnvironmentVariables {
     EnvironmentVariablesType
   > {
     const result = envSchema.safeParse(process.env);
+    console.log(process.env);
 
     if (!result.success) {
       if (process.env.NODE_ENV === "development") {
