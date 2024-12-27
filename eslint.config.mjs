@@ -25,6 +25,7 @@ const eslintConfig = [
       {
         files: [
           "./src/app/domain/environment-variables/entity/environment-variables.ts",
+          "./src/app/domain/environment-variables/entity/environment-variables.error.ts",
           "./src/app/env.ts",
         ],
         rules: {
