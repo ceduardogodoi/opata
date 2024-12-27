@@ -15,6 +15,7 @@ jobs:
   continuous-integration:
     name: Continuous Integration
     runs-on: ubuntu-latest
+    environment: development
 
     strategy:
       matrix:
