@@ -5,13 +5,13 @@ import { createAnimalFixture } from "@/app/fixtures/animal.fixtures";
 import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 import { UUID_REGEX } from "@/app/globals/constants";
 
-describe("use-cases / create-animal", () => {
+describe("use-cases / create animal", () => {
   let animalRepository: AnimalRepositoryGateway;
   beforeEach(() => {
     animalRepository = container.resolve("AnimalRepositoryGateway");
   });
 
-  it("should create an animal and confirm present its data", async () => {
+  it("should create an animal and confirm its data", async () => {
     const createAnimalUsecase = CreateAnimalUseCase.create(animalRepository);
 
     const animal = await createAnimalUsecase.execute(createAnimalFixture);

@@ -7,5 +7,10 @@
   - [X] Add test coverage
 - [X] Make test coverage 100% (when possible)
 - [X] Add environment variables guard function
-- [ ] Deploy to Vercel preview and production
+- [X] Deploy to Vercel preview and production
+- [ ] Create endpoint `GET /animals`
+- [ ] Create `preview` environment to Github repository
+  - [ ] Update `preview.yml` to use `preview` environment
+  - [ ] Delete `development` environment from Github repository
 - [ ] Add linting to CI
+- [ ] Improve `README.md`
