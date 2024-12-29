@@ -8,9 +8,11 @@
 - [X] Make test coverage 100% (when possible)
 - [X] Add environment variables guard function
 - [X] Deploy to Vercel preview and production
-- [ ] Create endpoint `GET /animals`
+- [X] Create endpoint `GET /animals`
 - [ ] Create `preview` environment to Github repository
   - [ ] Update `preview.yml` to use `preview` environment
   - [ ] Delete `development` environment from Github repository
 - [ ] Add linting to CI
 - [ ] Improve `README.md`
+- [ ] Create pagination to `GET /animals`
+- [ ] Create filter to `GET /animals`
