@@ -12,7 +12,7 @@ describe("entities / environment variables error", () => {
     expect(() => {
       throw new EnvironmentVariablesError();
     }).toThrowError(
-      "NODE_ENV: test - One or more environment variables were not set correctly."
+      "test - One or more environment variables were not set correctly."
     );
   });
 });

@@ -16,3 +16,4 @@
 - [ ] Improve `README.md`
 - [ ] Create pagination to `GET /animals`
 - [ ] Create filter to `GET /animals`
+- [ ] Update vercel envs with GitHub Actions envs (vercel CLI: `vercel env`)
