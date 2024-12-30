@@ -1,12 +1,12 @@
 import { Animal } from "@/app/domain/animal/entity/animal";
-import { CreateAnimalOutput } from "./create-animal.presenter.dto";
+import { CreateAnimalPresentOutput } from "./create-animal.presenter.dto";
 
 export class CreateAnimalPresenter {
   constructor() {
-    throw new Error("CreateAnimalPresenter constructor is private");
+    throw new Error("CreateAnimalPresenter constructor is private.");
   }
 
-  public static present(animal: Animal): CreateAnimalOutput {
+  public static present(animal: Animal): CreateAnimalPresentOutput {
     return {
       id: animal.id,
       name: animal.name,
