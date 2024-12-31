@@ -9,9 +9,10 @@
 - [X] Add environment variables guard function
 - [X] Deploy to Vercel preview and production
 - [X] Create endpoint `GET /animals`
-- [X] Create `preview` environment to Github repository
+- [X] Create `preview` environment to GitHub repository
   - [X] Update `preview.yml` to use `preview` environment
-  - [X] Delete `development` environment from Github repository
+  - [X] Delete `development` environment from GitHub repository
+- [WIP] Configure to only deploy to vercel after GitHub Actions ran successfully
 - [ ] Create pagination to `GET /animals
 - [ ] Create filter to `GET /animals`
 - [ ] Create get animal by id `GET /animals/:id`
