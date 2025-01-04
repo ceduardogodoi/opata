@@ -16,11 +16,14 @@ describe("use-cases / find all animals", () => {
     });
   });
 
-  it("should return all registered animals", async () => {
+  it("should return all 3 registered animals", async () => {
     const findAllAnimalsUseCase =
       FindAllAnimalsUseCase.create(animalRepository);
 
-    const animals = await findAllAnimalsUseCase.execute();
-    expect(animals).toHaveLength(3);
+    const output = await findAllAnimalsUseCase.execute();
+    expect(output.items).toHaveLength(3);
+    expect(output.totalItems).toBe(3);
+    expect(output.totalPages).toBe(1);
+    expect(output.currentPage).toBe(1);
   });
 });
