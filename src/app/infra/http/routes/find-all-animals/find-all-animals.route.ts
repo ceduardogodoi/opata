@@ -1,5 +1,6 @@
 import { FindAllAnimalsUseCase } from "@/app/use-cases/find-all-animals/find-all-animals.usecase";
 import { RouteHandle } from "../route.handle.interface";
+import { Pageable } from "@/app/types/pagination.types";
 
 export class FindAllAnimalsRoute implements RouteHandle {
   readonly #findAllAnimalsUseCase: FindAllAnimalsUseCase;
@@ -16,10 +17,22 @@ export class FindAllAnimalsRoute implements RouteHandle {
     return new FindAllAnimalsRoute(findAllAnimalsUseCase);
   }
 
-  public async handle(): Promise<Response> {
-    const output = await this.#findAllAnimalsUseCase.execute();
+  public async handle(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get("page")) || undefined;
+    const pageSize = Number(url.searchParams.get("pageSize")) || undefined;
 
-    if (output.length < 1) {
+    let pageable: Pageable | undefined;
+    if (!Number.isNaN(page) && !Number.isNaN(pageSize)) {
+      pageable = {
+        page,
+        pageSize,
+      };
+    }
+
+    const output = await this.#findAllAnimalsUseCase.execute(pageable);
+
+    if (output.items.length < 1) {
       return Response.json(output, {
         status: 404,
       });

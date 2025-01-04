@@ -5,6 +5,7 @@ import type {
   FindAllAnimalsOutputDto,
 } from "./find-all-animals.dto";
 import type { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
+import type { Pageable } from "@/app/types/pagination.types";
 
 @injectable()
 export class FindAllAnimalsUseCase
@@ -25,9 +26,9 @@ export class FindAllAnimalsUseCase
     return new FindAllAnimalsUseCase(animalRepositoryGateway);
   }
 
-  public async execute(): Promise<FindAllAnimalsOutputDto> {
-    const animals = await this.#animalRepositoryGateway.findAll();
+  public async execute(pageable?: Pageable): Promise<FindAllAnimalsOutputDto> {
+    const output = await this.#animalRepositoryGateway.findAll(pageable);
 
-    return animals;
+    return output;
   }
 }
