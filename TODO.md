@@ -12,8 +12,8 @@
 - [X] Create `preview` environment to GitHub repository
   - [X] Update `preview.yml` to use `preview` environment
   - [X] Delete `development` environment from GitHub repository
-- [X] Create pagination to `GET /animals
-- [ ] Create filter to `GET /animals`
+- [X] Create pagination to `GET /animals`
+- [WIP] Create filter to `GET /animals` by property
 - [ ] Create get animal by id `GET /animals/:id`
 
 - [ ] Improve `README.md`
