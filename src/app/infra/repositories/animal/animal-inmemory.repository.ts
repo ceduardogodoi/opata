@@ -59,13 +59,13 @@ export class AnimalInMemoryRepository implements AnimalRepositoryGateway {
     return filteredAnimals;
   }
 
-  #paginate(animals: Animal[], pageable: Pageable = {}): Paged<Animal> {
-    let page = Number(pageable.page);
-    if (isNaN(Number(pageable.pageSize)) || page <= 0) {
+  #paginate(animals: Animal[], pageable?: Pageable): Paged<Animal> {
+    let page = Number(pageable?.page);
+    if (isNaN(Number(pageable?.pageSize)) || page <= 0) {
       page = 1;
     }
 
-    let pageSize = Number(pageable.pageSize);
+    let pageSize = Number(pageable?.pageSize);
     if (isNaN(pageSize) || pageSize <= 0) {
       pageSize = 10;
     }
