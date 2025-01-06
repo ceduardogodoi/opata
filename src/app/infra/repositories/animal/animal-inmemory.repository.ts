@@ -24,27 +24,51 @@ export class AnimalInMemoryRepository implements AnimalRepositoryGateway {
   }
 
   public async findAll(
-    pageable: Pageable = {},
+    pageable?: Pageable,
     filterCriteria?: FilterCriteria<AnimalLike>
   ): Promise<Paged<Animal>> {
     let animals: Animal[] = this.#animals;
     if (filterCriteria != null) {
-      animals = this.#animals.filter((animal) => {
-        return Object.entries(filterCriteria).every(([key, value]) => {
-          const property = key as keyof AnimalLike;
-          if (property === "name") {
-            return animal.name
-              .toLocaleLowerCase()
-              .includes(value.toString().toLocaleLowerCase());
-          }
-
-          return animal[property] === value;
-        });
-      });
+      animals = this.#filterByCriteria(filterCriteria);
     }
 
-    const page = pageable.page ?? 1;
-    const pageSize = pageable.pageSize ?? 10;
+    const pagination = this.#paginate(animals, pageable);
+
+    return {
+      items: pagination.items,
+      totalItems: pagination.totalItems,
+      totalPages: pagination.totalPages,
+      currentPage: pagination.currentPage,
+    };
+  }
+
+  #filterByCriteria(filterCriteria: FilterCriteria<AnimalLike>): Animal[] {
+    const filteredAnimals = this.#animals.filter((animal) => {
+      return Object.entries(filterCriteria).every(([key, value]) => {
+        const property = key as keyof AnimalLike;
+        if (property === "name") {
+          return animal.name
+            .toLocaleLowerCase()
+            .includes(value.toString().toLocaleLowerCase());
+        }
+
+        return animal[property] === value;
+      });
+    });
+
+    return filteredAnimals;
+  }
+
+  #paginate(animals: Animal[], pageable: Pageable = {}): Paged<Animal> {
+    let page = Number(pageable.page);
+    if (isNaN(Number(pageable.pageSize)) || page <= 0) {
+      page = 1;
+    }
+
+    let pageSize = Number(pageable.pageSize);
+    if (isNaN(pageSize) || pageSize <= 0) {
+      pageSize = 10;
+    }
 
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;

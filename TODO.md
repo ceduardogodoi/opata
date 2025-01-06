@@ -13,7 +13,8 @@
   - [X] Update `preview.yml` to use `preview` environment
   - [X] Delete `development` environment from GitHub repository
 - [X] Create pagination to `GET /animals`
-- [WIP] Create filter to `GET /animals` by property
+- [X] Create filter to `GET /animals` by property
+- [ ] Add ChatGPT suggestions for improvement for the task above
 - [ ] Create get animal by id `GET /animals/:id`
 
 - [ ] Improve `README.md`
