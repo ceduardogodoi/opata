@@ -61,7 +61,7 @@ export class AnimalInMemoryRepository implements AnimalRepositoryGateway {
 
   #paginate(animals: Animal[], pageable?: Pageable): Paged<Animal> {
     let page = Number(pageable?.page);
-    if (isNaN(Number(pageable?.pageSize)) || page <= 0) {
+    if (isNaN(page) || page <= 0) {
       page = 1;
     }
 

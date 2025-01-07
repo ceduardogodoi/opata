@@ -92,6 +92,26 @@ describe("repositories / animal", () => {
     }
   );
 
+  it.each([
+    { pageSize: 0 },
+    { pageSize: -1 },
+    { pageSize: -10 },
+    { pageSize: NaN },
+  ])(
+    "should find first 10 animals of 20 animals, 2 pages and current page is 1 when informed pageSize is $pageSize",
+    async ({ pageSize }) => {
+      const pageable: Pageable = {
+        pageSize,
+      };
+
+      const output = await animalRepository.findAll(pageable);
+      expect(output.items).toHaveLength(10);
+      expect(output.totalItems).toBe(20);
+      expect(output.totalPages).toBe(2);
+      expect(output.currentPage).toBe(1);
+    }
+  );
+
   // Filtering
   // 21 animals registered from here
   it("should find 1 of 21 animals, 3 pages and current page is 1", async () => {
