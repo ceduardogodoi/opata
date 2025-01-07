@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { container } from "tsyringe";
 import {
+  animalFixture,
   createAnimalFixture,
   inexistentAnimalId,
 } from "@/app/fixtures/animal.fixtures";
@@ -8,6 +9,8 @@ import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repo
 import { Animal } from "@/app/domain/animal/entity/animal";
 import { UUID_REGEX } from "@/app/globals/constants";
 import type { Pageable } from "@/app/types/pagination.types";
+import type { FilterCriteria } from "@/app/types/filtering.types";
+import type { AnimalLike } from "@/app/domain/animal/entity/animal.types";
 
 describe("repositories / animal", () => {
   let animalRepository: AnimalRepositoryGateway;
@@ -46,7 +49,8 @@ describe("repositories / animal", () => {
     expect(output.currentPage).toBe(1);
   });
 
-  it("should find first 10 animals from the total of 20 animals, 2 pages and current page is 1", async () => {
+  // 20 animals registered from here
+  it("should find first 10 animals of 20 animals, 2 pages and current page is 1", async () => {
     Array.from({ length: 17 }).forEach(async () => {
       const animal = Animal.create(createAnimalFixture);
       await animalRepository.save(animal);
@@ -59,7 +63,8 @@ describe("repositories / animal", () => {
     expect(output.currentPage).toBe(1);
   });
 
-  it("should find first 5 animals from the total of 20 animals, 4 pages and current page is 1", async () => {
+  // Pagination
+  it("should find first 5 animals of 20 animals, 4 pages and current page is 1", async () => {
     const pageable: Pageable = {
       page: 1,
       pageSize: 5,
@@ -70,5 +75,81 @@ describe("repositories / animal", () => {
     expect(output.totalItems).toBe(20);
     expect(output.totalPages).toBe(4);
     expect(output.currentPage).toBe(1);
+  });
+
+  it.each([{ page: 0 }, { page: -1 }, { page: -10 }, { page: NaN }])(
+    "should find first 10 animals of 20 animals, 2 pages and current page is 1 when informed page is $page",
+    async ({ page }) => {
+      const pageable: Pageable = {
+        page,
+      };
+
+      const output = await animalRepository.findAll(pageable);
+      expect(output.items).toHaveLength(10);
+      expect(output.totalItems).toBe(20);
+      expect(output.totalPages).toBe(2);
+      expect(output.currentPage).toBe(1);
+    }
+  );
+
+  it.each([
+    { pageSize: 0 },
+    { pageSize: -1 },
+    { pageSize: -10 },
+    { pageSize: NaN },
+  ])(
+    "should find first 10 animals of 20 animals, 2 pages and current page is 1 when informed pageSize is $pageSize",
+    async ({ pageSize }) => {
+      const pageable: Pageable = {
+        pageSize,
+      };
+
+      const output = await animalRepository.findAll(pageable);
+      expect(output.items).toHaveLength(10);
+      expect(output.totalItems).toBe(20);
+      expect(output.totalPages).toBe(2);
+      expect(output.currentPage).toBe(1);
+    }
+  );
+
+  // Filtering
+  // 21 animals registered from here
+  it("should find 1 of 21 animals, 3 pages and current page is 1", async () => {
+    const filters: FilterCriteria<AnimalLike> = { name: "Xpto", age: 3 };
+
+    const animal21 = Animal.with({
+      ...animalFixture,
+      name: "Xpto",
+      age: 3,
+      history: "History Xpto lorem ipsum",
+      observations: "Observations Cat Lorem ipsum",
+    });
+    await animalRepository.save(animal21);
+
+    const output = await animalRepository.findAll(undefined, filters);
+    expect(output.items).toHaveLength(1);
+    expect(output.totalItems).toBe(21);
+    expect(output.totalPages).toBe(3);
+    expect(output.currentPage).toBe(1);
+  });
+
+  it("should find 1 of 21 animals, 3 pages and current page is 1 with case-insensitive name", async () => {
+    const filters: FilterCriteria<AnimalLike> = { name: "xpto" };
+
+    const output = await animalRepository.findAll(undefined, filters);
+    expect(output.items).toHaveLength(1);
+    expect(output.totalItems).toBe(21);
+    expect(output.totalPages).toBe(3);
+    expect(output.currentPage).toBe(1);
+  });
+
+  it("should not find any filtered animals of 21 animals, 3 pages and current page is 0", async () => {
+    const filters: FilterCriteria<AnimalLike> = { name: "None" };
+
+    const output = await animalRepository.findAll(undefined, filters);
+    expect(output.items).toHaveLength(0);
+    expect(output.totalItems).toBe(21);
+    expect(output.totalPages).toBe(3);
+    expect(output.currentPage).toBe(0);
   });
 });

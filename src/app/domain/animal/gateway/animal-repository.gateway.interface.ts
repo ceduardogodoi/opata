@@ -1,5 +1,7 @@
 import type { Pageable, Paged } from "@/app/types/pagination.types";
 import { Animal } from "../entity/animal";
+import type { FilterCriteria } from "@/app/types/filtering.types";
+import type { AnimalLike } from "../entity/animal.types";
 
 /**
  * Interface representing a gateway for animal repository operations.
@@ -20,8 +22,12 @@ export interface AnimalRepositoryGateway {
   findById(id: string): Promise<Animal | null>;
 
   /**
-   * Retrieves all animals from the repository.
-   * @returns A promise that resolves to a paginated list of animal entities.
+   * Retrieves animals from the repository.
+   * @returns A promise that resolves to a filtered, and paginated
+   * list of animal entities.
    */
-  findAll(pageable?: Pageable): Promise<Paged<Animal>>;
+  findAll(
+    pageable?: Pageable,
+    filterCriteria?: FilterCriteria<AnimalLike>
+  ): Promise<Paged<Animal>>;
 }
