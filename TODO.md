@@ -15,9 +15,10 @@
 - [X] Create pagination to `GET /animals`
 - [X] Create filter to `GET /animals` by property
 - [X] Create pagination `totalPageItems` counting the itens for that page
-- [ ] Add ChatGPT suggestions for improvement for the task above
+- [X] Add ChatGPT suggestions for improvement for the task above
+- [X] Create get animal by id `GET /animals/:id`
+- [ ] Global Http Error Handling
 - [ ] Fix deployment to vercel bypassing GitHub Actions deployment approval
-- [ ] Create get animal by id `GET /animals/:id`
 
 - [ ] Improve `README.md`
 - [ ] Add linting to CI
