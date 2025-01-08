@@ -21,7 +21,7 @@ describe("use-cases / find all animals", () => {
       FindAllAnimalsUseCase.create(animalRepository);
 
     const output = await findAllAnimalsUseCase.execute();
-    expect(output.items).toHaveLength(3);
+    expect(output.totalPageItems).toBe(3);
     expect(output.totalItems).toBe(3);
     expect(output.totalPages).toBe(1);
     expect(output.currentPage).toBe(1);
