@@ -19,16 +19,13 @@ export class FindAllAnimalsRoute implements RouteHandle {
 
   public async handle(request: Request): Promise<Response> {
     const url = new URL(request.url);
-    const page = Number(url.searchParams.get("page")) || undefined;
-    const pageSize = Number(url.searchParams.get("pageSize")) || undefined;
+    const page = Number(url.searchParams.get("page"));
+    const pageSize = Number(url.searchParams.get("pageSize"));
 
-    let pageable: Pageable | undefined;
-    if (!Number.isNaN(page) && !Number.isNaN(pageSize)) {
-      pageable = {
-        page,
-        pageSize,
-      };
-    }
+    const pageable: Pageable = {
+      page,
+      pageSize,
+    };
 
     const output = await this.#findAllAnimalsUseCase.execute(pageable);
 
