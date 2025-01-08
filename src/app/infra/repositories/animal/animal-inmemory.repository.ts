@@ -36,6 +36,7 @@ export class AnimalInMemoryRepository implements AnimalRepositoryGateway {
 
     return {
       items: pagination.items,
+      totalPageItems: pagination.totalPageItems,
       totalItems: pagination.totalItems,
       totalPages: pagination.totalPages,
       currentPage: pagination.currentPage,
@@ -74,12 +75,14 @@ export class AnimalInMemoryRepository implements AnimalRepositoryGateway {
     const endIndex = startIndex + pageSize;
 
     const items = animals.slice(startIndex, endIndex);
+    const totalPageItems = items.length;
     const totalItems = this.#animals.length;
     const totalPages = Math.ceil(totalItems / pageSize);
     const currentPage = items.length > 0 ? page : 0;
 
     return {
       items,
+      totalPageItems,
       totalItems,
       totalPages,
       currentPage,
