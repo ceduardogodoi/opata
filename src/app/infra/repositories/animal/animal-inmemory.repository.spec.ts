@@ -43,7 +43,7 @@ describe("repositories / animal", () => {
     await animalRepository.save(animal3);
 
     const output = await animalRepository.findAll();
-    expect(output.items).toHaveLength(3);
+    expect(output.totalPageItems).toBe(3);
     expect(output.totalItems).toBe(3);
     expect(output.totalPages).toBe(1);
     expect(output.currentPage).toBe(1);
@@ -57,7 +57,7 @@ describe("repositories / animal", () => {
     });
 
     const output = await animalRepository.findAll();
-    expect(output.items).toHaveLength(10);
+    expect(output.totalPageItems).toBe(10);
     expect(output.totalItems).toBe(20);
     expect(output.totalPages).toBe(2);
     expect(output.currentPage).toBe(1);
@@ -71,7 +71,7 @@ describe("repositories / animal", () => {
     };
 
     const output = await animalRepository.findAll(pageable);
-    expect(output.items).toHaveLength(5);
+    expect(output.totalPageItems).toBe(5);
     expect(output.totalItems).toBe(20);
     expect(output.totalPages).toBe(4);
     expect(output.currentPage).toBe(1);
@@ -85,7 +85,7 @@ describe("repositories / animal", () => {
       };
 
       const output = await animalRepository.findAll(pageable);
-      expect(output.items).toHaveLength(10);
+      expect(output.totalPageItems).toBe(10);
       expect(output.totalItems).toBe(20);
       expect(output.totalPages).toBe(2);
       expect(output.currentPage).toBe(1);
@@ -105,7 +105,7 @@ describe("repositories / animal", () => {
       };
 
       const output = await animalRepository.findAll(pageable);
-      expect(output.items).toHaveLength(10);
+      expect(output.totalPageItems).toBe(10);
       expect(output.totalItems).toBe(20);
       expect(output.totalPages).toBe(2);
       expect(output.currentPage).toBe(1);
@@ -127,7 +127,7 @@ describe("repositories / animal", () => {
     await animalRepository.save(animal21);
 
     const output = await animalRepository.findAll(undefined, filters);
-    expect(output.items).toHaveLength(1);
+    expect(output.totalPageItems).toBe(1);
     expect(output.totalItems).toBe(21);
     expect(output.totalPages).toBe(3);
     expect(output.currentPage).toBe(1);
@@ -137,7 +137,7 @@ describe("repositories / animal", () => {
     const filters: FilterCriteria<AnimalLike> = { name: "xpto" };
 
     const output = await animalRepository.findAll(undefined, filters);
-    expect(output.items).toHaveLength(1);
+    expect(output.totalPageItems).toBe(1);
     expect(output.totalItems).toBe(21);
     expect(output.totalPages).toBe(3);
     expect(output.currentPage).toBe(1);
@@ -147,7 +147,7 @@ describe("repositories / animal", () => {
     const filters: FilterCriteria<AnimalLike> = { name: "None" };
 
     const output = await animalRepository.findAll(undefined, filters);
-    expect(output.items).toHaveLength(0);
+    expect(output.totalPageItems).toBe(0);
     expect(output.totalItems).toBe(21);
     expect(output.totalPages).toBe(3);
     expect(output.currentPage).toBe(0);

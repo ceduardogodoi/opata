@@ -14,7 +14,9 @@
   - [X] Delete `development` environment from GitHub repository
 - [X] Create pagination to `GET /animals`
 - [X] Create filter to `GET /animals` by property
+- [X] Create pagination `totalPageItems` counting the itens for that page
 - [ ] Add ChatGPT suggestions for improvement for the task above
+- [ ] Fix deployment to vercel bypassing GitHub Actions deployment approval
 - [ ] Create get animal by id `GET /animals/:id`
 
 - [ ] Improve `README.md`

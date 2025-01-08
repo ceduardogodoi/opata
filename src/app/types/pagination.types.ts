@@ -32,6 +32,11 @@ export type Paged<Model> = {
   items: Model[];
 
   /**
+   * The total number of items in the current page.
+   */
+  totalPageItems: number;
+
+  /**
    * The total number of items across all pages.
    */
   totalItems: number;
