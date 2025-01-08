@@ -14,11 +14,11 @@
   - [X] Delete `development` environment from GitHub repository
 - [X] Create pagination to `GET /animals`
 - [X] Create filter to `GET /animals` by property
+- [WIP] Configure to only deploy to vercel after GitHub Actions ran successfully
 - [ ] Add ChatGPT suggestions for improvement for the task above
 - [ ] Create get animal by id `GET /animals/:id`
 
 - [ ] Improve `README.md`
 - [ ] Add linting to CI
 - [ ] Update vercel envs with GitHub Actions envs (vercel CLI: `vercel env`)
-- [ ] Configure to only deploy to vercel after GitHub Actions ran successfully
 - [ ] Add problem+json error
