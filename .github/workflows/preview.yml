@@ -52,4 +52,5 @@ jobs:
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
+        if: success()
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
