@@ -24,7 +24,7 @@ describe("routes / find all animals", () => {
     const output = await response.json();
 
     expect(response.status).toBe(404);
-    expect(output.items).toHaveLength(0);
+    expect(output.totalPageItems).toBe(0);
     expect(output.totalItems).toBe(0);
     expect(output.totalPages).toBe(0);
     expect(output.currentPage).toBe(0);
@@ -43,7 +43,7 @@ describe("routes / find all animals", () => {
     const output = await response.json();
 
     expect(response.status).toBe(200);
-    expect(output.items).toHaveLength(3);
+    expect(output.totalPageItems).toBe(3);
     expect(output.totalItems).toBe(3);
     expect(output.totalPages).toBe(1);
     expect(output.currentPage).toBe(1);
@@ -62,7 +62,7 @@ describe("routes / find all animals", () => {
     const output = await response.json();
 
     expect(response.status).toBe(200);
-    expect(output.items).toHaveLength(10);
+    expect(output.totalPageItems).toBe(10);
     expect(output.totalItems).toBe(20);
     expect(output.totalPages).toBe(2);
     expect(output.currentPage).toBe(1);
@@ -77,7 +77,7 @@ describe("routes / find all animals", () => {
     const output = await response.json();
 
     expect(response.status).toBe(200);
-    expect(output.items).toHaveLength(10);
+    expect(output.totalPageItems).toBe(10);
     expect(output.totalItems).toBe(20);
     expect(output.totalPages).toBe(2);
     expect(output.currentPage).toBe(1);
@@ -97,7 +97,7 @@ describe("routes / find all animals", () => {
       const output = await response.json();
 
       expect(response.status).toBe(200);
-      expect(output.items).toHaveLength(10);
+      expect(output.totalPageItems).toBe(10);
       expect(output.totalItems).toBe(20);
       expect(output.totalPages).toBe(2);
       expect(output.currentPage).toBe(1);
@@ -113,7 +113,7 @@ describe("routes / find all animals", () => {
     const output = await response.json();
 
     expect(response.status).toBe(200);
-    expect(output.items).toHaveLength(5);
+    expect(output.totalPageItems).toBe(5);
     expect(output.totalItems).toBe(20);
     expect(output.totalPages).toBe(4);
     expect(output.currentPage).toBe(2);
