@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Building to preview
     runs-on: ubuntu-latest
     environment: preview
     env:
@@ -42,6 +43,7 @@ jobs:
         run: npm run build
 
   deploy:
+    name: Deploying to preview
     runs-on: ubuntu-latest
     needs: build
     environment: preview

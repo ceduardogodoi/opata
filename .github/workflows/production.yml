@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Building to production
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -42,6 +43,7 @@ jobs:
         run: npm run build
 
   deploy:
+    name: Deploying to production
     runs-on: ubuntu-latest
     environment: production
     env:
