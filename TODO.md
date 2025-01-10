@@ -17,11 +17,10 @@
 - [X] Create pagination `totalPageItems` counting the itens for that page
 - [X] Add ChatGPT suggestions for improvement for the task above
 - [X] Create get animal by id `GET /animals/:id`
+- [X] Fix deployment to vercel: wait for GitHub Actions to finish before deploy
 - [ ] Global Http Error Handling
-- [ ] Fix deployment to vercel bypassing GitHub Actions deployment approval
 
 - [ ] Improve `README.md`
 - [ ] Add linting to CI
 - [ ] Update vercel envs with GitHub Actions envs (vercel CLI: `vercel env`)
-- [ ] Configure to only deploy to vercel after GitHub Actions ran successfully
 - [ ] Add problem+json error
