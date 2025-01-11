@@ -4,9 +4,9 @@
 name: Vercel Preview Build & Deployment
 
 on:
-  push:
-    branches-ignore:
-      - main
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   build:
