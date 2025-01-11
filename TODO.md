@@ -18,8 +18,8 @@
 - [X] Add ChatGPT suggestions for improvement for the task above
 - [X] Create get animal by id `GET /animals/:id`
 - [X] Fix deployment to vercel: wait for GitHub Actions to finish before deploy
-- [WIP] Fix production deployment failing
-- [ ] Fix: vercel is building `preview` environment before Pull Request is created
+- [X] Fix production deployment failing
+- [WIP] Fix: vercel is building `preview` environment before Pull Request is created
 - [ ] Check why GitHub Actions is asking for approval on each job
 - [ ] Global Http Error Handling
 
