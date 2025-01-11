@@ -19,7 +19,7 @@
 - [X] Create get animal by id `GET /animals/:id`
 - [X] Fix deployment to vercel: wait for GitHub Actions to finish before deploy
 - [X] Fix production deployment failing
-- [WIP] Fix: vercel is building `preview` environment before Pull Request is created
+- [WIP] Fix: GitHub Actions to be triggered only when the branch Pull Request is created
 - [ ] Check why GitHub Actions is asking for approval on each job
 - [ ] Global Http Error Handling
 
