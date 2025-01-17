@@ -31,4 +31,23 @@ describe("use-cases / create animal", () => {
 
     vi.useRealTimers();
   });
+
+  it("should throw when trying to create an animal with invalid data", async () => {
+    const createAnimalUsecase = CreateAnimalUseCase.create(animalRepository);
+
+    const fixture = Object.create(createAnimalFixture, {
+      name: {
+        value: undefined,
+      },
+    });
+
+    await expect(() =>
+      createAnimalUsecase.execute(fixture)
+    ).rejects.toMatchObject({
+      detail: "Your input is missing valid value(s) for field(s): name",
+      fields: {
+        name: ["Name is required."],
+      },
+    });
+  });
 });

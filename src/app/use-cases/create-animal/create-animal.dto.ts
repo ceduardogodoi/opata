@@ -1,10 +1,17 @@
 import { Animal } from "@/app/domain/animal/entity/animal";
+import { z } from "zod";
 
-export type CreateAnimalInputDto = {
-  name: string;
-  age?: number;
-  history?: string;
-  observations?: string;
-};
+export const createAnimalInputSchema = z.object({
+  name: z
+    .string({
+      required_error: "Name is required.",
+    })
+    .min(1, "Name is required."),
+  age: z.number().optional(),
+  history: z.string().optional(),
+  observations: z.string().optional(),
+});
+
+export type CreateAnimalInputDto = z.infer<typeof createAnimalInputSchema>;
 
 export type CreateAnimalOutputDto = Animal;
