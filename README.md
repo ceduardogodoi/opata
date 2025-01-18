@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Opata
+
+Opata is a web application built with Next.js, React, and TypeScript. It follows best practices for modern web development, including dependency injection, environment variable management, and comprehensive test coverage.
+
+## Features
+
+- **Next.js**: Utilizes the powerful features of Next.js for server-side rendering and static site generation.
+- **React**: Built with React for a dynamic and responsive user interface.
+- **TypeScript**: Ensures type safety and code quality.
+- **Dependency Injection**: Uses `tsyringe` for dependency injection.
+- **Validation**: Implements schema validation with `zod`.
+- **Testing**: Comprehensive test coverage using `vitest` and `@testing-library/react`.
+- **CI/CD**: Automated workflows with GitHub Actions for testing, building, and deploying the application.
+- **Deployment**: Deployed on Vercel for both preview and production environments.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (version specified in `.tool-versions`)
+- npm
+
+### Installation
+
+#### Clone the repository
+
+```sh
+git clone https://github.com/yourusername/opata.git
+cd opata
+```
+
+#### Install dependencies
+
+```bash
+npm i
+```
+
+#### Set up environment variables
+
+Copy .env.example to .env.development and fill in the required values.
+
+#### Running the Application
+
+Development:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Start:
 
-## Learn More
+```bash
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+Lint:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Test:
 
-## Deploy on Vercel
+```bash
+npm test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Coverage:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run coverage
+```
+
+#### Task Management
+
+Task management for this project is handled through the [TODO.md](TODO.md) file. This file contains a list of tasks, their statuses, and any relevant notes. Please refer to this file for an overview of ongoing and completed tasks.
+
+#### Deployment
+
+The application is deployed using Vercel. The deployment process is automated with GitHub Actions, which runs tests, builds the project, and deploys it to the specified environment.
+
+#### Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+#### License
+
+This project is licensed under the MIT License.
