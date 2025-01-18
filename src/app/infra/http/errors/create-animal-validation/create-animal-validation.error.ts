@@ -1,7 +1,7 @@
-import { ProblemDetailError } from "@/app/domain/error/problem-detail.error";
+import { ProblemDetailError } from "@/app/infra/http/errors/problem-detail.error";
 
 export class CreateAnimalValidationError extends ProblemDetailError {
-  readonly #fields: Record<string, string[]>;
+  readonly fields: Record<string, string[]>;
 
   constructor(fieldErrors: Record<string, string[]>) {
     const fieldKeys = Object.keys(fieldErrors);
@@ -17,12 +17,7 @@ export class CreateAnimalValidationError extends ProblemDetailError {
       `Input with invalid value for field(s): ${fields}`,
       "/api/animals"
     );
-    this.name = 'CreateAnimalValidationError';
 
-    this.#fields = fieldErrors;
-  }
-
-  get fields(): Record<string, string[]> {
-    return this.#fields;
+    this.fields = fieldErrors;
   }
 }

@@ -22,7 +22,8 @@
 - [X] Fix: GitHub Actions to be triggered only when the branch Pull Request is created
 - [X] Check why GitHub Actions is requiring approval on each job for production
 - [X] Add problem+json error
-- [ ] Global Http Error Handling
+- [WIP] Global Http Error Handling
+- [ ] Improve CreateAnimalValidationError & ProblemDetailError logging
 
 - [ ] Improve `README.md`
 - [ ] Add linting to CI

@@ -38,4 +38,31 @@ describe("routes / create-animal", () => {
     expect(output.history).toBe("Turtle history");
     expect(output.observations).toBe("Turtle observations");
   });
+
+  it("should fail with 400 to create animal with invalid input", async () => {
+    const request = {
+      json: async (): Promise<Partial<CreateAnimalInputDto>> => {
+        return {
+          name: undefined,
+          age: 10,
+          history: "Turtle history",
+          observations: "Turtle observations",
+        };
+      },
+    } as Request;
+
+    const response = await createAnimalRoute.handle(request);
+    expect(response.status).toBe(400);
+  });
+
+  it("should fail with 500 unknown error", async () => {
+    const request = {
+      json: (): Promise<unknown> => {
+        throw new Error("Unknown error.");
+      },
+    } as Request;
+
+    const response = await createAnimalRoute.handle(request);
+    expect(response.status).toBe(500);
+  });
 });

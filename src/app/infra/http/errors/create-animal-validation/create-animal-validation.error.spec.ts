@@ -12,9 +12,7 @@ describe("use-cases / errors / create animal", () => {
     expect(error).toBeInstanceOf(CreateAnimalValidationError);
     expect(error.type).toBe("https://example.com/probs/input-validation");
     expect(error.title).toBe("You have entered invalid input data.");
-    expect(error.detail).toBe(
-      "Input with invalid value for field(s): name"
-    );
+    expect(error.detail).toBe("Input with invalid value for field(s): name");
     expect(error.instance).toBe("/api/animals");
     expect(error.fields).toHaveProperty("name", ["Name is required."]);
   });
