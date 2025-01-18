@@ -19,7 +19,7 @@ export class CreateAnimalRoute extends RouteErrorHandler {
     return new CreateAnimalRoute(createAnimalUseCase);
   }
 
-  #handler = async (request: Request): Promise<Response> => {
+  handleImpl = async (request: Request): Promise<Response> => {
     const data = await request.json();
 
     const animal = await this.#createAnimalUseCase.execute(data);
@@ -29,10 +29,4 @@ export class CreateAnimalRoute extends RouteErrorHandler {
       status: 201,
     });
   };
-
-  public async handle(request: Request): Promise<Response> {
-    const response = await this.process(request, this.#handler);
-
-    return response;
-  }
 }

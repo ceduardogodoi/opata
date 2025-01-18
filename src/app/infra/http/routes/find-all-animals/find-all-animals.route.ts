@@ -19,7 +19,7 @@ export class FindAllAnimalsRoute extends RouteErrorHandler {
     return new FindAllAnimalsRoute(findAllAnimalsUseCase);
   }
 
-  #handle = async (request: Request): Promise<Response> => {
+  handleImpl = async (request: Request): Promise<Response> => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page"));
     const pageSize = Number(url.searchParams.get("pageSize"));
@@ -41,10 +41,4 @@ export class FindAllAnimalsRoute extends RouteErrorHandler {
       status: 200,
     });
   };
-
-  public async handle(request: Request): Promise<Response> {
-    const response = await this.process(request, this.#handle);
-
-    return response;
-  }
 }

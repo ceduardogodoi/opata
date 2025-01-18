@@ -30,5 +30,11 @@ export abstract class RouteErrorHandler {
     }
   }
 
-  abstract handle(request: Request): Promise<Response>;
+  abstract handleImpl(request: Request): Promise<Response>;
+
+  public async handle(request: Request): Promise<Response> {
+    const response = await this.process(request, this.handleImpl);
+
+    return response;
+  }
 }

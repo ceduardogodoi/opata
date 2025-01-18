@@ -5,7 +5,7 @@ import { CreateAnimalValidationError } from "../errors/create-animal-validation/
 import type { HttpHandler } from "../http.types";
 
 class RouteErrorHandlerTestImpl extends RouteErrorHandler {
-  async handle(): Promise<Response> {
+  async handleImpl(): Promise<Response> {
     throw new Error("Unused.");
   }
 }
