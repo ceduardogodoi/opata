@@ -17,6 +17,7 @@ export class CreateAnimalValidationError extends ProblemDetailError {
       `Input with invalid value for field(s): ${fields}`,
       "/api/animals"
     );
+    this.name = 'CreateAnimalValidationError';
 
     this.#fields = fieldErrors;
   }
