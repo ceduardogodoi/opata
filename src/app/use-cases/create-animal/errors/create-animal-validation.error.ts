@@ -3,20 +3,22 @@ import { ProblemDetailError } from "@/app/domain/error/problem-detail.error";
 export class CreateAnimalValidationError extends ProblemDetailError {
   readonly #fields: Record<string, string[]>;
 
-  constructor(detail: string, fields: Record<string, string[]>) {
-    const keysCount = Object.keys(fields).length;
-    if (keysCount < 1) {
+  constructor(fieldErrors: Record<string, string[]>) {
+    const fieldKeys = Object.keys(fieldErrors);
+    if (fieldKeys.length < 1) {
       throw new RangeError("No field errors present.");
     }
+
+    const fields = fieldKeys.join(", ");
 
     super(
       "https://example.com/probs/input-validation",
       "You have entered invalid input data.",
-      detail,
+      `Input with invalid value for field(s): ${fields}`,
       "/api/animals"
     );
 
-    this.#fields = fields;
+    this.#fields = fieldErrors;
   }
 
   get fields(): Record<string, string[]> {

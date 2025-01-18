@@ -3,18 +3,17 @@ import { CreateAnimalValidationError } from "./create-animal-validation.error";
 
 describe("use-cases / errors / create animal", () => {
   it("should create an error instance with extensions", () => {
-    const error = new CreateAnimalValidationError(
-      "Your input is missing valid value(s) for field(s): name",
-      {
-        name: ["Name is required."],
-      }
-    );
+    const fields = {
+      name: ["Name is required."],
+    };
+
+    const error = new CreateAnimalValidationError(fields);
 
     expect(error).toBeInstanceOf(CreateAnimalValidationError);
     expect(error.type).toBe("https://example.com/probs/input-validation");
     expect(error.title).toBe("You have entered invalid input data.");
     expect(error.detail).toBe(
-      "Your input is missing valid value(s) for field(s): name"
+      "Input with invalid value for field(s): name"
     );
     expect(error.instance).toBe("/api/animals");
     expect(error.fields).toHaveProperty("name", ["Name is required."]);
@@ -25,29 +24,25 @@ describe("use-cases / errors / create animal", () => {
       fieldA: ["fieldA is required."],
       fieldB: ["fieldB is too short."],
     };
-    const fields = Object.keys(fieldErrors).join(" ,");
 
-    const error = new CreateAnimalValidationError(
-      `Your input is missing valid value(s) for field(s): ${fields}`,
-      fieldErrors
-    );
+    const error = new CreateAnimalValidationError(fieldErrors);
 
     expect(error).toBeInstanceOf(CreateAnimalValidationError);
     expect(error.type).toBe("https://example.com/probs/input-validation");
     expect(error.title).toBe("You have entered invalid input data.");
     expect(error.detail).toBe(
-      `Your input is missing valid value(s) for field(s): ${fields}`
+      "Input with invalid value for field(s): fieldA, fieldB"
     );
     expect(error.instance).toBe("/api/animals");
     expect(error.fields).toHaveProperty("fieldA", ["fieldA is required."]);
     expect(error.fields).toHaveProperty("fieldB", ["fieldB is too short."]);
   });
 
-  it("should throw when no fields are passed", () => {
+  it("should throw when no fieldErrors are passed", () => {
     const fields = {};
 
-    expect(
-      () => new CreateAnimalValidationError("_detail_", fields)
-    ).toThrowError(new RangeError("No field errors present."));
+    expect(() => new CreateAnimalValidationError(fields)).toThrowError(
+      new RangeError("No field errors present.")
+    );
   });
 });

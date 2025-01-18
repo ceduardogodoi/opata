@@ -43,12 +43,7 @@ export class CreateAnimalUseCase
 
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
-      const fields = Object.keys(fieldErrors).join(", ");
-
-      throw new CreateAnimalValidationError(
-        `Your input is missing valid value(s) for field(s): ${fields}`,
-        fieldErrors
-      );
+      throw new CreateAnimalValidationError(fieldErrors);
     }
 
     return result.data;
