@@ -1,8 +1,8 @@
 import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
+import { RouteHandler } from "../../route-handler/route-handler";
 import { CreateAnimalPresenter } from "../../presenters/create-animal/create-animal.presenter";
-import { RouteErrorHandler } from "../../route-error-handler/route-error-handler";
 
-export class CreateAnimalRoute extends RouteErrorHandler {
+export class CreateAnimalRoute extends RouteHandler {
   readonly #createAnimalUseCase: CreateAnimalUseCase;
 
   constructor(createAnimalUseCase: CreateAnimalUseCase) {

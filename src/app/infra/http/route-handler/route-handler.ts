@@ -3,7 +3,7 @@ import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources
 import { UnknownError } from "../errors/unknown/unknown.error";
 import { HttpHandler } from "../http.types";
 
-export abstract class RouteErrorHandler {
+export abstract class RouteHandler {
   constructor() {
     this.process = this.process.bind(this);
   }

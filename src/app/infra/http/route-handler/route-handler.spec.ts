@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { RouteErrorHandler } from "./route-error-handler";
+import { RouteHandler } from "./route-handler";
 import type { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
 import { CreateAnimalValidationError } from "../errors/create-animal-validation/create-animal-validation.error";
 import type { HttpHandler } from "../http.types";
 import type { FindAllAnimalsOutputDto } from "@/app/use-cases/find-all-animals/find-all-animals.dto";
 import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources-found.error";
 
-class RouteErrorHandlerTestImpl extends RouteErrorHandler {
+class RouteHandlerTestImpl extends RouteHandler {
   async handleImpl(): Promise<Response> {
     throw new Error("Unused.");
   }
 }
 
-describe("route error handler", () => {
+describe("route handler", () => {
   let handler: HttpHandler;
-  const routeErrorHandler = new RouteErrorHandlerTestImpl();
+  const routeHandler = new RouteHandlerTestImpl();
 
   it("should return 500 when an unknown error has occured", async () => {
     const url = new URL("/api/animals", "http://localhost:3000").toString();
@@ -34,7 +34,7 @@ describe("route error handler", () => {
       return response;
     };
 
-    const response = await routeErrorHandler.process(request, handler);
+    const response = await routeHandler.process(request, handler);
     expect(response.status).toBe(500);
   });
 
@@ -61,7 +61,7 @@ describe("route error handler", () => {
       throw new CreateAnimalValidationError(fieldErrors);
     };
 
-    const response = await routeErrorHandler.process(request, handler);
+    const response = await routeHandler.process(request, handler);
     expect(response.status).toBe(400);
   });
 
@@ -85,7 +85,7 @@ describe("route error handler", () => {
       throw new NoResourcesFoundError();
     };
 
-    const response = await routeErrorHandler.process(request, handler);
+    const response = await routeHandler.process(request, handler);
     expect(response.status).toBe(404);
   });
 
@@ -108,7 +108,7 @@ describe("route error handler", () => {
       });
     };
 
-    const response = await routeErrorHandler.process(request, handler);
+    const response = await routeHandler.process(request, handler);
     const data = await response.json();
     expect(response.status).toBe(200);
     expect(data).toEqual(value);
