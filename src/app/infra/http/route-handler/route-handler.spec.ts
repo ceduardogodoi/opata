@@ -35,7 +35,14 @@ describe("route handler", () => {
     };
 
     const response = await routeHandler.process(request, handler);
+    const output = await response.json();
     expect(response.status).toBe(500);
+    expect(output.type).toBe("https://example.com/probs/unknown");
+    expect(output.title).toBe("An unknown error has occured.");
+    expect(output.detail).toBe(
+      "An unknown error has occured in our servers. Please try again later."
+    );
+    expect(output.instance).toBe("/api/animals");
   });
 
   it("should return 400 when invalid input is entered", async () => {
@@ -62,7 +69,15 @@ describe("route handler", () => {
     };
 
     const response = await routeHandler.process(request, handler);
+    const output = await response.json();
     expect(response.status).toBe(400);
+    expect(output.type).toBe("https://example.com/probs/input-validation");
+    expect(output.title).toBe("You have entered invalid input data.");
+    expect(output.detail).toBe("Input with invalid value for field(s): name");
+    expect(output.instance).toBe("/api/animals");
+    expect(output.fields).toEqual({
+      name: ["Name is required."],
+    });
   });
 
   it("should return 404 when no resources are found", async () => {
@@ -86,7 +101,14 @@ describe("route handler", () => {
     };
 
     const response = await routeHandler.process(request, handler);
+    const output = await response.json();
     expect(response.status).toBe(404);
+    expect(output.type).toBe("https://example.com/probs/no-resources-found");
+    expect(output.title).toBe("No resources were found for your request.");
+    expect(output.detail).toBe(
+      "The request you made has not found any resources."
+    );
+    expect(output.instance).toBe("/api/animals");
   });
 
   it("should return the handler status when process succeeds", async () => {
@@ -109,8 +131,8 @@ describe("route handler", () => {
     };
 
     const response = await routeHandler.process(request, handler);
-    const data = await response.json();
+    const output = await response.json();
     expect(response.status).toBe(200);
-    expect(data).toEqual(value);
+    expect(output).toEqual(value);
   });
 });

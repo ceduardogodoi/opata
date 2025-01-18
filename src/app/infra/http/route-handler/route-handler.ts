@@ -17,23 +17,24 @@ export abstract class RouteHandler {
 
       return response;
     } catch (error: unknown) {
-      const instance = new URL(request.url).pathname;
-
       if (error instanceof CreateAnimalValidationError) {
         return Response.json(error, {
           status: 400,
         });
       }
 
+      const pathname = new URL(request.url).pathname;
+
       if (error instanceof NoResourcesFoundError) {
-        error.setInstance = instance;
+        error.setInstance = pathname;
 
         return Response.json(error, {
           status: 404,
         });
       }
 
-      const unknownError = new UnknownError(instance);
+      const unknownError = new UnknownError();
+      unknownError.setInstance = pathname;
       return Response.json(unknownError, {
         status: 500,
       });

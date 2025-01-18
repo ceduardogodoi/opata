@@ -3,7 +3,8 @@ import { UnknownError } from "./unknown.error";
 
 describe("http / errors / unknown error", () => {
   it("should create an unknown error instance no extensions", () => {
-    const error = new UnknownError("/api/animals");
+    const error = new UnknownError();
+    error.setInstance = "/api/animals";
 
     expect(error).toBeInstanceOf(UnknownError);
     expect(error.type).toBe("https://example.com/probs/unknown");
