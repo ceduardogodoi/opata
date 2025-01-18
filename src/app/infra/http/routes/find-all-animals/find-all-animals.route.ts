@@ -31,12 +31,6 @@ export class FindAllAnimalsRoute extends RouteErrorHandler {
 
     const output = await this.#findAllAnimalsUseCase.execute(pageable);
 
-    if (output.items.length < 1) {
-      return Response.json(output, {
-        status: 404,
-      });
-    }
-
     return Response.json(output, {
       status: 200,
     });

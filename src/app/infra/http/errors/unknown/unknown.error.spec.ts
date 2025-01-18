@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { UnknownError } from "./unknown.error";
 
 describe("http / errors / unknown error", () => {
-  it("should create an error instance no extensions", () => {
+  it("should create an unknown error instance no extensions", () => {
     const error = new UnknownError("/api/animals");
 
     expect(error).toBeInstanceOf(UnknownError);

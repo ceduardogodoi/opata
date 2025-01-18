@@ -5,7 +5,9 @@ import type {
   FindAllAnimalsOutputDto,
 } from "./find-all-animals.dto";
 import type { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
-import type { Pageable } from "@/app/types/pagination.types";
+import type { Pageable, Paged } from "@/app/types/pagination.types";
+import { Animal } from "@/app/domain/animal/entity/animal";
+import { NoResourcesFoundError } from "@/app/infra/http/errors/no-resources-found/no-resources-found.error";
 
 @injectable()
 export class FindAllAnimalsUseCase
@@ -28,6 +30,16 @@ export class FindAllAnimalsUseCase
 
   public async execute(pageable?: Pageable): Promise<FindAllAnimalsOutputDto> {
     const output = await this.#animalRepositoryGateway.findAll(pageable);
+
+    const data = this.#validate(output);
+
+    return data;
+  }
+
+  #validate(output: Paged<Animal>): FindAllAnimalsOutputDto {
+    if (output.totalPageItems < 1) {
+      throw new NoResourcesFoundError();
+    }
 
     return output;
   }

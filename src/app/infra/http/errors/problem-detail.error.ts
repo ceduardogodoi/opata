@@ -2,7 +2,7 @@ export class ProblemDetailError {
   readonly type: string;
   readonly title: string;
   readonly detail: string;
-  readonly instance: string;
+  instance: string;
 
   constructor(type: string, title: string, detail: string, instance: string) {
     this.type = type;

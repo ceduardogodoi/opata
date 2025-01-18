@@ -23,6 +23,7 @@
 - [X] Check why GitHub Actions is requiring approval on each job for production
 - [X] Add problem+json error
 - [WIP] Global Http Error Handling
+- [WIP] Make ProblemDetailErrors use builder pattern
 - [ ] Improve CreateAnimalValidationError & ProblemDetailError logging
 
 - [ ] Improve `README.md`

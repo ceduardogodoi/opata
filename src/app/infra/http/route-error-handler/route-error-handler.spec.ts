@@ -3,6 +3,8 @@ import { RouteErrorHandler } from "./route-error-handler";
 import type { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
 import { CreateAnimalValidationError } from "../errors/create-animal-validation/create-animal-validation.error";
 import type { HttpHandler } from "../http.types";
+import type { FindAllAnimalsOutputDto } from "@/app/use-cases/find-all-animals/find-all-animals.dto";
+import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources-found.error";
 
 class RouteErrorHandlerTestImpl extends RouteErrorHandler {
   async handleImpl(): Promise<Response> {
@@ -61,6 +63,30 @@ describe("route error handler", () => {
 
     const response = await routeErrorHandler.process(request, handler);
     expect(response.status).toBe(400);
+  });
+
+  it("should return 404 when no resources are found", async () => {
+    const url = new URL("/api/animals", "http://localhost:3000").toString();
+
+    const request = {
+      json: async (): Promise<FindAllAnimalsOutputDto> => {
+        return Promise.resolve({
+          currentPage: 0,
+          items: [],
+          totalItems: 0,
+          totalPageItems: 0,
+          totalPages: 0,
+        });
+      },
+      url,
+    } as Request;
+
+    handler = async (): Promise<Response> => {
+      throw new NoResourcesFoundError();
+    };
+
+    const response = await routeErrorHandler.process(request, handler);
+    expect(response.status).toBe(404);
   });
 
   it("should return the handler status when process succeeds", async () => {
