@@ -1,11 +1,13 @@
 import { FindAllAnimalsUseCase } from "@/app/use-cases/find-all-animals/find-all-animals.usecase";
-import { RouteHandle } from "../route.handle.interface";
 import { Pageable } from "@/app/types/pagination.types";
+import { RouteErrorHandler } from "../../route-error-handler/route-error-handler";
 
-export class FindAllAnimalsRoute implements RouteHandle {
+export class FindAllAnimalsRoute extends RouteErrorHandler {
   readonly #findAllAnimalsUseCase: FindAllAnimalsUseCase;
 
   constructor(findAllAnimalsUseCase: FindAllAnimalsUseCase) {
+    super();
+
     this.#findAllAnimalsUseCase = findAllAnimalsUseCase;
 
     this.handle = this.handle.bind(this);
@@ -17,7 +19,7 @@ export class FindAllAnimalsRoute implements RouteHandle {
     return new FindAllAnimalsRoute(findAllAnimalsUseCase);
   }
 
-  public async handle(request: Request): Promise<Response> {
+  #handle = async (request: Request): Promise<Response> => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page"));
     const pageSize = Number(url.searchParams.get("pageSize"));
@@ -38,5 +40,11 @@ export class FindAllAnimalsRoute implements RouteHandle {
     return Response.json(output, {
       status: 200,
     });
+  };
+
+  public async handle(request: Request): Promise<Response> {
+    const response = await this.process(request, this.#handle);
+
+    return response;
   }
 }

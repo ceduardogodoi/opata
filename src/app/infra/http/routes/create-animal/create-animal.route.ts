@@ -1,12 +1,8 @@
 import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
 import { CreateAnimalPresenter } from "../../presenters/create-animal/create-animal.presenter";
-import { RouteHandle } from "../route.handle.interface";
 import { RouteErrorHandler } from "../../route-error-handler/route-error-handler";
 
-export class CreateAnimalRoute
-  extends RouteErrorHandler
-  implements RouteHandle
-{
+export class CreateAnimalRoute extends RouteErrorHandler {
   readonly #createAnimalUseCase: CreateAnimalUseCase;
 
   constructor(createAnimalUseCase: CreateAnimalUseCase) {
@@ -33,10 +29,10 @@ export class CreateAnimalRoute
       status: 201,
     });
   };
-  
 
   public async handle(request: Request): Promise<Response> {
     const response = await this.process(request, this.#handler);
+
     return response;
   }
 }

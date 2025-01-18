@@ -4,9 +4,15 @@ import type { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-
 import { CreateAnimalValidationError } from "../errors/create-animal-validation/create-animal-validation.error";
 import type { HttpHandler } from "../http.types";
 
+class RouteErrorHandlerTestImpl extends RouteErrorHandler {
+  async handle(): Promise<Response> {
+    throw new Error("Unused.");
+  }
+}
+
 describe("route error handler", () => {
   let handler: HttpHandler;
-  const routeHandler = new RouteErrorHandler();
+  const routeErrorHandler = new RouteErrorHandlerTestImpl();
 
   it("should return 500 when an unknown error has occured", async () => {
     const url = new URL("/api/animals", "http://localhost:3000").toString();
@@ -26,7 +32,7 @@ describe("route error handler", () => {
       return response;
     };
 
-    const response = await routeHandler.process(request, handler);
+    const response = await routeErrorHandler.process(request, handler);
     expect(response.status).toBe(500);
   });
 
@@ -53,7 +59,7 @@ describe("route error handler", () => {
       throw new CreateAnimalValidationError(fieldErrors);
     };
 
-    const response = await routeHandler.process(request, handler);
+    const response = await routeErrorHandler.process(request, handler);
     expect(response.status).toBe(400);
   });
 
@@ -76,7 +82,7 @@ describe("route error handler", () => {
       });
     };
 
-    const response = await routeHandler.process(request, handler);
+    const response = await routeErrorHandler.process(request, handler);
     const data = await response.json();
     expect(response.status).toBe(200);
     expect(data).toEqual(value);

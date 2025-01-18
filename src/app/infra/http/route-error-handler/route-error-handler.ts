@@ -2,7 +2,7 @@ import { CreateAnimalValidationError } from "../errors/create-animal-validation/
 import { UnknownError } from "../errors/unknown/unknown.error";
 import { HttpHandler } from "../http.types";
 
-export class RouteErrorHandler {
+export abstract class RouteErrorHandler {
   constructor() {
     this.process = this.process.bind(this);
   }
@@ -29,4 +29,6 @@ export class RouteErrorHandler {
       });
     }
   }
+
+  abstract handle(request: Request): Promise<Response>;
 }
