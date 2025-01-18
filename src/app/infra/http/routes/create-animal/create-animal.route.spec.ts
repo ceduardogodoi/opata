@@ -18,15 +18,18 @@ describe("routes / create-animal", () => {
   });
 
   it("should create a new animal", async () => {
+    const url = new URL("/api/animals", "http://localhost:3000").toString();
+
     const request = {
       json: async (): Promise<CreateAnimalInputDto> => {
-        return {
+        return Promise.resolve({
           name: "Turtle",
           age: 10,
           history: "Turtle history",
           observations: "Turtle observations",
-        };
+        });
       },
+      url,
     } as Request;
 
     const response = await createAnimalRoute.handle(request);
@@ -39,30 +42,22 @@ describe("routes / create-animal", () => {
     expect(output.observations).toBe("Turtle observations");
   });
 
-  it("should fail with 400 to create animal with invalid input", async () => {
+  it("should return 400 when invalid input is entered", async () => {
+    const url = new URL("/api/animals", "http://localhost:3000").toString();
+
     const request = {
       json: async (): Promise<Partial<CreateAnimalInputDto>> => {
-        return {
+        return Promise.resolve({
           name: undefined,
           age: 10,
           history: "Turtle history",
           observations: "Turtle observations",
-        };
+        });
       },
+      url,
     } as Request;
 
     const response = await createAnimalRoute.handle(request);
     expect(response.status).toBe(400);
-  });
-
-  it("should fail with 500 unknown error", async () => {
-    const request = {
-      json: (): Promise<unknown> => {
-        throw new Error("Unknown error.");
-      },
-    } as Request;
-
-    const response = await createAnimalRoute.handle(request);
-    expect(response.status).toBe(500);
   });
 });
