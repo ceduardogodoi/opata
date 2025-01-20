@@ -4,10 +4,10 @@ import { strategies } from "./route-handler-error-strategy/error-handler-strateg
 import type { RouteHandlerErrorStrategy } from "./route-handler-error-strategy/route-handler-error-strategy.interface";
 
 export abstract class RouteHandler {
-  readonly #errorHandlersStrategy: RouteHandlerErrorStrategy[];
+  readonly #errorHandlersStrategies: RouteHandlerErrorStrategy[];
 
   constructor() {
-    this.#errorHandlersStrategy = strategies;
+    this.#errorHandlersStrategies = strategies;
 
     this.process = this.process.bind(this);
   }
@@ -24,7 +24,7 @@ export abstract class RouteHandler {
       const pathname = new URL(request.url).pathname;
 
       // error handler strategy context
-      for (const errorHandlerStrategy of this.#errorHandlersStrategy) {
+      for (const errorHandlerStrategy of this.#errorHandlersStrategies) {
         if (errorHandlerStrategy.canHandle(error)) {
           const response = errorHandlerStrategy.handle(error, pathname);
 

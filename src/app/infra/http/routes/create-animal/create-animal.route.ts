@@ -11,6 +11,7 @@ export class CreateAnimalRoute extends RouteHandler {
     this.#createAnimalUseCase = createAnimalUseCase;
 
     this.handle = this.handle.bind(this);
+    this.handleImpl = this.handleImpl.bind(this);
   }
 
   public static create(
@@ -19,7 +20,7 @@ export class CreateAnimalRoute extends RouteHandler {
     return new CreateAnimalRoute(createAnimalUseCase);
   }
 
-  handleImpl = async (request: Request): Promise<Response> => {
+  public async handleImpl(request: Request): Promise<Response> {
     const data = await request.json();
 
     const animal = await this.#createAnimalUseCase.execute(data);
@@ -28,5 +29,5 @@ export class CreateAnimalRoute extends RouteHandler {
     return Response.json(output, {
       status: 201,
     });
-  };
+  }
 }

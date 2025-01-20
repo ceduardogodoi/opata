@@ -19,7 +19,7 @@ describe("repositories / animal", () => {
   });
 
   describe("repositories / animal / empty", () => {
-    it("should no animals with page properties", async () => {
+    it("should return no animals with page properties", async () => {
       const output = await animalRepository.findAll();
       expect(output.totalPageItems).toBe(0);
       expect(output.totalItems).toBe(0);

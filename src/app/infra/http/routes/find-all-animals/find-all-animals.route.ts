@@ -11,6 +11,7 @@ export class FindAllAnimalsRoute extends RouteHandler {
     this.#findAllAnimalsUseCase = findAllAnimalsUseCase;
 
     this.handle = this.handle.bind(this);
+    this.handleImpl = this.handleImpl.bind(this);
   }
 
   public static create(
@@ -19,7 +20,7 @@ export class FindAllAnimalsRoute extends RouteHandler {
     return new FindAllAnimalsRoute(findAllAnimalsUseCase);
   }
 
-  handleImpl = async (request: Request): Promise<Response> => {
+  public async handleImpl(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page"));
     const pageSize = Number(url.searchParams.get("pageSize"));
@@ -34,5 +35,5 @@ export class FindAllAnimalsRoute extends RouteHandler {
     return Response.json(output, {
       status: 200,
     });
-  };
+  }
 }
