@@ -24,6 +24,6 @@
 - [X] Add problem+json error
 - [X] Global Http Error Handling
 
-- [ ] Improve `README.md`
+- [X] Improve `README.md`
 - [ ] Add linting to CI
 - [ ] Update vercel envs with GitHub Actions envs (vercel CLI: `vercel env`)
