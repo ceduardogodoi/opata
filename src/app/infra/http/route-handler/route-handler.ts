@@ -28,6 +28,7 @@ export abstract class RouteHandler {
         if (errorHandlerStrategy.canHandle(error)) {
           const response = errorHandlerStrategy.handle(error, pathname);
 
+          response.headers.set("Content-Type", "application/problem+json");
           return response;
         }
       }
@@ -37,6 +38,9 @@ export abstract class RouteHandler {
 
       return Response.json(unknownError, {
         status: 500,
+        headers: {
+          "Content-Type": "application/problem+json",
+        },
       });
     }
   }

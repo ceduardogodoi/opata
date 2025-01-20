@@ -43,6 +43,9 @@ describe("route handler", () => {
       "An unknown error has occured in our servers. Please try again later."
     );
     expect(output.instance).toBe("/api/animals");
+    expect(response.headers.get("Content-Type")).toBe(
+      "application/problem+json"
+    );
   });
 
   it("should return 400 when invalid input is entered", async () => {
@@ -78,6 +81,9 @@ describe("route handler", () => {
     expect(output.fields).toEqual({
       name: ["Name is required."],
     });
+    expect(response.headers.get("Content-Type")).toBe(
+      "application/problem+json"
+    );
   });
 
   it("should return 404 when no resources are found", async () => {
@@ -109,6 +115,9 @@ describe("route handler", () => {
       "The request you made has not found any resources."
     );
     expect(output.instance).toBe("/api/animals");
+    expect(response.headers.get("Content-Type")).toBe(
+      "application/problem+json"
+    );
   });
 
   it("should return the handler status when process succeeds", async () => {
@@ -134,5 +143,6 @@ describe("route handler", () => {
     const output = await response.json();
     expect(response.status).toBe(200);
     expect(output).toEqual(value);
+    expect(response.headers.get("Content-Type")).toBe("application/json");
   });
 });
