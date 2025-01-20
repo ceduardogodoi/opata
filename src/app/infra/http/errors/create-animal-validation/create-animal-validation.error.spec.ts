@@ -10,6 +10,7 @@ describe("http / errors / create animal validation", () => {
     const error = new CreateAnimalValidationError(fields);
 
     expect(error).toBeInstanceOf(CreateAnimalValidationError);
+    expect(error.id).toBe("CreateAnimalValidationError");
     expect(error.type).toBe("https://example.com/probs/input-validation");
     expect(error.title).toBe("You have entered invalid input data.");
     expect(error.detail).toBe("Input with invalid value for field(s): name");
@@ -26,6 +27,7 @@ describe("http / errors / create animal validation", () => {
     const error = new CreateAnimalValidationError(fieldErrors);
 
     expect(error).toBeInstanceOf(CreateAnimalValidationError);
+    expect(error.id).toBe("CreateAnimalValidationError");
     expect(error.type).toBe("https://example.com/probs/input-validation");
     expect(error.title).toBe("You have entered invalid input data.");
     expect(error.detail).toBe(

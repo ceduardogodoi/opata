@@ -1,6 +1,7 @@
 import { ProblemDetailError } from "@/app/infra/http/errors/problem-detail.error";
 
 export class CreateAnimalValidationError extends ProblemDetailError {
+  readonly #id;
   readonly fields: Record<string, string[]>;
 
   constructor(fieldErrors: Record<string, string[]>) {
@@ -19,5 +20,10 @@ export class CreateAnimalValidationError extends ProblemDetailError {
     );
 
     this.fields = fieldErrors;
+    this.#id = "CreateAnimalValidationError";
+  }
+
+  public get id(): string {
+    return this.#id;
   }
 }

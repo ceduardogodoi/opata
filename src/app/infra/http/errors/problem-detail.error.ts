@@ -1,4 +1,6 @@
 export class ProblemDetailError {
+  readonly #id: string;
+
   readonly type: string;
   readonly title: string;
   readonly detail: string;
@@ -9,9 +11,11 @@ export class ProblemDetailError {
     this.title = title;
     this.detail = detail;
     this.instance = instance;
+
+    this.#id = "ProblemDetailError";
   }
 
-  set setInstance(instance: string) {
-    this.instance = instance;
+  public get id(): string {
+    return this.#id;
   }
 }

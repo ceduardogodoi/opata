@@ -1,10 +1,14 @@
-import { CreateAnimalValidationError } from "../errors/create-animal-validation/create-animal-validation.error";
-import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources-found.error";
 import { UnknownError } from "../errors/unknown/unknown.error";
-import { HttpHandler } from "../http.types";
+import type { HttpHandler } from "../http.types";
+import { errorStrategies } from "./route-handler-error-strategy/error-strategies";
+import type { RouteHandlerErrorStrategy } from "./route-handler-error-strategy/route-handler-error-strategy.interface";
 
 export abstract class RouteHandler {
+  readonly #errorHandlers: RouteHandlerErrorStrategy[];
+
   constructor() {
+    this.#errorHandlers = errorStrategies;
+
     this.process = this.process.bind(this);
   }
 
@@ -17,24 +21,19 @@ export abstract class RouteHandler {
 
       return response;
     } catch (error: unknown) {
-      if (error instanceof CreateAnimalValidationError) {
-        return Response.json(error, {
-          status: 400,
-        });
-      }
-
       const pathname = new URL(request.url).pathname;
 
-      if (error instanceof NoResourcesFoundError) {
-        error.setInstance = pathname;
+      for (const errorHandler of this.#errorHandlers) {
+        if (errorHandler.canHandle(error)) {
+          const response = errorHandler.handle(error, pathname);
 
-        return Response.json(error, {
-          status: 404,
-        });
+          return response;
+        }
       }
 
-      const unknownError = new UnknownError();
-      unknownError.setInstance = pathname;
+      // fallback error / generic error
+      const unknownError = new UnknownError(pathname);
+
       return Response.json(unknownError, {
         status: 500,
       });
