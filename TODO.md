@@ -23,6 +23,7 @@
 - [X] Check why GitHub Actions is requiring approval on each job for production
 - [X] Add problem+json error
 - [X] Global Http Error Handling
+- [ ] Implement Prisma ORM with PostgreSQL
 
 - [X] Improve `README.md`
 - [ ] Add linting to CI
