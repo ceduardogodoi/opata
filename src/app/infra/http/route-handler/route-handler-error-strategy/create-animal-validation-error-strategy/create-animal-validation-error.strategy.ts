@@ -4,6 +4,16 @@ import type { RouteHandlerErrorStrategy } from "../route-handler-error-strategy.
 export class CreateAnimalValidationErrorStrategy
   implements RouteHandlerErrorStrategy
 {
+  readonly #id: string;
+
+  constructor() {
+    this.#id = "CreateAnimalValidationErrorStrategy";
+  }
+
+  public get id(): string {
+    return this.#id;
+  }
+
   public canHandle(error: unknown): error is CreateAnimalValidationError {
     return error instanceof CreateAnimalValidationError;
   }

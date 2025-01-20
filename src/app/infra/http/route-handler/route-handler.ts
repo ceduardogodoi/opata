@@ -1,13 +1,13 @@
 import { UnknownError } from "../errors/unknown/unknown.error";
 import type { HttpHandler } from "../http.types";
-import { errorStrategies } from "./route-handler-error-strategy/error-strategies";
+import { strategies } from "./route-handler-error-strategy/error-handler-strategies";
 import type { RouteHandlerErrorStrategy } from "./route-handler-error-strategy/route-handler-error-strategy.interface";
 
 export abstract class RouteHandler {
-  readonly #errorHandlers: RouteHandlerErrorStrategy[];
+  readonly #errorHandlersStrategy: RouteHandlerErrorStrategy[];
 
   constructor() {
-    this.#errorHandlers = errorStrategies;
+    this.#errorHandlersStrategy = strategies;
 
     this.process = this.process.bind(this);
   }
@@ -23,9 +23,10 @@ export abstract class RouteHandler {
     } catch (error: unknown) {
       const pathname = new URL(request.url).pathname;
 
-      for (const errorHandler of this.#errorHandlers) {
-        if (errorHandler.canHandle(error)) {
-          const response = errorHandler.handle(error, pathname);
+      // error handler strategy context
+      for (const errorHandlerStrategy of this.#errorHandlersStrategy) {
+        if (errorHandlerStrategy.canHandle(error)) {
+          const response = errorHandlerStrategy.handle(error, pathname);
 
           return response;
         }

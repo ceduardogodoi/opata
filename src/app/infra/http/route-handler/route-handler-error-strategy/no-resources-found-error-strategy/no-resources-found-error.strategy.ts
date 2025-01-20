@@ -4,6 +4,16 @@ import type { RouteHandlerErrorStrategy } from "../route-handler-error-strategy.
 export class NoResourcesFoundErrorStrategy
   implements RouteHandlerErrorStrategy
 {
+  readonly #id: string;
+
+  constructor() {
+    this.#id = "NoResourcesFoundErrorStrategy";
+  }
+
+  public get id(): string {
+    return this.#id;
+  }
+
   public canHandle(error: unknown): error is NoResourcesFoundError {
     return error instanceof NoResourcesFoundError;
   }

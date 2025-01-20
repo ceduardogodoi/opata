@@ -3,6 +3,11 @@
  */
 export interface RouteHandlerErrorStrategy {
   /**
+   * Unique identifier for the error handling strategy.
+   */
+  id: string;
+
+  /**
    * Determines if the strategy can handle the given error.
    *
    * @param {unknown} error - The error to check.
