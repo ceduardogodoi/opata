@@ -7,7 +7,7 @@ export class User {
   readonly #email: string;
   readonly #passwordHash: string;
   readonly #createdAt: Date;
-  readonly #updatedAt: Date;
+  #updatedAt: Date;
 
   private constructor(
     id: string,
@@ -58,6 +58,10 @@ export class User {
 
   public get createdAt(): Date {
     return this.#createdAt;
+  }
+
+  public set updatedAt(date: Date) {
+    this.#updatedAt = date;
   }
 
   public get updatedAt(): Date {

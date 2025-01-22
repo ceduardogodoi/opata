@@ -3,21 +3,18 @@ import { describe, expect, it, vi } from "vitest";
 import { User } from "./user";
 import type { CreateUser, UserLike } from "./user.types";
 import { UUID_REGEX } from "@/app/globals/constants";
+import {
+  createUserFixture,
+  password,
+  passwordHash,
+  userFixture,
+} from "@/app/fixtures/user.fixture";
 
 describe("entities / animal", () => {
   it("should create a new user", async () => {
     const mockDate = new Date(2025, 0, 21, 0, 0, 0, 0);
     vi.setSystemTime(mockDate);
 
-    const password = "cTF3MmUzcjQ=";
-    const passwordHash =
-      "$2b$10$iGODARbBXqgyUi.Ul9P1TObr5FNZOoZXcG7R.FYMCN4vIKshLUJMK";
-
-    const createUserFixture: CreateUser = {
-      fullName: "John Doe",
-      email: "john.doe@email.com",
-      passwordHash,
-    };
     const user = User.create(createUserFixture);
 
     const passwordMatch = await bcrypt.compare(password, passwordHash);
@@ -36,19 +33,6 @@ describe("entities / animal", () => {
   });
 
   it("should create a user with predefined data", async () => {
-    const mockDate = new Date(2025, 0, 21, 0, 0, 0, 0);
-    const password = "cTF3MmUzcjQ=";
-    const passwordHash =
-      "$2b$10$iGODARbBXqgyUi.Ul9P1TObr5FNZOoZXcG7R.FYMCN4vIKshLUJMK";
-
-    const userFixture: UserLike = {
-      id: "73547cf9-0dd1-4217-9bd8-678cba042b35",
-      fullName: "John Doe",
-      email: "john.doe@email.com",
-      passwordHash,
-      createdAt: mockDate,
-      updatedAt: mockDate,
-    };
     const user = User.with(userFixture);
 
     const passwordMatch = await bcrypt.compare(
@@ -68,9 +52,6 @@ describe("entities / animal", () => {
   ])(
     "should create username $username when full name is $fullName",
     async ({ fullName, username }) => {
-      const passwordHash =
-        "$2b$10$iGODARbBXqgyUi.Ul9P1TObr5FNZOoZXcG7R.FYMCN4vIKshLUJMK";
-
       const createUserFixture: CreateUser = {
         fullName,
         email: "john.doe@email.com",
