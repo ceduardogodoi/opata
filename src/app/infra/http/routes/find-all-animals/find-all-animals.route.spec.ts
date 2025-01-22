@@ -15,14 +15,20 @@ describe("routes / find all animals", () => {
     findAllAnimalsRoute = FindAllAnimalsRoute.create(findAllAnimalsUseCase);
   });
 
-  it("should return 404 when there are no registered animals", async () => {
+  it("should return 200 when there are no registered animals", async () => {
     const request = {
       url: "http://localhost:3000/api/animals",
     } as Request;
 
     const response = await findAllAnimalsRoute.handle(request);
+    const output = await response.json();
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(200);
+    expect(output.items).toHaveLength(0);
+    expect(output.totalPageItems).toBe(0);
+    expect(output.totalItems).toBe(0);
+    expect(output.totalPages).toBe(0);
+    expect(output.currentPage).toBe(0);
   });
 
   it("should return 200 with all 3 registered animals", async () => {
