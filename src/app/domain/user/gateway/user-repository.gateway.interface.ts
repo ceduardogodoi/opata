@@ -12,4 +12,12 @@ export interface UserRepositoryGateway {
    * @returns {Promise<User>} - A promise that resolves to the upserted user.
    */
   upsert(user: User): Promise<User>;
+
+  /**
+   * Finds a user by their ID.
+   *
+   * @param {string} id - The ID of the user to find.
+   * @returns {Promise<User | undefined>} - A promise that resolves to the user if found, or undefined if not found.
+   */
+  findById(id: string): Promise<User | undefined>;
 }

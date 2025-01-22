@@ -32,4 +32,28 @@ describe("repositories / user", () => {
     expect(updatedUser.createdAt).toEqual(user.createdAt);
     expect(updatedUser.updatedAt).not.toEqual(user.updatedAt);
   });
+
+  it("should retrieve a user by its id", async () => {
+    const users: User[] = [];
+
+    for (let i = 0; i < 3; i++) {
+      const user = User.create(createUserFixture);
+      await userRepository.upsert(user);
+
+      users.push(user);
+    }
+
+    const [, , lastUser] = users;
+
+    const user = await userRepository.findById(lastUser.id);
+    expect(user).not.toBeUndefined();
+    expect(user?.id).toBe(lastUser.id);
+  });
+
+  it("should return undefined when a invalid id is passed", async () => {
+    const user = await userRepository.findById(
+      "026061b4-6a6e-4d12-aee3-34e0d4662439"
+    );
+    expect(user).toBeUndefined();
+  });
 });

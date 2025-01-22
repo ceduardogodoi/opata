@@ -22,4 +22,8 @@ export class UserInMemoryRepository implements UserRepositoryGateway {
 
     return user;
   }
+
+  public async findById(id: string): Promise<User | undefined> {
+    return this.#users.get(id);
+  }
 }
