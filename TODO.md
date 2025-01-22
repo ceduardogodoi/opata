@@ -23,6 +23,7 @@
 - [X] Check why GitHub Actions is requiring approval on each job for production
 - [X] Add problem+json error
 - [X] Global Http Error Handling
+- [ ] FindAll should not return 404 when there no data returned.
 - [ ] Implement Prisma ORM with PostgreSQL
 
 - [X] Improve `README.md`
