@@ -1,14 +1,17 @@
 import { FindAllAnimalsUseCase } from "@/app/use-cases/find-all-animals/find-all-animals.usecase";
-import { RouteHandle } from "../route.handle.interface";
 import { Pageable } from "@/app/types/pagination.types";
+import { RouteHandler } from "../../route-handler/route-handler";
 
-export class FindAllAnimalsRoute implements RouteHandle {
+export class FindAllAnimalsRoute extends RouteHandler {
   readonly #findAllAnimalsUseCase: FindAllAnimalsUseCase;
 
   constructor(findAllAnimalsUseCase: FindAllAnimalsUseCase) {
+    super();
+
     this.#findAllAnimalsUseCase = findAllAnimalsUseCase;
 
     this.handle = this.handle.bind(this);
+    this.handleImpl = this.handleImpl.bind(this);
   }
 
   public static create(
@@ -17,7 +20,7 @@ export class FindAllAnimalsRoute implements RouteHandle {
     return new FindAllAnimalsRoute(findAllAnimalsUseCase);
   }
 
-  public async handle(request: Request): Promise<Response> {
+  public async handleImpl(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page"));
     const pageSize = Number(url.searchParams.get("pageSize"));
@@ -28,12 +31,6 @@ export class FindAllAnimalsRoute implements RouteHandle {
     };
 
     const output = await this.#findAllAnimalsUseCase.execute(pageable);
-
-    if (output.items.length < 1) {
-      return Response.json(output, {
-        status: 404,
-      });
-    }
 
     return Response.json(output, {
       status: 200,

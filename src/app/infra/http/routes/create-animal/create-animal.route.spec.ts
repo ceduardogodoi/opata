@@ -18,15 +18,18 @@ describe("routes / create-animal", () => {
   });
 
   it("should create a new animal", async () => {
+    const url = new URL("/api/animals", "http://localhost:3000").toString();
+
     const request = {
       json: async (): Promise<CreateAnimalInputDto> => {
-        return {
+        return Promise.resolve({
           name: "Turtle",
           age: 10,
           history: "Turtle history",
           observations: "Turtle observations",
-        };
+        });
       },
+      url,
     } as Request;
 
     const response = await createAnimalRoute.handle(request);
@@ -37,5 +40,24 @@ describe("routes / create-animal", () => {
     expect(output.age).toBe(10);
     expect(output.history).toBe("Turtle history");
     expect(output.observations).toBe("Turtle observations");
+  });
+
+  it("should return 400 when invalid input is entered", async () => {
+    const url = new URL("/api/animals", "http://localhost:3000").toString();
+
+    const request = {
+      json: async (): Promise<Partial<CreateAnimalInputDto>> => {
+        return Promise.resolve({
+          name: undefined,
+          age: 10,
+          history: "Turtle history",
+          observations: "Turtle observations",
+        });
+      },
+      url,
+    } as Request;
+
+    const response = await createAnimalRoute.handle(request);
+    expect(response.status).toBe(400);
   });
 });

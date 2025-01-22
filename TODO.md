@@ -22,8 +22,10 @@
 - [X] Fix: GitHub Actions to be triggered only when the branch Pull Request is created
 - [X] Check why GitHub Actions is requiring approval on each job for production
 - [X] Add problem+json error
-- [ ] Global Http Error Handling
+- [X] Global Http Error Handling
+- [ ] FindAll should not return 404 when there no data returned.
+- [ ] Implement Prisma ORM with PostgreSQL
 
-- [ ] Improve `README.md`
+- [X] Improve `README.md`
 - [ ] Add linting to CI
 - [ ] Update vercel envs with GitHub Actions envs (vercel CLI: `vercel env`)

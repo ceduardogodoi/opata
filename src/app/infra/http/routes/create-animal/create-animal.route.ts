@@ -1,14 +1,17 @@
 import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
+import { RouteHandler } from "../../route-handler/route-handler";
 import { CreateAnimalPresenter } from "../../presenters/create-animal/create-animal.presenter";
-import { RouteHandle } from "../route.handle.interface";
 
-export class CreateAnimalRoute implements RouteHandle {
+export class CreateAnimalRoute extends RouteHandler {
   readonly #createAnimalUseCase: CreateAnimalUseCase;
 
   constructor(createAnimalUseCase: CreateAnimalUseCase) {
+    super();
+
     this.#createAnimalUseCase = createAnimalUseCase;
 
     this.handle = this.handle.bind(this);
+    this.handleImpl = this.handleImpl.bind(this);
   }
 
   public static create(
@@ -17,7 +20,7 @@ export class CreateAnimalRoute implements RouteHandle {
     return new CreateAnimalRoute(createAnimalUseCase);
   }
 
-  public async handle(request: Request): Promise<Response> {
+  public async handleImpl(request: Request): Promise<Response> {
     const data = await request.json();
 
     const animal = await this.#createAnimalUseCase.execute(data);

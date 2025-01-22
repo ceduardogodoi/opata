@@ -12,14 +12,17 @@ const animalRepository = container.resolve<AnimalRepositoryGateway>(
   "AnimalRepositoryGateway"
 );
 
-// use case: create animal
+// #region - use case: create animal
 const createAnimalUseCase = CreateAnimalUseCase.create(animalRepository);
 const createAnimalRouteHandler = CreateAnimalRoute.create(createAnimalUseCase);
-export const POST = createAnimalRouteHandler.handle;
+// #endregion
 
-// use case: find all animals
+// #region - use case: find all animals
 const findAllAnimalsUseCase = FindAllAnimalsUseCase.create(animalRepository);
 const findAllAnimalsRouteHandler = FindAllAnimalsRoute.create(
   findAllAnimalsUseCase
 );
+// #endregion
+
+export const POST = createAnimalRouteHandler.handle;
 export const GET = findAllAnimalsRouteHandler.handle;

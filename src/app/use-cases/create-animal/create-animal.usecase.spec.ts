@@ -44,7 +44,7 @@ describe("use-cases / create animal", () => {
     await expect(() =>
       createAnimalUsecase.execute(fixture)
     ).rejects.toMatchObject({
-      detail: "Your input is missing valid value(s) for field(s): name",
+      detail: "Input with invalid value for field(s): name",
       fields: {
         name: ["Name is required."],
       },

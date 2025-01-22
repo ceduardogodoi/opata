@@ -11,6 +11,7 @@ describe("entities / problem detail error", () => {
     );
 
     expect(error).toBeInstanceOf(ProblemDetailError);
+    expect(error.id).toBe("ProblemDetailError");
     expect(error.type).toBe("https://example.com/probs/out-of-credit");
     expect(error.title).toBe("You do not have enough credit.");
     expect(error.detail).toBe("Your current balance is 30, but that costs 50.");

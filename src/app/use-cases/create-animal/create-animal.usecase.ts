@@ -7,7 +7,7 @@ import {
   type CreateAnimalOutputDto,
 } from "./create-animal.dto";
 import { Animal } from "@/app/domain/animal/entity/animal";
-import { CreateAnimalValidationError } from "./errors/create-animal-validation.error";
+import { CreateAnimalValidationError } from "@/app/infra/http/errors/create-animal-validation/create-animal-validation.error";
 
 @injectable()
 export class CreateAnimalUseCase
@@ -43,12 +43,7 @@ export class CreateAnimalUseCase
 
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
-      const fields = Object.keys(fieldErrors).join(", ");
-
-      throw new CreateAnimalValidationError(
-        `Your input is missing valid value(s) for field(s): ${fields}`,
-        fieldErrors
-      );
+      throw new CreateAnimalValidationError(fieldErrors);
     }
 
     return result.data;
