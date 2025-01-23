@@ -6,7 +6,6 @@ import { UUID_REGEX } from "@/app/globals/constants";
 import {
   createUserFixture,
   password,
-  passwordHash,
   userFixture,
 } from "@/app/fixtures/user.fixture";
 
@@ -15,16 +14,18 @@ describe("entities / animal", () => {
     const mockDate = new Date(2025, 0, 21, 0, 0, 0, 0);
     vi.setSystemTime(mockDate);
 
-    const user = User.create(createUserFixture);
-
-    const passwordMatch = await bcrypt.compare(password, passwordHash);
+    const user = await User.create(createUserFixture);
+    const passwordMatch = await bcrypt.compare(
+      createUserFixture.password,
+      user.passwordHash
+    );
 
     expect(user).toBeInstanceOf(User);
     expect(user.id).toMatch(UUID_REGEX);
     expect(user.fullName).toBe("John Doe");
     expect(user.username).toBe("jdoe");
     expect(user.email).toBe("john.doe@email.com");
-    expect(user.passwordHash).toBe(passwordHash);
+    expect(user.passwordHash).toBeDefined();
     expect(passwordMatch).toBe(true);
     expect(user.createdAt).toEqual(mockDate);
     expect(user.updatedAt).toEqual(mockDate);
@@ -55,10 +56,10 @@ describe("entities / animal", () => {
       const createUserFixture: CreateUser = {
         fullName,
         email: "john.doe@email.com",
-        passwordHash,
+        password,
       };
 
-      const user = User.create(createUserFixture);
+      const user = await User.create(createUserFixture);
 
       expect(user.username).toBe(username);
     }

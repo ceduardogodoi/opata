@@ -7,7 +7,7 @@ export const passwordHash =
 export const createUserFixture: CreateUser = {
   fullName: "John Doe",
   email: "john.doe@email.com",
-  passwordHash,
+  password,
 };
 
 const mockDate = new Date(2025, 0, 21, 0, 0, 0, 0);

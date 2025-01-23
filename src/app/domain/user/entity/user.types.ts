@@ -1,7 +1,7 @@
 export type CreateUser = {
   fullName: string;
   email: string;
-  passwordHash: string;
+  password: string;
 };
 
 export type UserLike = {

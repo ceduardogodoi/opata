@@ -11,7 +11,7 @@ describe("repositories / user", () => {
   );
 
   it("should save a user", async () => {
-    const user = User.create(createUserFixture);
+    const user = await User.create(createUserFixture);
 
     const output = await userRepository.upsert(user);
     expect(output.id).toMatch(UUID_REGEX);
@@ -37,7 +37,7 @@ describe("repositories / user", () => {
     const users: User[] = [];
 
     for (let i = 0; i < 3; i++) {
-      const user = User.create(createUserFixture);
+      const user = await User.create(createUserFixture);
       await userRepository.upsert(user);
 
       users.push(user);

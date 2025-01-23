@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import bcrypt from "bcrypt";
 import type { CreateUser, UserLike } from "./user.types";
 
 export class User {
@@ -68,14 +69,16 @@ export class User {
     return this.#updatedAt;
   }
 
-  public static create(user: CreateUser): User {
+  public static async create(user: CreateUser): Promise<User> {
     const date = new Date();
+
+    const passwordHash = await bcrypt.hash(user.password, 10);
 
     return new User(
       crypto.randomUUID(),
       user.fullName,
       user.email,
-      user.passwordHash,
+      passwordHash,
       date,
       date
     );
