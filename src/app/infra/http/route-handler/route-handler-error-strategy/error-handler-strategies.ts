@@ -1,9 +1,9 @@
-import { CreateAnimalValidationErrorStrategy } from "./create-animal-validation-error-strategy/create-animal-validation-error.strategy";
+import { InputValidationErrorStrategy } from "./input-validation-error-strategy/input-validation-error.strategy";
 import { NoResourcesFoundErrorStrategy } from "./no-resources-found-error-strategy/no-resources-found-error.strategy";
 import type { RouteHandlerErrorStrategy } from "./route-handler-error-strategy.interface";
 
 const _strategies: RouteHandlerErrorStrategy[] = [
-  new CreateAnimalValidationErrorStrategy(),
+  new InputValidationErrorStrategy(),
   new NoResourcesFoundErrorStrategy(),
 ] as const;
 

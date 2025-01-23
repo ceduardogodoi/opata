@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CreateAnimalValidationError } from "./create-animal-validation.error";
+import { InputValidationError } from "./input-validation.error";
 
 describe("http / errors / create animal validation", () => {
   it("should create an error instance with extensions", () => {
@@ -7,10 +7,10 @@ describe("http / errors / create animal validation", () => {
       name: ["Name is required."],
     };
 
-    const error = new CreateAnimalValidationError(fields);
+    const error = new InputValidationError(fields, "/api/animals");
 
-    expect(error).toBeInstanceOf(CreateAnimalValidationError);
-    expect(error.id).toBe("CreateAnimalValidationError");
+    expect(error).toBeInstanceOf(InputValidationError);
+    expect(error.id).toBe("InputValidationError");
     expect(error.type).toBe("https://example.com/probs/input-validation");
     expect(error.title).toBe("You have entered invalid input data.");
     expect(error.detail).toBe("Input with invalid value for field(s): name");
@@ -24,10 +24,10 @@ describe("http / errors / create animal validation", () => {
       fieldB: ["fieldB is too short."],
     };
 
-    const error = new CreateAnimalValidationError(fieldErrors);
+    const error = new InputValidationError(fieldErrors, "/api/animals");
 
-    expect(error).toBeInstanceOf(CreateAnimalValidationError);
-    expect(error.id).toBe("CreateAnimalValidationError");
+    expect(error).toBeInstanceOf(InputValidationError);
+    expect(error.id).toBe("InputValidationError");
     expect(error.type).toBe("https://example.com/probs/input-validation");
     expect(error.title).toBe("You have entered invalid input data.");
     expect(error.detail).toBe(
@@ -41,7 +41,7 @@ describe("http / errors / create animal validation", () => {
   it("should throw when no fieldErrors are passed", () => {
     const fields = {};
 
-    expect(() => new CreateAnimalValidationError(fields)).toThrowError(
+    expect(() => new InputValidationError(fields)).toThrowError(
       new RangeError("No field errors present.")
     );
   });

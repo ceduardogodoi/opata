@@ -7,7 +7,7 @@ import {
   type CreateAnimalOutputDto,
 } from "./create-animal.dto";
 import { Animal } from "@/app/domain/animal/entity/animal";
-import { CreateAnimalValidationError } from "@/app/infra/http/errors/create-animal-validation/create-animal-validation.error";
+import { InputValidationError } from "@/app/infra/http/errors/input-validation/input-validation.error";
 
 @injectable()
 export class CreateAnimalUseCase
@@ -39,11 +39,11 @@ export class CreateAnimalUseCase
   }
 
   #validate(input: CreateAnimalInputDto): CreateAnimalInputDto {
-    const result = createAnimalInputSchema.strip().safeParse(input);
+    const result = createAnimalInputSchema.safeParse(input);
 
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
-      throw new CreateAnimalValidationError(fieldErrors);
+      throw new InputValidationError(fieldErrors);
     }
 
     return result.data;

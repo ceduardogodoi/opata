@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { RouteHandler } from "./route-handler";
 import type { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
-import { CreateAnimalValidationError } from "../errors/create-animal-validation/create-animal-validation.error";
+import { InputValidationError } from "../errors/input-validation/input-validation.error";
 import type { HttpHandler } from "../http.types";
 import type { FindAllAnimalsOutputDto } from "@/app/use-cases/find-all-animals/find-all-animals.dto";
 import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources-found.error";
@@ -68,7 +68,7 @@ describe("route handler", () => {
         name: ["Name is required."],
       };
 
-      throw new CreateAnimalValidationError(fieldErrors);
+      throw new InputValidationError(fieldErrors);
     };
 
     const response = await routeHandler.process(request, handler);

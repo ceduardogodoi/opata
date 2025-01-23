@@ -1,10 +1,10 @@
 import { ProblemDetailError } from "@/app/infra/http/errors/problem-detail.error";
 
-export class CreateAnimalValidationError extends ProblemDetailError {
+export class InputValidationError extends ProblemDetailError {
   readonly #id;
   readonly fields: Record<string, string[]>;
 
-  constructor(fieldErrors: Record<string, string[]>) {
+  constructor(fieldErrors: Record<string, string[]>, instance?: string) {
     const fieldKeys = Object.keys(fieldErrors);
     if (fieldKeys.length < 1) {
       throw new RangeError("No field errors present.");
@@ -16,11 +16,11 @@ export class CreateAnimalValidationError extends ProblemDetailError {
       "https://example.com/probs/input-validation",
       "You have entered invalid input data.",
       `Input with invalid value for field(s): ${fields}`,
-      "/api/animals"
+      instance
     );
 
     this.fields = fieldErrors;
-    this.#id = "CreateAnimalValidationError";
+    this.#id = "InputValidationError";
   }
 
   public get id(): string {
