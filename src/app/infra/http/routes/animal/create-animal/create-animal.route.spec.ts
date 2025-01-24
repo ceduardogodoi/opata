@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { container } from "tsyringe";
 import { CreateAnimalRoute } from "./create-animal.route";
-import { CreateAnimalUseCase } from "@/app/use-cases/create-animal/create-animal.usecase";
 import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
-import { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
-import { CreateAnimalPresentOutput } from "../../presenters/create-animal/create-animal.presenter.dto";
+import { CreateAnimalPresentOutput } from "../../../presenters/create-animal/create-animal.presenter.dto";
 import { UUID_REGEX } from "@/app/globals/constants";
+import { CreateAnimalUseCase } from "@/app/use-cases/animal/create-animal/create-animal.usecase";
+import { CreateAnimalInputDto } from "@/app/use-cases/animal/create-animal/create-animal.dto";
 
 describe("routes / create-animal", () => {
   let animalRepository: AnimalRepositoryGateway;

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { RouteHandler } from "./route-handler";
-import type { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
 import { InputValidationError } from "../errors/input-validation/input-validation.error";
 import type { HttpHandler } from "../http.types";
-import type { FindAllAnimalsOutputDto } from "@/app/use-cases/find-all-animals/find-all-animals.dto";
 import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources-found.error";
+import { CreateAnimalInputDto } from "@/app/use-cases/animal/create-animal/create-animal.dto";
+import { FindAllAnimalsOutputDto } from "@/app/use-cases/animal/find-all-animals/find-all-animals.dto";
 
 class RouteHandlerTestImpl extends RouteHandler {
   async handleImpl(): Promise<Response> {
@@ -60,6 +60,7 @@ describe("route handler", () => {
           observations: "Turtle observations",
         });
       },
+
       url,
     } as Request;
 
