@@ -1,6 +1,6 @@
 import { Pageable } from "@/app/types/pagination.types";
 import { RouteHandler } from "../../../route-handler/route-handler";
-import { FindAllAnimalsUseCase } from "@/app/use-cases/animal/find-all-animals/find-all-animals.usecase";
+import { FindAllAnimalsUseCase } from "@/app/use-cases/animals/find-all-animals/find-all-animals.usecase";
 
 export class FindAllAnimalsRoute extends RouteHandler {
   readonly #findAllAnimalsUseCase: FindAllAnimalsUseCase;

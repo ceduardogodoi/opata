@@ -3,8 +3,8 @@ import { RouteHandler } from "./route-handler";
 import { InputValidationError } from "../errors/input-validation/input-validation.error";
 import type { HttpHandler } from "../http.types";
 import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources-found.error";
-import { CreateAnimalInputDto } from "@/app/use-cases/animal/create-animal/create-animal.dto";
-import { FindAllAnimalsOutputDto } from "@/app/use-cases/animal/find-all-animals/find-all-animals.dto";
+import { CreateAnimalInputDto } from "@/app/use-cases/animals/create-animal/create-animal.dto";
+import { FindAllAnimalsOutputDto } from "@/app/use-cases/animals/find-all-animals/find-all-animals.dto";
 
 class RouteHandlerTestImpl extends RouteHandler {
   async handleImpl(): Promise<Response> {

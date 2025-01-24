@@ -3,7 +3,7 @@ import { container } from "tsyringe";
 import { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 import { FindAllAnimalsRoute } from "./find-all-animals.route";
 import { animalInstanceFixture } from "@/app/fixtures/animal.fixtures";
-import { FindAllAnimalsUseCase } from "@/app/use-cases/animal/find-all-animals/find-all-animals.usecase";
+import { FindAllAnimalsUseCase } from "@/app/use-cases/animals/find-all-animals/find-all-animals.usecase";
 
 describe("routes / find all animals", () => {
   let animalRepository: AnimalRepositoryGateway;
