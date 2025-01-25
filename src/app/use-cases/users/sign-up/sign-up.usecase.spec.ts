@@ -5,7 +5,7 @@ import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repos
 import { createUserFixture } from "@/app/fixtures/user.fixture";
 import { User } from "@/app/domain/user/entity/user";
 import { UUID_REGEX } from "@/app/globals/constants";
-import { SignupUseCase } from "./signup.usecase";
+import { SignUpUseCase } from "./sign-up.usecase";
 
 describe("use-cases / create user", () => {
   const userRepository = container.resolve<UserRepositoryGateway>(
@@ -16,8 +16,8 @@ describe("use-cases / create user", () => {
     const mockDate = new Date(2025, 0, 22, 0, 0, 0, 0);
     vi.setSystemTime(mockDate);
 
-    const signupUseCase = SignupUseCase.create(userRepository);
-    const user = await signupUseCase.execute(createUserFixture);
+    const signUpUseCase = SignUpUseCase.create(userRepository);
+    const user = await signUpUseCase.execute(createUserFixture);
     const passwordMatch = await bcrypt.compare(
       createUserFixture.password,
       user.passwordHash
@@ -47,7 +47,7 @@ describe("use-cases / create user", () => {
   ])(
     "should throw when trying to create a user with invalid property $property",
     async ({ property, message, value }) => {
-      const signupUseCase = SignupUseCase.create(userRepository);
+      const signUpUseCase = SignUpUseCase.create(userRepository);
 
       const fixture = Object.create(createUserFixture, {
         [property]: {
@@ -55,7 +55,7 @@ describe("use-cases / create user", () => {
         },
       });
 
-      await expect(() => signupUseCase.execute(fixture)).rejects.toMatchObject({
+      await expect(() => signUpUseCase.execute(fixture)).rejects.toMatchObject({
         detail: `Input with invalid value for field(s): ${property}`,
         fields: {
           [property]: [message],

@@ -6,11 +6,11 @@ import {
   createUserInputSchema,
   type CreateUserInputDto,
   type CreateUserOutputDto,
-} from "./signup.dto";
+} from "./sign-up.dto";
 import { InputValidationError } from "@/app/infra/http/errors/input-validation/input-validation.error";
 
 @injectable()
-export class SignupUseCase
+export class SignUpUseCase
   implements UseCase<CreateUserInputDto, CreateUserOutputDto>
 {
   readonly #userRepositoryGateway: UserRepositoryGateway;
@@ -24,8 +24,8 @@ export class SignupUseCase
 
   public static create(
     userRepositoryGateway: UserRepositoryGateway
-  ): SignupUseCase {
-    return new SignupUseCase(userRepositoryGateway);
+  ): SignUpUseCase {
+    return new SignUpUseCase(userRepositoryGateway);
   }
 
   public async execute(

@@ -1,3 +1,4 @@
+import { User } from "../domain/user/entity/user";
 import type { CreateUser, UserLike } from "../domain/user/entity/user.types";
 
 export const password = "cTF3MmUzcjQ=";
@@ -19,3 +20,5 @@ export const userFixture: UserLike = {
   createdAt: mockDate,
   updatedAt: mockDate,
 };
+
+export const userFixtureInstance = User.with(userFixture);

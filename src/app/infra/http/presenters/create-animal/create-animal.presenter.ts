@@ -1,5 +1,5 @@
 import { Animal } from "@/app/domain/animal/entity/animal";
-import { CreateAnimalPresentOutput } from "./create-animal.presenter.dto";
+import type { CreateAnimalPresentOutput } from "./create-animal.presenter.dto";
 
 export class CreateAnimalPresenter {
   constructor() {

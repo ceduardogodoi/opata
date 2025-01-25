@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { animalInstanceFixture } from "@/app/fixtures/animal.fixtures";
 import { CreateAnimalPresenter } from "./create-animal.presenter";
-import { CreateAnimalPresentOutput } from "./create-animal.presenter.dto";
+import type { CreateAnimalPresentOutput } from "./create-animal.presenter.dto";
 
 describe("presenters / create animal", () => {
   it("should throw an error if the constructor is called", () => {
