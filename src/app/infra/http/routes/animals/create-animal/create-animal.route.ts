@@ -1,5 +1,5 @@
 import { RouteHandler } from "../../../route-handler/route-handler";
-import { CreateAnimalPresenter } from "../../../presenters/create-animal/create-animal.presenter";
+import { CreateAnimalPresenter } from "../../../presenters/animals/create-animal/create-animal.presenter";
 import { CreateAnimalUseCase } from "@/app/use-cases/animals/create-animal/create-animal.usecase";
 
 export class CreateAnimalRoute extends RouteHandler {
