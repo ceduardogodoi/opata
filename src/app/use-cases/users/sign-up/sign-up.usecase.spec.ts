@@ -26,7 +26,6 @@ describe("use-cases / create user", () => {
     expect(user).toBeInstanceOf(User);
     expect(user.id).toMatch(UUID_REGEX);
     expect(user.fullName).toBe(createUserFixture.fullName);
-    expect(user.username).toBe("jdoe");
     expect(user.email).toBe(createUserFixture.email);
     expect(passwordMatch).toBe(true);
     expect(user.createdAt).toEqual(mockDate);

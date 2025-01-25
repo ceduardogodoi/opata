@@ -11,7 +11,6 @@ export class SignUpPresenter {
       id: user.id,
       fullName: user.fullName,
       email: user.email,
-      username: user.username,
       createdAt: user.createdAt.toISOString(),
       updatedAt: user.updatedAt.toISOString(),
     };

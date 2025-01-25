@@ -34,21 +34,6 @@ export class User {
     return this.#fullName;
   }
 
-  public get username(): string {
-    const names = this.#fullName.split(" ");
-    if (names.length < 2) {
-      const firstName = names[0].toLocaleLowerCase();
-
-      return firstName;
-    }
-
-    const [name, ...surname] = names;
-    const firstCharacter = name[0].toLocaleLowerCase();
-    const lastName = surname[surname.length - 1].toLocaleLowerCase();
-
-    return `${firstCharacter}${lastName}`;
-  }
-
   public get email(): string {
     return this.#email;
   }

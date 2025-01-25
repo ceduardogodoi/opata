@@ -42,7 +42,6 @@ describe("routes / sign up user", () => {
     expect(output.id).toMatch(UUID_REGEX);
     expect(output.fullName).toBe("John Doe");
     expect(output.email).toBe("johndoe@email.com");
-    expect(output.username).toBe("jdoe");
     expect(output).not.toHaveProperty("passwordHash");
     expect(output.createdAt).toBe(mockDateISO);
     expect(output.updatedAt).toBe(mockDateISO);

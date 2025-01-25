@@ -17,7 +17,6 @@ describe("presenters / sign up", () => {
       id: userFixtureInstance.id,
       fullName: userFixtureInstance.fullName,
       email: userFixtureInstance.email,
-      username: userFixtureInstance.username,
       createdAt: userFixtureInstance.createdAt.toISOString(),
       updatedAt: userFixtureInstance.updatedAt.toISOString(),
     };

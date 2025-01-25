@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { describe, expect, it, vi } from "vitest";
 import { User } from "./user";
-import type { CreateUser, UserLike } from "./user.types";
+import type { UserLike } from "./user.types";
 import { UUID_REGEX } from "@/app/globals/constants";
 import {
   createUserFixture,
@@ -23,7 +23,6 @@ describe("entities / animal", () => {
     expect(user).toBeInstanceOf(User);
     expect(user.id).toMatch(UUID_REGEX);
     expect(user.fullName).toBe("John Doe");
-    expect(user.username).toBe("jdoe");
     expect(user.email).toBe("john.doe@email.com");
     expect(user.passwordHash).toBeDefined();
     expect(passwordMatch).toBe(true);
@@ -45,25 +44,6 @@ describe("entities / animal", () => {
     expect(user.id).toBe(userFixture.id);
     expect(passwordMatch).toBe(true);
   });
-
-  it.each([
-    { fullName: "John", username: "john" },
-    { fullName: "John Doe", username: "jdoe" },
-    { fullName: "John Doe Foo", username: "jfoo" },
-  ])(
-    "should create username $username when full name is $fullName",
-    async ({ fullName, username }) => {
-      const createUserFixture: CreateUser = {
-        fullName,
-        email: "john.doe@email.com",
-        password,
-      };
-
-      const user = await User.create(createUserFixture);
-
-      expect(user.username).toBe(username);
-    }
-  );
 
   it("should get user as JSON for debugging purposes", () => {
     const mockDate = new Date(2025, 0, 21, 0, 0, 0, 0);
