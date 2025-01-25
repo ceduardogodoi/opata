@@ -41,7 +41,7 @@ describe("use-cases / create user", () => {
     { property: "password", message: "Password is required." },
     {
       property: "password",
-      message: "Password should have a minimun of 4 characters long.",
+      message: "Password should have a minimum of 4 characters long.",
       value: "abc",
     },
   ])(

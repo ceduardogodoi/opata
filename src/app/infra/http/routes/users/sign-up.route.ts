@@ -14,8 +14,8 @@ export class SignUpRoute extends RouteHandler {
     this.handleImpl = this.handleImpl.bind(this);
   }
 
-  public static create(createAnimalUseCase: SignUpUseCase): SignUpRoute {
-    return new SignUpRoute(createAnimalUseCase);
+  public static create(signUpUseCase: SignUpUseCase): SignUpRoute {
+    return new SignUpRoute(signUpUseCase);
   }
 
   public async handleImpl(request: Request): Promise<Response> {

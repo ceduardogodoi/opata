@@ -7,7 +7,7 @@ import {
 } from "./create-animal.dto";
 import { Animal } from "@/app/domain/animal/entity/animal";
 import { InputValidationError } from "@/app/infra/http/errors/input-validation/input-validation.error";
-import { UseCase } from "../../use-case.interface";
+import type { UseCase } from "../../use-case.interface";
 
 @injectable()
 export class CreateAnimalUseCase

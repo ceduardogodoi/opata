@@ -5,7 +5,7 @@ import type {
 } from "./find-all-animals.dto";
 import type { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
 import type { Pageable } from "@/app/types/pagination.types";
-import { UseCase } from "../../use-case.interface";
+import type { UseCase } from "../../use-case.interface";
 
 @injectable()
 export class FindAllAnimalsUseCase

@@ -14,7 +14,7 @@ export const createUserInputSchema = z.object({
     .email("Invalid email format."),
   password: z
     .string({ required_error: "Password is required." })
-    .min(4, "Password should have a minimun of 4 characters long."),
+    .min(4, "Password should have a minimum of 4 characters long."),
 });
 
 export type CreateUserInputDto = z.infer<typeof createUserInputSchema>;
