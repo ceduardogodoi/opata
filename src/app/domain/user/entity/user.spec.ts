@@ -24,6 +24,7 @@ describe("entities / animal", () => {
     expect(user.id).toMatch(UUID_REGEX);
     expect(user.fullName).toBe("John Doe");
     expect(user.email).toBe("john.doe@email.com");
+    expect(user.username).toBe("jdoe");
     expect(user.passwordHash).toBeDefined();
     expect(passwordMatch).toBe(true);
     expect(user.createdAt).toEqual(mockDate);
@@ -51,6 +52,7 @@ describe("entities / animal", () => {
       id: "73547cf9-0dd1-4217-9bd8-678cba042b35",
       fullName: "John Doe",
       email: "john.doe@email.com",
+      username: "jdoe",
       passwordHash:
         "$2b$10$iGODARbBXqgyUi.Ul9P1TObr5FNZOoZXcG7R.FYMCN4vIKshLUJMK",
       createdAt: mockDate,
@@ -63,6 +65,7 @@ describe("entities / animal", () => {
       id: "73547cf9-0dd1-4217-9bd8-678cba042b35",
       fullName: "John Doe",
       email: "john.doe@email.com",
+      username: "jdoe",
       passwordHash:
         "$2b$10$iGODARbBXqgyUi.Ul9P1TObr5FNZOoZXcG7R.FYMCN4vIKshLUJMK",
       createdAt: mockDate,

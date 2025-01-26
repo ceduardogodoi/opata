@@ -16,6 +16,7 @@ describe("presenters / sign up", () => {
     const expectedResponse: SignUpPresentOutput = {
       id: userFixtureInstance.id,
       fullName: userFixtureInstance.fullName,
+      username: userFixtureInstance.username,
       email: userFixtureInstance.email,
       createdAt: userFixtureInstance.createdAt.toISOString(),
       updatedAt: userFixtureInstance.updatedAt.toISOString(),

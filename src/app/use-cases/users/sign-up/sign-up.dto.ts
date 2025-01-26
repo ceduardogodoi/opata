@@ -12,6 +12,11 @@ export const createUserInputSchema = z.object({
       required_error: "Email is required.",
     })
     .email("Invalid email format."),
+  username: z
+    .string({
+      required_error: "Username is required.",
+    })
+    .min(4, "Username should have a minimum of 4 characters long."),
   password: z
     .string({ required_error: "Password is required." })
     .min(4, "Password should have a minimum of 4 characters long."),

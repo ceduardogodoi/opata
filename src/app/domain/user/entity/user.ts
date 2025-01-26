@@ -6,6 +6,7 @@ export class User {
   readonly #id: string;
   readonly #fullName: string;
   readonly #email: string;
+  readonly #username: string;
   readonly #passwordHash: string;
   readonly #createdAt: Date;
   #updatedAt: Date;
@@ -14,6 +15,7 @@ export class User {
     id: string,
     fullName: string,
     email: string,
+    username: string,
     passwordHash: string,
     createdAt: Date,
     updatedAt: Date
@@ -21,6 +23,7 @@ export class User {
     this.#id = id;
     this.#fullName = fullName;
     this.#email = email;
+    this.#username = username;
     this.#passwordHash = passwordHash;
     this.#createdAt = createdAt;
     this.#updatedAt = updatedAt;
@@ -36,6 +39,10 @@ export class User {
 
   public get email(): string {
     return this.#email;
+  }
+
+  public get username(): string {
+    return this.#username;
   }
 
   public get passwordHash(): string {
@@ -63,6 +70,7 @@ export class User {
       crypto.randomUUID(),
       user.fullName,
       user.email,
+      user.username,
       passwordHash,
       date,
       date
@@ -74,6 +82,7 @@ export class User {
       userFixture.id,
       userFixture.fullName,
       userFixture.email,
+      userFixture.username,
       userFixture.passwordHash,
       userFixture.createdAt,
       userFixture.updatedAt
@@ -85,6 +94,7 @@ export class User {
       id: this.#id,
       fullName: this.#fullName,
       email: this.#email,
+      username: this.#username,
       passwordHash: this.#passwordHash,
       createdAt: this.#createdAt,
       updatedAt: this.#updatedAt,

@@ -8,6 +8,7 @@ export const passwordHash =
 export const createUserFixture: CreateUser = {
   fullName: "John Doe",
   email: "john.doe@email.com",
+  username: "jdoe",
   password,
 };
 
@@ -16,6 +17,7 @@ export const userFixture: UserLike = {
   id: "73547cf9-0dd1-4217-9bd8-678cba042b35",
   fullName: "John Doe",
   email: "john.doe@email.com",
+  username: "jdoe",
   passwordHash,
   createdAt: mockDate,
   updatedAt: mockDate,
