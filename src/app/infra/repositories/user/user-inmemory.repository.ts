@@ -14,7 +14,7 @@ export class UserInMemoryRepository implements UserRepositoryGateway {
     return new UserInMemoryRepository();
   }
 
-  public async upsert(input: User): Promise<User> {
+  public async save(input: User): Promise<User> {
     const user = this.#users.get(input.username);
     if (user != null) {
       throw new DuplicateResourceError();

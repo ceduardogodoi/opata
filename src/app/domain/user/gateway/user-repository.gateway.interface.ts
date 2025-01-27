@@ -6,12 +6,12 @@ import { User } from "../entity/user";
  */
 export interface UserRepositoryGateway {
   /**
-   * Inserts or updates a user in the repository.
+   * Inserts a user in the repository.
    *
-   * @param {User} user - The user entity to be upserted.
-   * @returns {Promise<User>} - A promise that resolves to the upserted user.
+   * @param {User} user - The user entity to be inserted.
+   * @returns {Promise<User>} - A promise that resolves to the inserted user.
    */
-  upsert(user: User): Promise<User>;
+  save(user: User): Promise<User>;
 
   /**
    * Finds a user by their ID.

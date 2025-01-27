@@ -15,14 +15,14 @@ describe("repositories / user", () => {
   it("should save a user", async () => {
     const user = await User.create(createUserFixture);
 
-    const output = await userRepository.upsert(user);
+    const output = await userRepository.save(user);
     expect(output.id).toMatch(UUID_REGEX);
   });
 
   it("should not save two users with same username", async () => {
     const userCopy = await User.create(createUserFixture);
 
-    await expect(() => userRepository.upsert(userCopy)).rejects.toThrowError(
+    await expect(() => userRepository.save(userCopy)).rejects.toThrowError(
       DuplicateResourceError
     );
   });
@@ -33,7 +33,7 @@ describe("repositories / user", () => {
       username: "xpto",
     });
 
-    await userRepository.upsert(newUser);
+    await userRepository.save(newUser);
 
     const user = await userRepository.findById(newUser.id);
     expect(user).toBeDefined();
