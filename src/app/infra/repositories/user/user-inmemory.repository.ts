@@ -1,5 +1,7 @@
 import { User } from "@/app/domain/user/entity/user";
 import { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
+import { DuplicateResourceError } from "../../http/errors/duplicate-resource/duplicate-resource.error";
+import { NoResourcesFoundError } from "../../http/errors/no-resources-found/no-resources-found.error";
 
 export class UserInMemoryRepository implements UserRepositoryGateway {
   #users: Map<string, User>;
@@ -12,18 +14,24 @@ export class UserInMemoryRepository implements UserRepositoryGateway {
     return new UserInMemoryRepository();
   }
 
-  public async upsert(user: User): Promise<User> {
-    const userFound = this.#users.get(user.id);
-    if (userFound != null) {
-      user.updatedAt = new Date();
+  public async upsert(input: User): Promise<User> {
+    const user = this.#users.get(input.username);
+    if (user != null) {
+      throw new DuplicateResourceError();
     }
 
-    this.#users.set(user.id, user);
+    this.#users.set(input.username, input);
 
-    return user;
+    return input;
   }
 
   public async findById(id: string): Promise<User | undefined> {
-    return this.#users.get(id);
+    const users = Array.from(this.#users.values());
+    const user = users.find((user) => id === user.id);
+    if (user == null) {
+      throw new NoResourcesFoundError();
+    }
+
+    return user;
   }
 }

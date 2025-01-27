@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DuplicateResourceError } from "./duplicate-resource";
+import { DuplicateResourceError } from "./duplicate-resource.error";
 
 describe("http / errors / duplicate resource error", () => {
   it("should create an no resources found error instance no extensions", () => {

@@ -72,4 +72,19 @@ describe("entities / animal", () => {
       updatedAt: mockDate,
     });
   });
+
+  it("should be able to update the user's updatedAt property", () => {
+    const user = User.with({
+      ...userFixture,
+      username: "johndoe",
+    });
+
+    const updatedAtSetter = vi.spyOn(user, "updatedAt", "set");
+
+    const date = new Date();
+    user.updatedAt = date;
+
+    expect(user.updatedAt).not.toEqual(userFixture.updatedAt);
+    expect(updatedAtSetter).toHaveBeenCalledWith(date);
+  });
 });
