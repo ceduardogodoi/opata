@@ -14,3 +14,9 @@ export type UserLike = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type UpdateUser = {
+  fullName: string;
+  email: string;
+  username: string;
+};

@@ -1,12 +1,12 @@
 import crypto from "node:crypto";
 import bcrypt from "bcrypt";
-import type { CreateUser, UserLike } from "./user.types";
+import type { CreateUser, UpdateUser, UserLike } from "./user.types";
 
 export class User {
   readonly #id: string;
-  readonly #fullName: string;
-  readonly #email: string;
-  readonly #username: string;
+  #fullName: string;
+  #email: string;
+  #username: string;
   readonly #passwordHash: string;
   readonly #createdAt: Date;
   #updatedAt: Date;
@@ -53,10 +53,6 @@ export class User {
     return this.#createdAt;
   }
 
-  public set updatedAt(date: Date) {
-    this.#updatedAt = date;
-  }
-
   public get updatedAt(): Date {
     return this.#updatedAt;
   }
@@ -87,6 +83,14 @@ export class User {
       userFixture.createdAt,
       userFixture.updatedAt
     );
+  }
+
+  public update(input: UpdateUser): void {
+    this.#fullName = input.fullName;
+    this.#email = input.email;
+    this.#username = input.username;
+
+    this.#updatedAt = new Date();
   }
 
   public toJSON(): UserLike {

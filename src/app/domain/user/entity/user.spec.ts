@@ -73,18 +73,25 @@ describe("entities / animal", () => {
     });
   });
 
-  it("should be able to update the user's updatedAt property", () => {
-    const user = User.with({
-      ...userFixture,
-      username: "johndoe",
+  it("should be able to a update user's data", () => {
+    const user = User.with(userFixture);
+
+    const newData = {
+      fullName: "Jane Doe",
+      email: "jane.doe@email.com",
+      username: "janedoe",
+    };
+
+    user.update({
+      fullName: newData.fullName,
+      email: newData.email,
+      username: newData.username,
     });
 
-    const updatedAtSetter = vi.spyOn(user, "updatedAt", "set");
-
-    const date = new Date();
-    user.updatedAt = date;
-
+    expect(user.fullName).toBe("Jane Doe");
+    expect(user.email).toBe("jane.doe@email.com");
+    expect(user.username).toBe("janedoe");
+    expect(user.createdAt).toEqual(userFixture.createdAt);
     expect(user.updatedAt).not.toEqual(userFixture.updatedAt);
-    expect(updatedAtSetter).toHaveBeenCalledWith(date);
   });
 });
