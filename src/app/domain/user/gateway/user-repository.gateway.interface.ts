@@ -1,4 +1,5 @@
 import { User } from "../entity/user";
+import { UpdateUser } from "../entity/user.types";
 
 /**
  * Interface for User Repository Gateway.
@@ -17,7 +18,16 @@ export interface UserRepositoryGateway {
    * Finds a user by their ID.
    *
    * @param {string} id - The ID of the user to find.
-   * @returns {Promise<User | undefined>} - A promise that resolves to the user if found, or undefined if not found.
+   * @returns {Promise<User>} - A promise that resolves to the user.
    */
-  findById(id: string): Promise<User | undefined>;
+  findById(id: string): Promise<User>;
+
+  /**
+   * Updates a user by their ID.
+   *
+   * @param {string} id - The ID of the user to update.
+   * @param {UpdateUser} input - The data to update the user with.
+   * @returns {Promise<User>} - A promise that resolves to the updated user.
+   */
+  update(id: string, input: UpdateUser): Promise<User>;
 }

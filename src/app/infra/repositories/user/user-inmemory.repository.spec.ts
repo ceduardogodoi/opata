@@ -40,6 +40,39 @@ describe("repositories / user", () => {
     expect(user).toBeInstanceOf(User);
   });
 
+  it("should update a user's data by its id", async () => {
+    const newUser = await User.create({
+      fullName: "Jimmy Doe",
+      email: "jimmy@email.com",
+      username: "jimmydoe",
+      password: "zaxscdvf",
+    });
+    const updatedAtInitialValue = newUser.updatedAt;
+
+    await userRepository.save(newUser);
+
+    await userRepository.update(newUser.id, {
+      fullName: "Jeff Doe",
+      email: "jeff.doe@email.com",
+      username: "jeffdoe",
+    });
+
+    const user = await userRepository.findById(newUser.id);
+    const updatedAtUpdatedValue = user.updatedAt;
+
+    expect(user).toBeDefined();
+    expect(user).toEqual(
+      expect.objectContaining({
+        id: newUser.id,
+        fullName: "Jeff Doe",
+        email: "jeff.doe@email.com",
+        username: "jeffdoe",
+        createdAt: newUser.createdAt,
+      })
+    );
+    expect(updatedAtInitialValue).not.toEqual(updatedAtUpdatedValue);
+  });
+
   it("should throw NoResourcesFoundError when id does not exist", async () => {
     const invalidId = "7202f5e9-1dfd-4fca-a928-6e9537d1ab81";
     await expect(() => userRepository.findById(invalidId)).rejects.toThrowError(
