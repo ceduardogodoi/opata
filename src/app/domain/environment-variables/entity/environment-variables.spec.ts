@@ -22,6 +22,7 @@ describe("entities / environment-variables / invalid", () => {
     vi.stubEnv("VERCEL_ORG_ID", undefined);
     vi.stubEnv("VERCEL_PROJECT_ID", undefined);
     vi.stubEnv("VERCEL_TOKEN", undefined);
+    vi.stubEnv("JWT_SECRET", undefined);
   });
 
   afterEach(() => {
@@ -59,6 +60,7 @@ describe("entities / environment-variables / valid", () => {
     vi.stubEnv("VERCEL_ORG_ID", "vercel_org_id");
     vi.stubEnv("VERCEL_PROJECT_ID", "vercel_project_id");
     vi.stubEnv("VERCEL_TOKEN", "vercel_token");
+    vi.stubEnv("JWT_SECRET", "jwt_secret");
   });
 
   afterEach(() => {

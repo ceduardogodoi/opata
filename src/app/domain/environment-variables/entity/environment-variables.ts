@@ -11,6 +11,7 @@ export const envSchema = z.object({
   VERCEL_ORG_ID: z.string(),
   VERCEL_PROJECT_ID: z.string(),
   VERCEL_TOKEN: z.string(),
+  JWT_SECRET: z.string(),
 });
 
 export class EnvironmentVariables {

@@ -1,18 +1,18 @@
 import { inject, injectable } from "tsyringe";
+import { z } from "zod";
 import type { UseCase } from "../../use-case.interface";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import { User } from "@/app/domain/user/entity/user";
-import {
-  createUserInputSchema,
-  type CreateUserInputDto,
-  type CreateUserOutputDto,
-} from "./sign-up.dto";
 import { InputValidationError } from "@/app/infra/http/errors/input-validation/input-validation.error";
 
+const usernameSchema = z
+  .string({
+    required_error: "Username is required.",
+  })
+  .min(4, "Username should have at least 4 characters.");
+
 @injectable()
-export class SignUpUseCase
-  implements UseCase<CreateUserInputDto, CreateUserOutputDto>
-{
+export class FindByUsernameUseCase implements UseCase<string, User> {
   readonly #userRepositoryGateway: UserRepositoryGateway;
 
   constructor(
@@ -24,25 +24,26 @@ export class SignUpUseCase
 
   public static create(
     userRepositoryGateway: UserRepositoryGateway
-  ): SignUpUseCase {
-    return new SignUpUseCase(userRepositoryGateway);
+  ): FindByUsernameUseCase {
+    return new FindByUsernameUseCase(userRepositoryGateway);
   }
 
-  public async execute(
-    input: CreateUserInputDto
-  ): Promise<CreateUserOutputDto> {
-    const data = this.#validate(input);
-    const user = await User.create(data);
+  public async execute(input: string): Promise<User> {
+    const username = this.#validate(input);
 
-    const savedUser = await this.#userRepositoryGateway.save(user);
-    return savedUser;
+    const user = await this.#userRepositoryGateway.findByUsername(username);
+    return user;
   }
 
-  #validate(input: CreateUserInputDto): CreateUserInputDto {
-    const result = createUserInputSchema.safeParse(input);
+  #validate(input: string): string {
+    const result = usernameSchema.safeParse(input);
 
     if (!result.success) {
-      const fieldErrors = result.error.flatten().fieldErrors;
+      const [error] = result.error.errors;
+      const fieldErrors = {
+        username: [error.message],
+      };
+
       throw new InputValidationError(fieldErrors);
     }
 
