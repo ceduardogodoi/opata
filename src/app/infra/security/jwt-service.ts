@@ -6,6 +6,7 @@ const payloadOutputSchema = z.object({
   id: z.string(),
   username: z.string(),
   email: z.string(),
+  exp: z.number(),
 });
 
 type Output = z.infer<typeof payloadOutputSchema>;
@@ -38,5 +39,14 @@ export class JwtService {
     };
 
     return data;
+  }
+
+  static isTokenExpired(token: string): boolean {
+    const payload = JwtService.decode(token);
+
+    const payloadExpirationInMs = payload.exp * 1000;
+    const currentTimeInMs = Date.now();
+
+    return currentTimeInMs > payloadExpirationInMs;
   }
 }

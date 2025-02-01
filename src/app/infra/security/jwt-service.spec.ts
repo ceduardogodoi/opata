@@ -53,4 +53,23 @@ describe("security / jwt service", () => {
       "Error trying to decode the token."
     );
   });
+
+  it("should return false when token is not expired", () => {
+    const isExpired = JwtService.isTokenExpired(token);
+
+    expect(isExpired).toBe(false);
+  });
+
+  it("should return true when token is expired", () => {
+    vi.useFakeTimers();
+
+    // Advance time in one hour and one second
+    vi.advanceTimersByTime(3600 * 1000 + 1000);
+
+    const isExpired = JwtService.isTokenExpired(token);
+
+    expect(isExpired).toBe(true);
+
+    vi.useRealTimers();
+  });
 });

@@ -1,11 +1,11 @@
-import { assert, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { container } from "tsyringe";
-import jwt from "jsonwebtoken";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import { createUserFixture } from "@/app/fixtures/user.fixture";
 import { User } from "@/app/domain/user/entity/user";
 import type { SignInInputDto } from "./sign-in.dto";
 import { SignInUseCase } from "./sign-in.use-case";
+import { JwtService } from "@/app/infra/security/jwt-service";
 
 describe("use-cases / sign in user", () => {
   const userRepository = container.resolve<UserRepositoryGateway>(
@@ -69,15 +69,7 @@ describe("use-cases / sign in user", () => {
     // Advance time in one hour and one second
     vi.advanceTimersByTime(3600 * 1000 + 1000);
 
-    // TODO: Create a especialized class for this
-    const payload = jwt.decode(token);
-    if (payload == null || typeof payload === "string") {
-      assert.fail("Payload is not valid.");
-    }
-
-    if (payload.exp == null) {
-      assert.fail("Payload expiration is undefined.");
-    }
+    const payload = JwtService.decode(token);
 
     const currentTime = Date.now();
     expect(payload.exp < currentTime);
