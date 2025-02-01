@@ -40,12 +40,13 @@ export class EnvironmentVariables {
     const result = envSchema.safeParse(process.env);
 
     if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
       if (process.env.NODE_ENV === "development") {
         // TODO: switch to logger
         console.error(result.error.format());
       }
 
-      return [new EnvironmentVariablesError(), null];
+      return [new EnvironmentVariablesError(fieldErrors), null];
     }
 
     return [null, result.data];
