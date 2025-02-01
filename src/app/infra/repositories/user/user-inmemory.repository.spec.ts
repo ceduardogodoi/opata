@@ -40,6 +40,19 @@ describe("repositories / user", () => {
     expect(user).toBeInstanceOf(User);
   });
 
+  it("should get a user by its username", async () => {
+    const newUser = await User.create({
+      ...createUserFixture,
+      username: "random",
+    });
+
+    await userRepository.save(newUser);
+
+    const user = await userRepository.findByUsername(newUser.username);
+    expect(user).toBeDefined();
+    expect(user).toBeInstanceOf(User);
+  });
+
   it("should update a user's data by its id", async () => {
     const newUser = await User.create({
       fullName: "Jimmy Doe",
@@ -78,5 +91,12 @@ describe("repositories / user", () => {
     await expect(() => userRepository.findById(invalidId)).rejects.toThrowError(
       NoResourcesFoundError
     );
+  });
+
+  it("should throw NoResourcesFoundError when username does not exist", async () => {
+    const invalidUsername = "foobar";
+    await expect(() =>
+      userRepository.findByUsername(invalidUsername)
+    ).rejects.toThrowError(NoResourcesFoundError);
   });
 });
