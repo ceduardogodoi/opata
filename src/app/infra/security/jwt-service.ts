@@ -25,11 +25,33 @@ export class JwtService {
 
     if (payload == null || typeof payload === "string") {
       // TODO: create a specific error
-      throw new Error("Error trying to decode the token.");
+      throw new jwt.JsonWebTokenError("Error trying to decode the token.");
     }
 
     const result = payloadOutputSchema.safeParse(payload);
     if (!result.success) {
+      throw new Error("Invalid output.");
+    }
+
+    const data = {
+      ...payload,
+      ...result.data,
+    };
+
+    return data;
+  }
+
+  static verify(token: string): PayloadOutput {
+    const payload = jwt.verify(token, env.JWT_SECRET);
+
+    if (typeof payload === "string") {
+      // TODO: create specific error
+      throw new Error("Invalid result.");
+    }
+
+    const result = payloadOutputSchema.safeParse(payload);
+    if (!result.success) {
+      // TODO: create specific error
       throw new Error("Invalid output.");
     }
 

@@ -21,13 +21,52 @@ describe("security / jwt service", () => {
   });
 
   it("should decode the token, and retrieve the payload", () => {
-    const payload = JwtService.decode(token);
+    const _payload = JwtService.decode(token);
 
-    expect(payload).toBeDefined();
-    expect(payload).toBeTypeOf("object");
-    expect(payload).toHaveProperty("id");
-    expect(payload).toHaveProperty("username");
-    expect(payload).toHaveProperty("email");
+    expect(_payload).toBeDefined();
+    expect(_payload).toBeTypeOf("object");
+    expect(_payload).toHaveProperty("id");
+    expect(_payload).toHaveProperty("username");
+    expect(_payload).toHaveProperty("email");
+  });
+
+  it("should throw when verifying that the token is not valid", async () => {
+    expect(() => JwtService.verify("invalid_token")).toThrowError(
+      jwt.JsonWebTokenError
+    );
+  });
+
+  it("should throw when verifying that the token is not valid", async () => {
+    expect(() => JwtService.verify("invalid_token")).toThrowError(
+      jwt.JsonWebTokenError
+    );
+  });
+
+  it("should throw when token is valid, but payload is string", async () => {
+    vi.spyOn(jwt, "verify").mockImplementationOnce((token) => token);
+
+    expect(() => JwtService.verify("invalid_token")).toThrowError();
+  });
+
+  it("should verify that the token is valid, and return the payload", async () => {
+    const _payload = JwtService.verify(token);
+
+    expect(_payload).toBeDefined();
+    expect(_payload).toBeTypeOf("object");
+    expect(_payload).toHaveProperty("id");
+    expect(_payload).toHaveProperty("username");
+    expect(_payload).toHaveProperty("email");
+  });
+
+  it("should throw when verify returns payload with missing data", () => {
+    const badPayload = {
+      username: "xpto",
+      email: "xpto@email.com",
+    };
+
+    const token = JwtService.sign(badPayload);
+
+    expect(() => JwtService.verify(token)).toThrowError("Invalid output.");
   });
 
   it("should throw when decoded payload is missing data", () => {
@@ -49,9 +88,7 @@ describe("security / jwt service", () => {
 
     vi.spyOn(jwt, "decode").mockReturnValueOnce(payload);
 
-    expect(() => JwtService.decode(token)).toThrowError(
-      "Error trying to decode the token."
-    );
+    expect(() => JwtService.decode(token)).toThrowError(jwt.JsonWebTokenError);
   });
 
   it("should return false when token is not expired", () => {
