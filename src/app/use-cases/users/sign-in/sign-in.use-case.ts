@@ -5,6 +5,7 @@ import type { UseCase } from "../../use-case.interface";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import type { SignInInputDto } from "./sign-in.dto";
 import { env } from "@/app/env";
+import { InvalidCredentialsError } from "@/app/infra/http/errors/invalid-credentials/invalid-credentials";
 
 @injectable()
 export class SignInUseCase implements UseCase<SignInInputDto, string> {
@@ -27,13 +28,12 @@ export class SignInUseCase implements UseCase<SignInInputDto, string> {
     const user = await this.#userRepositoryGateway.findByUsername(
       input.username
     );
-    const passwordMatch = await bcrypt.compare(
+    const doesPasswordMatch = await bcrypt.compare(
       input.password,
       user.passwordHash
     );
-    if (!passwordMatch) {
-      // TODO: create the correct error type for this
-      throw new Error("Username or password is invalid.");
+    if (!doesPasswordMatch) {
+      throw new InvalidCredentialsError();
     }
 
     const payload = user.toJSON();
