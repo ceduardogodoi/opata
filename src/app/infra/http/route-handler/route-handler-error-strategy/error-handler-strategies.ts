@@ -2,6 +2,7 @@ import { DuplicateResourceErrorStrategy } from "./duplicate-resources-error-stra
 import { InputValidationErrorStrategy } from "./input-validation-error-strategy/input-validation-error.strategy";
 import { InvalidCredentialsErrorStrategy } from "./invalid-credentials-error-strategy/invalid-credentials-error.strategy";
 import { NoResourcesFoundErrorStrategy } from "./no-resources-found-error-strategy/no-resources-found-error.strategy";
+import { OutputValidationErrorStrategy } from "./output-validation-error-strategy/output-validation-error.strategy";
 import type { RouteHandlerErrorStrategy } from "./route-handler-error-strategy.interface";
 
 const _strategies: RouteHandlerErrorStrategy[] = [
@@ -9,6 +10,7 @@ const _strategies: RouteHandlerErrorStrategy[] = [
   new NoResourcesFoundErrorStrategy(),
   new DuplicateResourceErrorStrategy(),
   new InvalidCredentialsErrorStrategy(),
+  new OutputValidationErrorStrategy(),
 ] as const;
 
 const strategyIterator = new Map(

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { InputValidationError } from "./input-validation.error";
 
-describe("http / errors / create animal validation", () => {
+describe("http / errors / input validation", () => {
   it("should create an error instance with extensions", () => {
     const fields = {
       name: ["Name is required."],

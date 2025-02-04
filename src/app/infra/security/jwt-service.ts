@@ -1,6 +1,7 @@
 import { env } from "@/app/env";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
+import { OutputValidationError } from "../http/errors/output-validation/output-validation.error";
 
 const payloadOutputSchema = z.object({
   id: z.string(),
@@ -23,20 +24,7 @@ export class JwtService {
   static decode(token: string): PayloadOutput {
     const payload = jwt.decode(token);
 
-    if (payload == null || typeof payload === "string") {
-      // TODO: create a specific error
-      throw new jwt.JsonWebTokenError("Error trying to decode the token.");
-    }
-
-    const result = payloadOutputSchema.safeParse(payload);
-    if (!result.success) {
-      throw new Error("Invalid output.");
-    }
-
-    const data = {
-      ...payload,
-      ...result.data,
-    };
+    const data = JwtService.#validatePayloadOrThrow(payload);
 
     return data;
   }
@@ -44,21 +32,7 @@ export class JwtService {
   static verify(token: string): PayloadOutput {
     const payload = jwt.verify(token, env.JWT_SECRET);
 
-    if (typeof payload === "string") {
-      // TODO: create specific error
-      throw new Error("Invalid result.");
-    }
-
-    const result = payloadOutputSchema.safeParse(payload);
-    if (!result.success) {
-      // TODO: create specific error
-      throw new Error("Invalid output.");
-    }
-
-    const data = {
-      ...payload,
-      ...result.data,
-    };
+    const data = JwtService.#validatePayloadOrThrow(payload);
 
     return data;
   }
@@ -70,5 +44,21 @@ export class JwtService {
     const currentTimeInMs = Date.now();
 
     return currentTimeInMs > payloadExpirationInMs;
+  }
+
+  static #validatePayloadOrThrow(
+    payload: string | jwt.JwtPayload | null
+  ): PayloadOutput {
+    const result = payloadOutputSchema.safeParse(payload);
+    if (payload == null || typeof payload === "string" || !result.success) {
+      throw new OutputValidationError();
+    }
+
+    const data: PayloadOutput = {
+      ...payload,
+      ...result.data,
+    };
+
+    return data;
   }
 }
