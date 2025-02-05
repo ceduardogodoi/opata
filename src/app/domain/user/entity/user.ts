@@ -60,7 +60,8 @@ export class User {
   public static async create(user: CreateUser): Promise<User> {
     const date = new Date();
 
-    const passwordHash = await bcrypt.hash(user.password, 10);
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(user.password, salt);
 
     return new User(
       crypto.randomUUID(),
