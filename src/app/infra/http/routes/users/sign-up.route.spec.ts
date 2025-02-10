@@ -12,7 +12,7 @@ describe("routes / sign up user", () => {
     "UserRepositoryGateway"
   );
   const signUpUseCase = SignUpUseCase.create(userRepository);
-  const createAnimalRoute = SignUpRoute.create(signUpUseCase);
+  const signUpRoute = SignUpRoute.create(signUpUseCase);
 
   it("should sign up a new user", async () => {
     afterEach(() => {
@@ -37,7 +37,7 @@ describe("routes / sign up user", () => {
       url,
     } as Request;
 
-    const response = await createAnimalRoute.handle(request);
+    const response = await signUpRoute.handle(request);
     const output: SignUpPresentOutput = await response.json();
     expect(response.status).toBe(201);
     expect(output.id).toMatch(UUID_REGEX);

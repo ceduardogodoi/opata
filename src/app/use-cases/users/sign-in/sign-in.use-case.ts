@@ -36,7 +36,12 @@ export class SignInUseCase implements UseCase<SignInInputDto, string> {
       throw new InvalidCredentialsError();
     }
 
-    const payload = user.toJSON();
+    const payload = {
+      id: user.id,
+      fullName: user.fullName,
+      username: user.username,
+      email: user.email,
+    };
     const token = jwt.sign(payload, env.JWT_SECRET, {
       expiresIn: "1h",
     });

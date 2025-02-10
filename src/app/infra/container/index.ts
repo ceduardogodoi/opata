@@ -9,6 +9,8 @@ import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repos
 import { SignUpUseCase } from "@/app/use-cases/users/sign-up/sign-up.usecase";
 import { SignUpRoute } from "../http/routes/users/sign-up.route";
 import { InstancesManager } from "./instances-manager";
+import { SignInUseCase } from "@/app/use-cases/users/sign-in/sign-in.use-case";
+import { SignInRoute } from "../http/routes/users/sign-in.route";
 
 InstancesManager.init();
 
@@ -35,4 +37,7 @@ const userRepository = container.resolve<UserRepositoryGateway>(
 );
 const signUpUseCase = SignUpUseCase.create(userRepository);
 export const signUpRouteHandler = SignUpRoute.create(signUpUseCase);
+
+const signInUseCase = SignInUseCase.create(userRepository);
+export const signInRouteHandler = SignInRoute.create(signInUseCase);
 // #endregion
