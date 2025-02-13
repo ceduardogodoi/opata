@@ -29,7 +29,7 @@ describe("use-cases / sign in user", () => {
 
     const jwtSignSpy = vi.spyOn(jwt, "sign");
 
-    const token = await signInUseCase.execute(credentials);
+    const output = await signInUseCase.execute(credentials);
     expect(jwtSignSpy.mock.calls[0]).toStrictEqual([
       {
         id: newUser.id,
@@ -40,8 +40,8 @@ describe("use-cases / sign in user", () => {
       "jwt_secret",
       { expiresIn: "1h" },
     ]);
-    expect(token).toBeDefined();
-    expect(token).toBeTypeOf("string");
+    expect(output).toBeDefined();
+    expect(output.accessToken).toBeTypeOf("string");
   });
 
   it.each([
@@ -77,12 +77,12 @@ describe("use-cases / sign in user", () => {
       password: createUserFixture.password,
     };
 
-    const token = await signInUseCase.execute(credentials);
+    const output = await signInUseCase.execute(credentials);
 
     // Advance time in one hour and one second
     vi.advanceTimersByTime(3600 * 1000 + 1000);
 
-    const payload = JwtService.decode(token);
+    const payload = JwtService.decode(output.accessToken);
 
     const currentTime = Date.now();
     expect(payload.exp < currentTime);

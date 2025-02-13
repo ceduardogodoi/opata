@@ -57,8 +57,10 @@ describe("routes / sign in user", () => {
     } as Request;
 
     const response = await signInRoute.handle(request);
-    const token = await response.json();
-    expect(token).toBeTypeOf("string");
-    expect(() => JwtService.verify(token)).not.toThrowError(JsonWebTokenError);
+    const output = await response.json();
+    expect(output.accessToken).toBeTypeOf("string");
+    expect(() => JwtService.verify(output.accessToken)).not.toThrowError(
+      JsonWebTokenError
+    );
   });
 });

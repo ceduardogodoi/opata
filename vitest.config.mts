@@ -14,7 +14,6 @@ export default defineConfig({
         "**/*.dto.ts",
         "**/*.interface.ts",
         "**/*.types.ts",
-        "src/app/api/**/route.ts",
 
       ],
       reporter: ["text", "json", "html", "lcov"],
