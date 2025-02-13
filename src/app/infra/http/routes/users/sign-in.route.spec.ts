@@ -1,12 +1,23 @@
 import { describe, expect, it, vi } from "vitest";
 import { container } from "tsyringe";
+import { JsonWebTokenError } from "jsonwebtoken";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import { SignInRoute } from "./sign-in.route";
 import { SignInUseCase } from "@/app/use-cases/users/sign-in/sign-in.use-case";
 import type { SignInInputDto } from "@/app/use-cases/users/sign-in/sign-in.dto";
 import { User } from "@/app/domain/user/entity/user";
 import { JwtService } from "@/app/infra/security/jwt-service";
-import { JsonWebTokenError } from "jsonwebtoken";
+
+vi.mock(import("next/headers"), async (importOriginal) => {
+  const originalModule = await importOriginal();
+
+  return {
+    ...originalModule,
+    cookies: vi.fn().mockResolvedValue({
+      set: vi.fn().mockReturnValue({}),
+    }),
+  };
+});
 
 describe("routes / sign in user", () => {
   vi.stubEnv("JWT_SECRET", "jwt_secret");

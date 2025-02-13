@@ -1,5 +1,7 @@
 import { SignInUseCase } from "@/app/use-cases/users/sign-in/sign-in.use-case";
 import { RouteHandler } from "../../route-handler/route-handler";
+import { cookies } from "next/headers";
+import { env } from "@/app/env";
 
 export class SignInRoute extends RouteHandler {
   readonly #signInUseCase: SignInUseCase;
@@ -20,9 +22,15 @@ export class SignInRoute extends RouteHandler {
   public async handleImpl(request: Request): Promise<Response> {
     const data = await request.json();
 
-    const accessToken = await this.#signInUseCase.execute(data);
+    const output = await this.#signInUseCase.execute(data);
 
-    return Response.json(accessToken, {
+    const cookieStore = await cookies();
+    cookieStore.set("access_token", output.accessToken, {
+      secure: env.NODE_ENV === "production",
+      httpOnly: env.NODE_ENV === "production",
+    });
+
+    return Response.json(output, {
       status: 200,
     });
   }
