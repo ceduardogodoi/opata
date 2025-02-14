@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { RouteHandler } from "./route-handler";
-import type { CreateAnimalInputDto } from "@/app/use-cases/create-animal/create-animal.dto";
-import { CreateAnimalValidationError } from "../errors/create-animal-validation/create-animal-validation.error";
+import { InputValidationError } from "../errors/input-validation/input-validation.error";
 import type { HttpHandler } from "../http.types";
-import type { FindAllAnimalsOutputDto } from "@/app/use-cases/find-all-animals/find-all-animals.dto";
 import { NoResourcesFoundError } from "../errors/no-resources-found/no-resources-found.error";
+import type { CreateAnimalInputDto } from "@/app/use-cases/animals/create-animal/create-animal.dto";
+import type { FindAllAnimalsOutputDto } from "@/app/use-cases/animals/find-all-animals/find-all-animals.dto";
+import type { CreateUserInputDto } from "@/app/use-cases/users/sign-up/sign-up.dto";
+import { DuplicateResourceError } from "../errors/duplicate-resource/duplicate-resource.error";
 
 class RouteHandlerTestImpl extends RouteHandler {
   async handleImpl(): Promise<Response> {
@@ -60,6 +62,7 @@ describe("route handler", () => {
           observations: "Turtle observations",
         });
       },
+
       url,
     } as Request;
 
@@ -68,7 +71,7 @@ describe("route handler", () => {
         name: ["Name is required."],
       };
 
-      throw new CreateAnimalValidationError(fieldErrors);
+      throw new InputValidationError(fieldErrors);
     };
 
     const response = await routeHandler.process(request, handler);
@@ -115,6 +118,37 @@ describe("route handler", () => {
       "The request you made has not found any resources."
     );
     expect(output.instance).toBe("/api/animals");
+    expect(response.headers.get("Content-Type")).toBe(
+      "application/problem+json"
+    );
+  });
+
+  it("should return 409 when trying to create a duplicate resource", async () => {
+    const url = new URL("/api/users", "http://localhost:3000").toString();
+
+    const request = {
+      json: async (): Promise<CreateUserInputDto> => {
+        return Promise.resolve({
+          fullName: "John Doe",
+          username: "jdoe",
+          email: "john.doe@email.com",
+          password: "c62d929e7b7e7b6165923a5dfc60cb56",
+        });
+      },
+      url,
+    } as Request;
+
+    handler = async (): Promise<Response> => {
+      throw new DuplicateResourceError();
+    };
+
+    const response = await routeHandler.process(request, handler);
+    const output = await response.json();
+    expect(response.status).toBe(409);
+    expect(output.type).toBe("https://example.com/probs/duplicate-resource");
+    expect(output.title).toBe("Resource already exists.");
+    expect(output.detail).toBe("This resource was already registered.");
+    expect(output.instance).toBe("/api/users");
     expect(response.headers.get("Content-Type")).toBe(
       "application/problem+json"
     );

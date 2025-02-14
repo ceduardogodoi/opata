@@ -14,6 +14,7 @@ export default defineConfig({
         "**/*.dto.ts",
         "**/*.interface.ts",
         "**/*.types.ts",
+
       ],
       reporter: ["text", "json", "html", "lcov"],
       thresholds: {
