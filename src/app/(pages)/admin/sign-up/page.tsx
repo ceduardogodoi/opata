@@ -1,93 +1,157 @@
 "use client";
 
-import { createUserInputSchema } from "@/app/use-cases/users/sign-up/sign-up.dto";
-import { useState, type FormEvent, type JSX } from "react";
-
-type FormErrorState = {
-  fullName?: string[];
-  email?: string[];
-  username?: string[];
-  password?: string[];
-};
-
-const INITIAL_STATE = {};
+import { type JSX } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  type CreateUserInputDto,
+  createUserInputSchema,
+} from "@/app/use-cases/users/sign-up/sign-up.dto";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export default function SignUpPage(): JSX.Element {
-  const [formErrorState, setFormErrorState] =
-    useState<FormErrorState>(INITIAL_STATE);
+  const form = useForm({
+    resolver: zodResolver(createUserInputSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      username: "",
+      password: "",
+    },
+  });
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const entries = new FormData(event.currentTarget);
-    const data = Object.fromEntries(entries);
-
-    const result = createUserInputSchema.safeParse(data);
-    if (!result.success) {
-      setFormErrorState(result.error.formErrors.fieldErrors);
-
-      return;
-    }
-
-    console.log(result.data);
-
-    setFormErrorState({});
-  }
+  const handleSignUp: SubmitHandler<CreateUserInputDto> = (values) => {
+    console.log(values);
+  };
 
   return (
-    <div>
-      <h1>Criar nova conta</h1>
+    <main className="flex flex-col justify-center items-center min-h-screen space-y-6 bg-slate-100 p-3">
+      <h1 className="text-4xl xl:text-5xl font-bold">Opata</h1>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="fullName">Nome completo</label>
-        <input
-          id="fullName"
-          name="fullName"
-          type="text"
-          placeholder="Seu nome completo"
-        />
-        {formErrorState.fullName != null && (
-          <p data-testid="fullNameError" role="alert">
-            {formErrorState.fullName}
-          </p>
-        )}
+      <Card className="xl:w-[768px]">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSignUp)}>
+            <CardHeader>
+              <CardTitle>
+                <h2>Criar nova conta</h2>
+              </CardTitle>
 
-        <label htmlFor="email">E-mail</label>
-        <input id="email" name="email" type="text" placeholder="Seu e-mail" />
-        {formErrorState.email != null && (
-          <p data-testid="emailError" role="alert">
-            {formErrorState.email}
-          </p>
-        )}
+              <CardDescription>
+                Informe seus dados para criar seu acesso.
+              </CardDescription>
+            </CardHeader>
 
-        <label htmlFor="username">Usuário</label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          placeholder="Seu usuário"
-        />
-        {formErrorState.username != null && (
-          <p data-testid="usernameError" role="alert">
-            {formErrorState.username}
-          </p>
-        )}
+            <CardContent className="space-y-2">
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="fullName">Nome completo*</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="fullName"
+                        type="text"
+                        placeholder="Maria da Silva"
+                        {...field}
+                      />
+                    </FormControl>
 
-        <label htmlFor="password">Senha</label>
-        <input
-          id="password"
-          name="password"
-          type="text"
-          placeholder="Sua senha"
-        />
-        {formErrorState.password != null && (
-          <p data-testid="passwordError" role="alert">
-            {formErrorState.password}
-          </p>
-        )}
+                    <FormDescription>Mínimo de 4 caracteres.</FormDescription>
 
-        <button type="submit">Cadastre-se</button>
-      </form>
-    </div>
+                    <FormMessage data-testid="fullNameError" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="username">Usuário*</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="username"
+                        type="text"
+                        placeholder="msilva"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormDescription>
+                      Sugestão: Primeira letra do nome + sobrenome (ex.: msilva)
+                    </FormDescription>
+
+                    <FormMessage data-testid="usernameError" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="email">E-mail*</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="mariasilva@email.com"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage data-testid="emailError" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="password">Senha*</FormLabel>
+                    <FormControl>
+                      <Input id="password" type="password" {...field} />
+                    </FormControl>
+
+                    <FormDescription>Mínimo de 4 caracteres.</FormDescription>
+
+                    <FormMessage data-testid="passwordError" />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+
+            <CardFooter className="flex justify-end">
+              <Button className="w-full xl:w-max" type="submit">
+                Cadastre-se
+              </Button>
+            </CardFooter>
+          </form>
+        </Form>
+      </Card>
+    </main>
   );
 }

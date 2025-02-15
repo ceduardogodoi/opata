@@ -19,21 +19,21 @@ describe("pages / sign up", () => {
     render(<SignUpPage />);
 
     heading = screen.getByRole<HTMLHeadingElement>("heading", {
-      level: 1,
+      level: 2,
       name: "Criar nova conta",
     });
     expect(heading).toHaveTextContent("Criar nova conta");
 
-    fullName = screen.getByLabelText<HTMLInputElement>("Nome completo");
+    fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
     expect(fullName).toBeInTheDocument();
 
-    email = screen.getByLabelText<HTMLInputElement>("E-mail");
+    email = screen.getByLabelText<HTMLInputElement>("E-mail*");
     expect(email).toBeInTheDocument();
 
-    username = screen.getByLabelText<HTMLInputElement>("Usuário");
+    username = screen.getByLabelText<HTMLInputElement>("Usuário*");
     expect(username).toBeInTheDocument();
 
-    password = screen.getByLabelText<HTMLInputElement>("Senha");
+    password = screen.getByLabelText<HTMLInputElement>("Senha*");
     expect(password).toBeInTheDocument();
 
     submit = screen.getByRole<HTMLButtonElement>("button", {
