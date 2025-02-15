@@ -35,13 +35,25 @@ describe("use-cases / create user", () => {
   });
 
   it.each([
-    { property: "fullName", message: "Full name is required." },
-    { property: "email", message: "Email is required." },
-    { property: "password", message: "Password is required." },
+    {
+      property: "fullName",
+      message: "Nome completo deve ter no mínimo 4 caracteres.",
+      value: "xpt",
+    },
+    {
+      property: "email",
+      message: "Fomato de e-mail inválido.",
+      value: "xpt",
+    },
+    {
+      property: "username",
+      message: "Usuário deve ter no mínimo 4 caracteres.",
+      value: "xpt",
+    },
     {
       property: "password",
-      message: "Password should have a minimum of 4 characters long.",
-      value: "abc",
+      message: "Senha deve ter no mínimo 4 caracteres.",
+      value: "xpt",
     },
   ])(
     "should throw when trying to create a user with invalid property $property",
