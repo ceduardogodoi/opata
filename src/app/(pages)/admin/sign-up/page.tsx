@@ -28,6 +28,10 @@ export default function SignUpPage(): JSX.Element {
 
       return;
     }
+
+    console.log(result.data);
+
+    setFormErrorState({});
   }
 
   return (
