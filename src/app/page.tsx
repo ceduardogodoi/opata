@@ -1,3 +1,5 @@
-export default function Home() {
-  return <h1>Hello World</h1>;
+import type { JSX } from "react";
+
+export default function Home(): JSX.Element {
+  return <h1>I&apos;m a landing page</h1>;
 }

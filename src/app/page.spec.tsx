@@ -8,7 +8,7 @@ describe("root page", () => {
 
     const h1 = screen.getByRole<HTMLHeadingElement>("heading", {
       level: 1,
-      name: "Hello World",
+      name: "I'm a landing page",
     });
     expect(h1).toBeInTheDocument();
   });
