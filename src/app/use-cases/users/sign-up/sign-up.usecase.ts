@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import jwt from "jsonwebtoken";
 import type { UseCase } from "../../use-case.interface";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import { User } from "@/app/domain/user/entity/user";
@@ -8,6 +9,7 @@ import {
   type CreateUserOutputDto,
 } from "./sign-up.dto";
 import { InputValidationError } from "@/app/infra/http/errors/input-validation/input-validation.error";
+import { env } from "@/app/env";
 
 @injectable()
 export class SignUpUseCase
@@ -34,8 +36,23 @@ export class SignUpUseCase
     const data = this.#validate(input);
     const user = await User.create(data);
 
+    const payload = {
+      id: user.id,
+      fullName: user.fullName,
+      username: user.username,
+      email: user.email,
+    };
+
+    const token = jwt.sign(payload, env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     const savedUser = await this.#userRepositoryGateway.save(user);
-    return savedUser;
+
+    return {
+      user: savedUser,
+      accessToken: token,
+    };
   }
 
   #validate(input: CreateUserInputDto): CreateUserInputDto {

@@ -24,10 +24,11 @@ const eslintConfig = [
     overrides: [
       {
         files: [
-          "./vitest.setup.ts",
+          "./src/app/(public)/**/*.ts?(x)",
           "./src/app/domain/environment-variables/entity/environment-variables.ts",
           "./src/app/domain/environment-variables/entity/environment-variables.error.ts",
           "./src/app/env.ts",
+          "./vitest.setup.ts",
         ],
         rules: {
           "n/no-process-env": "off",

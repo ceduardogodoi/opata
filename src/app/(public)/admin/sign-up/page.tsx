@@ -26,20 +26,31 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 export default function SignUpPage(): JSX.Element {
   const form = useForm({
     resolver: zodResolver(createUserInputSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      username: "",
-      password: "",
+      fullName: "Maria da Silva",
+      email: "mariasilva@gmail.com",
+      username: "msilva",
+      password: "q1w2e3r4",
     },
   });
 
-  const handleSignUp: SubmitHandler<CreateUserInputDto> = (values) => {
-    console.log(values);
+  const submitButtonText = form.formState.isSubmitting
+    ? "Criando sua conta..."
+    : "Cadastre-se";
+
+  const handleSignUp: SubmitHandler<CreateUserInputDto> = async (values) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-up`, {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+
+    const data = await response.json();
+    console.log(data);
   };
 
   return (
@@ -145,8 +156,16 @@ export default function SignUpPage(): JSX.Element {
             </CardContent>
 
             <CardFooter className="flex justify-end">
-              <Button className="w-full xl:w-max" type="submit">
-                Cadastre-se
+              <Button
+                className="w-full xl:w-max"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting && (
+                  <Loader2 className="animate-spin" />
+                )}
+
+                {submitButtonText}
               </Button>
             </CardFooter>
           </form>

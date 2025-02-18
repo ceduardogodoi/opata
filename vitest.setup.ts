@@ -33,7 +33,7 @@ class VitestSetup {
 
         JWT_SECRET: "jwt_secret",
 
-        API_URL: "http://localhost:3000/api",
+        NEXT_PUBLIC_API_URL: "http://localhost:3000/api",
       });
 
       return;

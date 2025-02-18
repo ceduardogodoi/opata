@@ -24,4 +24,7 @@ export const createUserInputSchema = z.object({
 
 export type CreateUserInputDto = z.infer<typeof createUserInputSchema>;
 
-export type CreateUserOutputDto = User;
+export type CreateUserOutputDto = {
+  user: User;
+  accessToken: string;
+};

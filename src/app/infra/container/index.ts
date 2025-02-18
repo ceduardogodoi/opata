@@ -35,7 +35,7 @@ export const findAllAnimalsRouteHandler = FindAllAnimalsRoute.create(
 const userRepository = container.resolve<UserRepositoryGateway>(
   "UserRepositoryGateway"
 );
-const signUpUseCase = SignUpUseCase.create(userRepository);
+export const signUpUseCase = SignUpUseCase.create(userRepository);
 export const signUpRouteHandler = SignUpRoute.create(signUpUseCase);
 
 const signInUseCase = SignInUseCase.create(userRepository);
