@@ -19,7 +19,7 @@ describe("pages / sign up", () => {
     vi.restoreAllMocks();
   });
 
-  it("Should render sign up page with correct contents", () => {
+  it("should render sign up page with correct contents", () => {
     render(<SignUpPage />);
 
     heading = screen.getByRole<HTMLHeadingElement>("heading", {
@@ -46,7 +46,7 @@ describe("pages / sign up", () => {
     expect(submit).toBeInTheDocument();
   });
 
-  it("Should have input errors shown when input data does not meet requirements", async () => {
+  it("should have input errors shown when input data does not meet requirements", async () => {
     const user = userEvent.setup();
 
     await user.click(submit);
@@ -62,7 +62,7 @@ describe("pages / sign up", () => {
     expect(passwordError).toBeInTheDocument();
   });
 
-  it("Should have input fields filled out correctly", async () => {
+  it("should have input fields filled out correctly", async () => {
     const user = userEvent.setup();
 
     await user.type(fullName, "John Doe");
@@ -81,7 +81,7 @@ describe("pages / sign up", () => {
     expect(password).toHaveValue("q1w2e3r4");
   });
 
-  it("Should have submitted data to sign up", async () => {
+  it("should have submitted data to sign up", async () => {
     const user = userEvent.setup();
 
     const fetchSpy = vi.spyOn(global, "fetch");

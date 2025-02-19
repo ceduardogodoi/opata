@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { RouteHandler } from "./route-handler";
 import { InputValidationError } from "../errors/input-validation/input-validation.error";
 import type { HttpHandler } from "../http.types";
@@ -17,6 +17,10 @@ class RouteHandlerTestImpl extends RouteHandler {
 describe("route handler", () => {
   let handler: HttpHandler;
   const routeHandler = new RouteHandlerTestImpl();
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
 
   it("should return 500 when an unknown error has occured", async () => {
     const url = new URL("/api/animals", "http://localhost:3000").toString();
@@ -45,9 +49,43 @@ describe("route handler", () => {
       "An unknown error has occured in our servers. Please try again later."
     );
     expect(output.instance).toBe("/api/animals");
+    expect(output.cause).toStrictEqual(
+      expect.objectContaining({
+        message: "Unknown error when calling Request.json.",
+      })
+    );
     expect(response.headers.get("Content-Type")).toBe(
       "application/problem+json"
     );
+  });
+
+  it("should print the unknown error to the console in development mode", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    const url = new URL("/api/animals", "http://localhost:3000").toString();
+
+    const request = {
+      json: async (): Promise<Error> => {
+        return Promise.reject(
+          new Error("Unknown error when calling Request.json.")
+        );
+      },
+      url,
+    } as Request;
+
+    handler = async (request: Request): Promise<Response> => {
+      const response = await request.json();
+
+      return response;
+    };
+
+    await routeHandler.process(request, handler);
+
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   it("should return 400 when invalid input is entered", async () => {

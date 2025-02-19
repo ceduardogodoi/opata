@@ -1,3 +1,4 @@
+import { env } from "@/app/env";
 import { UnknownError } from "../errors/unknown/unknown.error";
 import type { HttpHandler } from "../http.types";
 import { strategies } from "./route-handler-error-strategy/error-handler-strategies";
@@ -33,8 +34,19 @@ export abstract class RouteHandler {
         }
       }
 
+      let cause: unknown;
+      if (error instanceof Error) {
+        cause = error.cause ?? {
+          message: error.message,
+        };
+
+        if (env.NODE_ENV === "development") {
+          console.error(error);
+        }
+      }
+
       // fallback error / generic error
-      const unknownError = new UnknownError(pathname);
+      const unknownError = new UnknownError(pathname, cause);
 
       return Response.json(unknownError, {
         status: 500,

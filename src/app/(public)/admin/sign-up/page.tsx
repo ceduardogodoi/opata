@@ -32,10 +32,10 @@ export default function SignUpPage(): JSX.Element {
   const form = useForm({
     resolver: zodResolver(createUserInputSchema),
     defaultValues: {
-      fullName: "Maria da Silva",
-      email: "mariasilva@gmail.com",
-      username: "msilva",
-      password: "q1w2e3r4",
+      fullName: "",
+      email: "",
+      username: "",
+      password: "",
     },
   });
 
