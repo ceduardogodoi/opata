@@ -3,6 +3,8 @@
 import { type JSX } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import {
   type CreateUserInputDto,
   createUserInputSchema,
@@ -26,9 +28,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
 
 export default function SignUpPage(): JSX.Element {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(createUserInputSchema),
     defaultValues: {
@@ -39,7 +42,9 @@ export default function SignUpPage(): JSX.Element {
     },
   });
 
-  const submitButtonText = form.formState.isSubmitting
+  const { isSubmitting } = form.formState;
+
+  const submitButtonText = isSubmitting
     ? "Criando sua conta..."
     : "Cadastre-se";
 
@@ -49,8 +54,16 @@ export default function SignUpPage(): JSX.Element {
       body: JSON.stringify(values),
     });
 
-    const data = await response.json();
-    console.log(data);
+    // username already taken
+    if (response.status === 409) {
+      form.setError("username", {
+        message: "Usuário já existe.",
+      });
+
+      return;
+    }
+
+    router.push("/admin/sign-in");
   };
 
   return (
@@ -83,6 +96,7 @@ export default function SignUpPage(): JSX.Element {
                         type="text"
                         placeholder="Maria da Silva"
                         {...field}
+                        disabled={isSubmitting}
                       />
                     </FormControl>
 
@@ -105,6 +119,7 @@ export default function SignUpPage(): JSX.Element {
                         type="text"
                         placeholder="msilva"
                         {...field}
+                        disabled={isSubmitting}
                       />
                     </FormControl>
 
@@ -129,6 +144,7 @@ export default function SignUpPage(): JSX.Element {
                         type="email"
                         placeholder="mariasilva@email.com"
                         {...field}
+                        disabled={isSubmitting}
                       />
                     </FormControl>
 
@@ -140,18 +156,25 @@ export default function SignUpPage(): JSX.Element {
               <FormField
                 control={form.control}
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="password">Senha*</FormLabel>
-                    <FormControl>
-                      <Input id="password" type="password" {...field} />
-                    </FormControl>
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel htmlFor="password">Senha*</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="password"
+                          type="password"
+                          {...field}
+                          disabled={isSubmitting}
+                        />
+                      </FormControl>
 
-                    <FormDescription>Mínimo de 4 caracteres.</FormDescription>
+                      <FormDescription>Mínimo de 4 caracteres.</FormDescription>
 
-                    <FormMessage data-testid="passwordError" />
-                  </FormItem>
-                )}
+                      <FormMessage data-testid="passwordError" />
+                    </FormItem>
+                  );
+                }}
               />
             </CardContent>
 
@@ -159,11 +182,9 @@ export default function SignUpPage(): JSX.Element {
               <Button
                 className="w-full xl:w-max"
                 type="submit"
-                disabled={form.formState.isSubmitting}
+                disabled={isSubmitting}
               >
-                {form.formState.isSubmitting && (
-                  <Loader2 className="animate-spin" />
-                )}
+                {isSubmitting && <Loader2 className="animate-spin" />}
 
                 {submitButtonText}
               </Button>

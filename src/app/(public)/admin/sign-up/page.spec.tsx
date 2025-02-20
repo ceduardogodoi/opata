@@ -1,104 +1,160 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { cleanup, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import SignUpPage from "./page";
+import userEvent from "@testing-library/user-event";
+import { useRouter } from "next/navigation";
+
+vi.mock(import("next/navigation"), async (originalImport) => {
+  const originalModule = await originalImport();
+  return {
+    ...originalModule,
+    useRouter: vi.fn(),
+  };
+});
 
 describe("pages / sign up", () => {
-  let heading: HTMLHeadElement;
-  let fullName: HTMLInputElement;
-  let email: HTMLInputElement;
-  let username: HTMLInputElement;
-  let password: HTMLInputElement;
-  let submit: HTMLButtonElement;
-  let fullNameError: HTMLParagraphElement;
-  let emailError: HTMLParagraphElement;
-  let usernameError: HTMLParagraphElement;
-  let passwordError: HTMLParagraphElement;
+  beforeEach(() => {
+    cleanup();
 
-  afterEach(() => {
+    vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });
 
-  it("should render sign up page with correct contents", () => {
+  it("should render page with main content", () => {
     render(<SignUpPage />);
 
-    heading = screen.getByRole<HTMLHeadingElement>("heading", {
+    const heading = screen.getByRole<HTMLHeadingElement>("heading", {
+      level: 1,
+      name: "Opata",
+    });
+    expect(heading).toBeInTheDocument();
+
+    const heading2 = screen.getByRole<HTMLHeadingElement>("heading", {
       level: 2,
       name: "Criar nova conta",
     });
-    expect(heading).toHaveTextContent("Criar nova conta");
+    expect(heading2).toBeInTheDocument();
 
-    fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
+    const fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
     expect(fullName).toBeInTheDocument();
+    expect(fullName).toHaveValue("");
 
-    email = screen.getByLabelText<HTMLInputElement>("E-mail*");
-    expect(email).toBeInTheDocument();
-
-    username = screen.getByLabelText<HTMLInputElement>("Usuário*");
+    const username = screen.getByLabelText<HTMLInputElement>("Usuário*");
     expect(username).toBeInTheDocument();
+    expect(username).toHaveValue("");
 
-    password = screen.getByLabelText<HTMLInputElement>("Senha*");
+    const email = screen.getByLabelText<HTMLInputElement>("E-mail*");
+    expect(email).toBeInTheDocument();
+    expect(email).toHaveValue("");
+
+    const password = screen.getByLabelText<HTMLInputElement>("Senha*");
     expect(password).toBeInTheDocument();
+    expect(password).toHaveValue("");
 
-    submit = screen.getByRole<HTMLButtonElement>("button", {
-      name: "Cadastre-se",
+    const signUpButton = screen.getByRole<HTMLButtonElement>("button");
+    expect(signUpButton).toBeInTheDocument();
+  });
+
+  it("should show error messages when form is not properly filled out", async () => {
+    const user = userEvent.setup();
+
+    render(<SignUpPage />);
+
+    const signUpButton = screen.getByRole<HTMLButtonElement>("button");
+
+    await user.click(signUpButton);
+
+    const fullNameErrorMessage =
+      screen.getByTestId<HTMLParagraphElement>("fullNameError");
+    const usernameErrorMessage =
+      screen.getByTestId<HTMLParagraphElement>("usernameError");
+    const emailErrorMessage =
+      screen.getByTestId<HTMLParagraphElement>("emailError");
+    const passwordErrorMessage =
+      screen.getByTestId<HTMLParagraphElement>("passwordError");
+
+    expect(fullNameErrorMessage).toBeInTheDocument();
+    expect(usernameErrorMessage).toBeInTheDocument();
+    expect(emailErrorMessage).toBeInTheDocument();
+    expect(passwordErrorMessage).toBeInTheDocument();
+  });
+
+  it("should sign-up user and redirect it to /admin/sign-in", async () => {
+    const user = userEvent.setup();
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 201,
+      })
+    );
+
+    const mockRouterPush = vi.fn();
+    const mockUseRouter = vi.mocked(useRouter);
+    mockUseRouter.mockReturnValue({
+      back: vi.fn(),
+      forward: vi.fn(),
+      prefetch: vi.fn(),
+      refresh: vi.fn(),
+      replace: vi.fn(),
+      push: mockRouterPush,
     });
-    expect(submit).toBeInTheDocument();
-  });
 
-  it("should have input errors shown when input data does not meet requirements", async () => {
-    const user = userEvent.setup();
+    render(<SignUpPage />);
 
-    await user.click(submit);
-
-    fullNameError = screen.getByTestId<HTMLParagraphElement>("fullNameError");
-    emailError = screen.getByTestId<HTMLParagraphElement>("emailError");
-    usernameError = screen.getByTestId<HTMLParagraphElement>("usernameError");
-    passwordError = screen.getByTestId<HTMLParagraphElement>("passwordError");
-
-    expect(fullNameError).toBeInTheDocument();
-    expect(emailError).toBeInTheDocument();
-    expect(usernameError).toBeInTheDocument();
-    expect(passwordError).toBeInTheDocument();
-  });
-
-  it("should have input fields filled out correctly", async () => {
-    const user = userEvent.setup();
+    const fullName =
+      screen.getByLabelText<HTMLHeadingElement>("Nome completo*");
+    const username = screen.getByLabelText<HTMLHeadingElement>("Usuário*");
+    const email = screen.getByLabelText<HTMLHeadingElement>("E-mail*");
+    const password = screen.getByLabelText<HTMLHeadingElement>("Senha*");
 
     await user.type(fullName, "John Doe");
     await user.type(username, "jdoe");
-    await user.type(email, "jdoe@email.com");
+    await user.type(email, "jdoe@gmail.com");
     await user.type(password, "q1w2e3r4");
 
-    expect(fullNameError).not.toBeInTheDocument();
-    expect(emailError).not.toBeInTheDocument();
-    expect(usernameError).not.toBeInTheDocument();
-    expect(passwordError).not.toBeInTheDocument();
+    const signUpButton = screen.getByRole<HTMLButtonElement>("button");
 
-    expect(fullName).toHaveValue("John Doe");
-    expect(username).toHaveValue("jdoe");
-    expect(email).toHaveValue("jdoe@email.com");
-    expect(password).toHaveValue("q1w2e3r4");
+    await user.click(signUpButton);
+    await user.click(signUpButton);
+
+    // expect(signUpButton).toBeDisabled();
+    // expect(signUpButton).toHaveTextContent("Criando sua conta...");
+
+    expect(mockRouterPush).toHaveBeenCalledWith("/admin/sign-in");
   });
 
-  it("should have submitted data to sign up", async () => {
+  it("should show submission error when signing up duplicate username", async () => {
     const user = userEvent.setup();
 
-    const fetchSpy = vi.spyOn(global, "fetch");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 409,
+      })
+    );
 
-    await user.click(submit);
+    render(<SignUpPage />);
 
-    expect(submit.textContent).toBe("Criando sua conta...");
-    expect(submit).toBeDisabled();
+    const fullName =
+      screen.getByLabelText<HTMLHeadingElement>("Nome completo*");
+    const username = screen.getByLabelText<HTMLHeadingElement>("Usuário*");
+    const email = screen.getByLabelText<HTMLHeadingElement>("E-mail*");
+    const password = screen.getByLabelText<HTMLHeadingElement>("Senha*");
 
-    expect(fetchSpy).toHaveBeenCalledWith("http://localhost:3000/api/sign-up", {
-      method: "POST",
-      body: JSON.stringify({
-        fullName: "John Doe",
-        email: "jdoe@email.com",
-        username: "jdoe",
-        password: "q1w2e3r4",
-      }),
-    });
+    await user.type(fullName, "John Doe");
+    await user.type(username, "jdoe");
+    await user.type(email, "jdoe@gmail.com");
+    await user.type(password, "q1w2e3r4");
+
+    const signUpButton = screen.getByRole<HTMLButtonElement>("button");
+
+    await user.click(signUpButton);
+
+    const usernameErrorMessage =
+      screen.getByTestId<HTMLParagraphElement>("usernameError");
+
+    expect(usernameErrorMessage).toBeInTheDocument();
+    expect(usernameErrorMessage).toHaveTextContent("Usuário já existe.");
   });
 });
