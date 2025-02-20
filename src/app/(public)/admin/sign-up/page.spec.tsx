@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import SignUpPage from "./page";
 import userEvent from "@testing-library/user-event";
@@ -84,8 +84,24 @@ describe("pages / sign up", () => {
 
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({
-        status: 201,
+      vi.fn().mockImplementationOnce(() => {
+        return new Promise<Response>((resolve) => {
+          setTimeout(() => {
+            resolve({
+              status: 201,
+              json: async () => {
+                return {
+                  id: "011760f0-1812-405c-9e17-39da18cac5aa",
+                  fullName: "John Doe",
+                  email: "jdoe@gmail.com",
+                  username: "jdoe",
+                  createdAt: "2025-02-20T15:12:13.651Z",
+                  updatedAt: "2025-02-20T15:12:13.651Z",
+                };
+              },
+            } as Response);
+          }, 100);
+        });
       })
     );
 
@@ -102,11 +118,10 @@ describe("pages / sign up", () => {
 
     render(<SignUpPage />);
 
-    const fullName =
-      screen.getByLabelText<HTMLHeadingElement>("Nome completo*");
-    const username = screen.getByLabelText<HTMLHeadingElement>("Usuário*");
-    const email = screen.getByLabelText<HTMLHeadingElement>("E-mail*");
-    const password = screen.getByLabelText<HTMLHeadingElement>("Senha*");
+    const fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
+    const username = screen.getByLabelText<HTMLInputElement>("Usuário*");
+    const email = screen.getByLabelText<HTMLInputElement>("E-mail*");
+    const password = screen.getByLabelText<HTMLInputElement>("Senha*");
 
     await user.type(fullName, "John Doe");
     await user.type(username, "jdoe");
@@ -118,10 +133,16 @@ describe("pages / sign up", () => {
     await user.click(signUpButton);
     await user.click(signUpButton);
 
-    // expect(signUpButton).toBeDisabled();
-    // expect(signUpButton).toHaveTextContent("Criando sua conta...");
+    expect(signUpButton).toBeDisabled();
+    expect(signUpButton).toHaveTextContent("Criando sua conta...");
+    expect(fullName).toBeDisabled();
+    expect(username).toBeDisabled();
+    expect(email).toBeDisabled();
+    expect(password).toBeDisabled();
 
-    expect(mockRouterPush).toHaveBeenCalledWith("/admin/sign-in");
+    await waitFor(() => {
+      expect(mockRouterPush).toHaveBeenCalledWith("/admin/sign-in");
+    });
   });
 
   it("should show submission error when signing up duplicate username", async () => {
@@ -136,11 +157,10 @@ describe("pages / sign up", () => {
 
     render(<SignUpPage />);
 
-    const fullName =
-      screen.getByLabelText<HTMLHeadingElement>("Nome completo*");
-    const username = screen.getByLabelText<HTMLHeadingElement>("Usuário*");
-    const email = screen.getByLabelText<HTMLHeadingElement>("E-mail*");
-    const password = screen.getByLabelText<HTMLHeadingElement>("Senha*");
+    const fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
+    const username = screen.getByLabelText<HTMLInputElement>("Usuário*");
+    const email = screen.getByLabelText<HTMLInputElement>("E-mail*");
+    const password = screen.getByLabelText<HTMLInputElement>("Senha*");
 
     await user.type(fullName, "John Doe");
     await user.type(username, "jdoe");
