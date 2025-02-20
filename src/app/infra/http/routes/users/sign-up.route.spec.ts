@@ -55,14 +55,7 @@ describe("routes / sign up user", () => {
     const response = await signUpRoute.handle(request);
     const output: SignUpPresentOutput = await response.json();
 
-    expect(cookieSetSpy).toHaveBeenCalledWith(
-      "access_token",
-      expect.any(String),
-      {
-        secure: false,
-        httpOnly: false,
-      }
-    );
+    expect(cookieSetSpy).not.toHaveBeenCalled();
 
     expect(response.status).toBe(201);
     expect(output.id).toMatch(UUID_REGEX);
