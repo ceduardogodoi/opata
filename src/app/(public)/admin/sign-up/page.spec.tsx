@@ -141,7 +141,7 @@ describe("pages / sign up", () => {
     expect(password).toBeDisabled();
 
     await waitFor(() => {
-      expect(mockRouterPush).toHaveBeenCalledWith("/admin/sign-in");
+      expect(mockRouterPush).toHaveBeenCalledWith("/admin/sign-in?username=jdoe");
     });
   });
 

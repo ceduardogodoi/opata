@@ -63,7 +63,7 @@ export default function SignUpPage(): JSX.Element {
       return;
     }
 
-    router.push("/admin/sign-in");
+    router.push(`/admin/sign-in?username=${values.username}`);
   };
 
   return (
