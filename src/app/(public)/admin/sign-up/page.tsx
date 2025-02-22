@@ -34,14 +34,28 @@ export default function SignUpPage() {
 
   const mockParams = searchParams.get("mock");
 
-  const form = useForm({
-    resolver: zodResolver(createUserInputSchema),
-    defaultValues: {
+  const productionDefaultValues = {
+    fullName: "",
+    email: "",
+    username: "",
+    password: "",
+  };
+
+  let defaultValues: CreateUserInputDto;
+  if (process.env.NODE_ENV === "production") {
+    defaultValues = productionDefaultValues;
+  } else {
+    defaultValues = {
       fullName: mockParams ? "John Doe" : "",
       email: mockParams ? "jdoe@gmail.com" : "",
       username: mockParams ? "jdoe" : "",
       password: mockParams ? "q1w2e3r4" : "",
-    },
+    };
+  }
+
+  const form = useForm({
+    resolver: zodResolver(createUserInputSchema),
+    defaultValues,
   });
 
   const { isSubmitting } = form.formState;

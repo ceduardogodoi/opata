@@ -23,6 +23,7 @@ describe("pages / sign up", () => {
     cleanup();
 
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
   });
 
   it("should render page with main content", () => {
@@ -184,29 +185,53 @@ describe("pages / sign up", () => {
     expect(usernameErrorMessage).toHaveTextContent("Usuário já existe.");
   });
 
-  it("should render filled out form when query param mock=filled is present", () => {
-    const mockUseSearchParams = vi.mocked(useSearchParams, {
-      partial: true,
-    });
-    mockUseSearchParams.mockReturnValue({
-      get: vi.fn().mockReturnValue("filled"),
-    });
+  it.each([
+    {
+      env: "test",
+      inputValues: {
+        fullName: "John Doe",
+        username: "jdoe",
+        email: "jdoe@gmail.com",
+        password: "q1w2e3r4",
+      },
+      renderMessage: "render",
+      mode: "test",
+    },
+    {
+      env: "production",
+      inputValues: { fullName: "", username: "", email: "", password: "" },
+      renderMessage: "not render",
+      mode: "production",
+    },
+  ])(
+    "should $renderMessage filled out form when query param `mock=filled` is present and is $mode mode",
+    ({ env, inputValues }) => {
+      vi.stubEnv("NODE_ENV", env);
 
-    const url = new URL("/admin/sign-up", "http://localhost:3000");
-    url.searchParams.set("mock", "filled");
+      const mockUseSearchParams = vi.mocked(useSearchParams, {
+        partial: true,
+      });
+      mockUseSearchParams.mockReturnValue({
+        get: vi.fn().mockReturnValue("filled"),
+      });
 
-    vi.stubGlobal(window.location.href, url.href);
+      const url = new URL("/admin/sign-up", "http://localhost:3000");
+      url.searchParams.set("mock", "filled");
 
-    render(<SignUpPage />);
+      vi.stubGlobal(window.location.href, url.href);
 
-    const fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
-    const username = screen.getByLabelText<HTMLInputElement>("Usuário*");
-    const email = screen.getByLabelText<HTMLInputElement>("E-mail*");
-    const password = screen.getByLabelText<HTMLInputElement>("Senha*");
+      render(<SignUpPage />);
 
-    expect(fullName).toHaveValue("John Doe");
-    expect(username).toHaveValue("jdoe");
-    expect(email).toHaveValue("jdoe@gmail.com");
-    expect(password).toHaveValue("q1w2e3r4");
-  });
+      const fullName =
+        screen.getByLabelText<HTMLInputElement>("Nome completo*");
+      const username = screen.getByLabelText<HTMLInputElement>("Usuário*");
+      const email = screen.getByLabelText<HTMLInputElement>("E-mail*");
+      const password = screen.getByLabelText<HTMLInputElement>("Senha*");
+
+      expect(fullName).toHaveValue(inputValues.fullName);
+      expect(username).toHaveValue(inputValues.username);
+      expect(email).toHaveValue(inputValues.email);
+      expect(password).toHaveValue(inputValues.password);
+    }
+  );
 });
