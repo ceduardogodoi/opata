@@ -21,8 +21,8 @@ export class SignUpRoute extends RouteHandler {
   public async handleImpl(request: Request): Promise<Response> {
     const data = await request.json();
 
-    const result = await this.#signUpUseCase.execute(data);
-    const output = SignUpPresenter.present(result.user);
+    const user = await this.#signUpUseCase.execute(data);
+    const output = SignUpPresenter.present(user);
 
     return Response.json(output, {
       status: 201,

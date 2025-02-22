@@ -1,8 +1,8 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useRouter, useSearchParams } from "next/navigation";
 import SignUpPage from "./page";
-import userEvent from "@testing-library/user-event";
 
 vi.mock(import("next/navigation"), async (originalImport) => {
   const originalModule = await originalImport();

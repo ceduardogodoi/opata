@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import bcrypt from "bcrypt";
 import { container } from "tsyringe";
-import jwt from "jsonwebtoken";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import { createUserFixture } from "@/app/fixtures/user.fixture";
 import { User } from "@/app/domain/user/entity/user";
@@ -17,25 +16,12 @@ describe("use-cases / create user", () => {
     const mockDate = new Date(2025, 0, 22, 0, 0, 0, 0);
     vi.setSystemTime(mockDate);
 
-    const jwtSignSpy = vi.spyOn(jwt, "sign");
-
     const signUpUseCase = SignUpUseCase.create(userRepository);
-    const { user: newUser } = await signUpUseCase.execute(createUserFixture);
+    const newUser = await signUpUseCase.execute(createUserFixture);
     const passwordMatch = await bcrypt.compare(
       createUserFixture.password,
       newUser.passwordHash
     );
-
-    expect(jwtSignSpy.mock.calls[0]).toStrictEqual([
-      {
-        id: newUser.id,
-        fullName: newUser.fullName,
-        username: newUser.username,
-        email: newUser.email,
-      },
-      "jwt_secret",
-      { expiresIn: "1h" },
-    ]);
 
     expect(newUser).toBeInstanceOf(User);
     expect(newUser.id).toMatch(UUID_REGEX);

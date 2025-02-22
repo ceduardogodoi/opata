@@ -1,6 +1,5 @@
 "use client";
 
-import { type JSX } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -29,7 +28,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-export default function SignUpPage(): JSX.Element {
+export default function SignUpPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
