@@ -3,7 +3,7 @@
 import { type JSX } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import {
   type CreateUserInputDto,
@@ -31,14 +31,17 @@ import { Input } from "@/components/ui/input";
 
 export default function SignUpPage(): JSX.Element {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const mockParams = searchParams.get("mock");
 
   const form = useForm({
     resolver: zodResolver(createUserInputSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      username: "",
-      password: "",
+      fullName: mockParams ? "John Doe" : "",
+      email: mockParams ? "jdoe@gmail.com" : "",
+      username: mockParams ? "jdoe" : "",
+      password: mockParams ? "q1w2e3r4" : "",
     },
   });
 

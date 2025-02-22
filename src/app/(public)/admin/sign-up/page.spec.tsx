@@ -1,14 +1,20 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { useRouter, useSearchParams } from "next/navigation";
 import SignUpPage from "./page";
 import userEvent from "@testing-library/user-event";
-import { useRouter } from "next/navigation";
 
 vi.mock(import("next/navigation"), async (originalImport) => {
   const originalModule = await originalImport();
+
   return {
     ...originalModule,
-    useRouter: vi.fn(),
+    useRouter: vi.fn().mockReturnValue({
+      push: vi.fn(),
+    }),
+    useSearchParams: vi.fn().mockReturnValue({
+      get: vi.fn().mockReturnValue(null),
+    }),
   };
 });
 
@@ -17,7 +23,6 @@ describe("pages / sign up", () => {
     cleanup();
 
     vi.unstubAllGlobals();
-    vi.restoreAllMocks();
   });
 
   it("should render page with main content", () => {
@@ -86,6 +91,8 @@ describe("pages / sign up", () => {
       "fetch",
       vi.fn().mockImplementationOnce(() => {
         return new Promise<Response>((resolve) => {
+          // need to have a delay
+          // to catch form submitting state
           setTimeout(() => {
             resolve({
               status: 201,
@@ -106,13 +113,10 @@ describe("pages / sign up", () => {
     );
 
     const mockRouterPush = vi.fn();
-    const mockUseRouter = vi.mocked(useRouter);
+    const mockUseRouter = vi.mocked(useRouter, {
+      partial: true,
+    });
     mockUseRouter.mockReturnValue({
-      back: vi.fn(),
-      forward: vi.fn(),
-      prefetch: vi.fn(),
-      refresh: vi.fn(),
-      replace: vi.fn(),
       push: mockRouterPush,
     });
 
@@ -141,7 +145,9 @@ describe("pages / sign up", () => {
     expect(password).toBeDisabled();
 
     await waitFor(() => {
-      expect(mockRouterPush).toHaveBeenCalledWith("/admin/sign-in?username=jdoe");
+      expect(mockRouterPush).toHaveBeenCalledWith(
+        "/admin/sign-in?username=jdoe"
+      );
     });
   });
 
@@ -176,5 +182,31 @@ describe("pages / sign up", () => {
 
     expect(usernameErrorMessage).toBeInTheDocument();
     expect(usernameErrorMessage).toHaveTextContent("Usuário já existe.");
+  });
+
+  it("should render filled out form when query param mock=filled is present", () => {
+    const mockUseSearchParams = vi.mocked(useSearchParams, {
+      partial: true,
+    });
+    mockUseSearchParams.mockReturnValue({
+      get: vi.fn().mockReturnValue("filled"),
+    });
+
+    const url = new URL("/admin/sign-up", "http://localhost:3000");
+    url.searchParams.set("mock", "filled");
+
+    vi.stubGlobal(window.location.href, url.href);
+
+    render(<SignUpPage />);
+
+    const fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
+    const username = screen.getByLabelText<HTMLInputElement>("Usuário*");
+    const email = screen.getByLabelText<HTMLInputElement>("E-mail*");
+    const password = screen.getByLabelText<HTMLInputElement>("Senha*");
+
+    expect(fullName).toHaveValue("John Doe");
+    expect(username).toHaveValue("jdoe");
+    expect(email).toHaveValue("jdoe@gmail.com");
+    expect(password).toHaveValue("q1w2e3r4");
   });
 });
