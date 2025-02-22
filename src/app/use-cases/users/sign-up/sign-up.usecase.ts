@@ -35,6 +35,7 @@ export class SignUpUseCase
     const user = await User.create(data);
 
     const savedUser = await this.#userRepositoryGateway.save(user);
+
     return savedUser;
   }
 

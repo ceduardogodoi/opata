@@ -11,9 +11,13 @@ export default defineConfig({
       include: ["src"],
       exclude: [
         ...coverageConfigDefaults.exclude,
+        // types
         "**/*.dto.ts",
         "**/*.interface.ts",
         "**/*.types.ts",
+
+        // shadcn components
+        "src/components/ui/*.tsx"
 
       ],
       reporter: ["text", "json", "html", "lcov"],

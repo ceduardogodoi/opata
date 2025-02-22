@@ -17,31 +17,43 @@ describe("use-cases / create user", () => {
     vi.setSystemTime(mockDate);
 
     const signUpUseCase = SignUpUseCase.create(userRepository);
-    const user = await signUpUseCase.execute(createUserFixture);
+    const newUser = await signUpUseCase.execute(createUserFixture);
     const passwordMatch = await bcrypt.compare(
       createUserFixture.password,
-      user.passwordHash
+      newUser.passwordHash
     );
 
-    expect(user).toBeInstanceOf(User);
-    expect(user.id).toMatch(UUID_REGEX);
-    expect(user.fullName).toBe(createUserFixture.fullName);
-    expect(user.email).toBe(createUserFixture.email);
+    expect(newUser).toBeInstanceOf(User);
+    expect(newUser.id).toMatch(UUID_REGEX);
+    expect(newUser.fullName).toBe(createUserFixture.fullName);
+    expect(newUser.email).toBe(createUserFixture.email);
     expect(passwordMatch).toBe(true);
-    expect(user.createdAt).toEqual(mockDate);
-    expect(user.updatedAt).toEqual(mockDate);
+    expect(newUser.createdAt).toEqual(mockDate);
+    expect(newUser.updatedAt).toEqual(mockDate);
 
     vi.useRealTimers();
   });
 
   it.each([
-    { property: "fullName", message: "Full name is required." },
-    { property: "email", message: "Email is required." },
-    { property: "password", message: "Password is required." },
+    {
+      property: "fullName",
+      message: "Nome completo deve ter no mínimo 4 caracteres.",
+      value: "xpt",
+    },
+    {
+      property: "email",
+      message: "Fomato de e-mail inválido.",
+      value: "xpt",
+    },
+    {
+      property: "username",
+      message: "Usuário deve ter no mínimo 4 caracteres.",
+      value: "xpt",
+    },
     {
       property: "password",
-      message: "Password should have a minimum of 4 characters long.",
-      value: "abc",
+      message: "Senha deve ter no mínimo 4 caracteres.",
+      value: "xpt",
     },
   ])(
     "should throw when trying to create a user with invalid property $property",

@@ -6,6 +6,18 @@ import type { CreateUserInputDto } from "@/app/use-cases/users/sign-up/sign-up.d
 import { UUID_REGEX } from "@/app/globals/constants";
 import { SignUpRoute } from "./sign-up.route";
 import { SignUpPresentOutput } from "../../presenters/users/sign-up.presenter.dto";
+import { cookies } from "next/headers";
+
+vi.mock(import("next/headers"), async (importOriginal) => {
+  const originalModule = await importOriginal();
+
+  return {
+    ...originalModule,
+    cookies: vi.fn().mockResolvedValue({
+      set: vi.fn().mockReturnValue({}),
+    }),
+  };
+});
 
 describe("routes / sign up user", () => {
   const userRepository = container.resolve<UserRepositoryGateway>(
@@ -14,11 +26,11 @@ describe("routes / sign up user", () => {
   const signUpUseCase = SignUpUseCase.create(userRepository);
   const signUpRoute = SignUpRoute.create(signUpUseCase);
 
-  it("should sign up a new user", async () => {
-    afterEach(() => {
-      vi.useRealTimers();
-    });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
+  it("should sign up a new user", async () => {
     const mockDate = new Date(2025, 0, 25, 0, 0, 0, 0);
     const mockDateISO = mockDate.toISOString();
     vi.setSystemTime(mockDate);
@@ -37,8 +49,14 @@ describe("routes / sign up user", () => {
       url,
     } as Request;
 
+    const cookieStore = await cookies();
+    const cookieSetSpy = vi.spyOn(cookieStore, "set");
+
     const response = await signUpRoute.handle(request);
     const output: SignUpPresentOutput = await response.json();
+
+    expect(cookieSetSpy).not.toHaveBeenCalled();
+
     expect(response.status).toBe(201);
     expect(output.id).toMatch(UUID_REGEX);
     expect(output.fullName).toBe("John Doe");
