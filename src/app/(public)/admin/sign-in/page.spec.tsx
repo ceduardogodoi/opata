@@ -54,11 +54,6 @@ describe("pages / sign in", () => {
       get: vi.fn().mockReturnValueOnce(username),
     });
 
-    const url = new URL("/admin/sign-in", "http://localhost:3000");
-    url.searchParams.set("username", username);
-
-    vi.stubGlobal(window.location.href, url.href);
-
     render(<SignInPage />);
 
     const usernameInput = screen.getByLabelText<HTMLInputElement>("Usuário*");
