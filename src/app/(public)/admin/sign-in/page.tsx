@@ -23,12 +23,16 @@ import {
   signInInputSchema,
   type SignInInputDto,
 } from "@/app/use-cases/users/sign-in/sign-in.dto";
+import { useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
+  const searchParams = useSearchParams();
+  const username = searchParams.get("username");
+
   const form = useForm({
     resolver: zodResolver(signInInputSchema),
     defaultValues: {
-      username: "",
+      username: username ?? "",
       password: "",
     },
   });
@@ -43,7 +47,7 @@ export default function SignInPage() {
         <form onSubmit={form.handleSubmit(handleSignIn)}>
           <CardHeader>
             <CardTitle>
-              <h1>Entrar</h1>
+              <h1>Autenticar</h1>
             </CardTitle>
           </CardHeader>
 

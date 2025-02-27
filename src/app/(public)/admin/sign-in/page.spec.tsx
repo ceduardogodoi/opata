@@ -1,14 +1,32 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { useSearchParams } from "next/navigation";
 import SignInPage from "./page";
 
+vi.mock(import("next/navigation"), async (originalImport) => {
+  const originalModule = await originalImport();
+
+  return {
+    ...originalModule,
+    useSearchParams: vi.fn().mockReturnValue({
+      get: vi.fn().mockReturnValue(null),
+    }),
+  };
+});
+
 describe("pages / sign in", () => {
+  beforeEach(() => {
+    cleanup();
+
+    vi.unstubAllGlobals();
+  });
+
   it("should render page with main content", () => {
     render(<SignInPage />);
 
     const heading = screen.getByRole<HTMLHeadingElement>("heading", {
       level: 1,
-      name: "Entrar",
+      name: "Autenticar",
     });
     expect(heading).toBeInTheDocument();
 
@@ -24,5 +42,27 @@ describe("pages / sign in", () => {
       name: "Entrar",
     });
     expect(signInButton).toBeInTheDocument();
+  });
+
+  it("should render page with username field filled out when present", () => {
+    const username = "jdoe";
+
+    const mockUseSearchParams = vi.mocked(useSearchParams, {
+      partial: true,
+    });
+    mockUseSearchParams.mockReturnValueOnce({
+      get: vi.fn().mockReturnValueOnce(username),
+    });
+
+    const url = new URL("/admin/sign-in", "http://localhost:3000");
+    url.searchParams.set("username", username);
+
+    vi.stubGlobal(window.location.href, url.href);
+
+    render(<SignInPage />);
+
+    const usernameInput = screen.getByLabelText<HTMLInputElement>("Usuário*");
+    expect(usernameInput).toBeInTheDocument();
+    expect(usernameInput).toHaveValue(username);
   });
 });
