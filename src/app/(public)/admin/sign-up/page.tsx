@@ -83,7 +83,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center min-h-screen space-y-6 bg-slate-100 p-3">
+    <>
       <h1 className="text-4xl xl:text-5xl font-bold">Opata</h1>
 
       <Card className="xl:w-[768px]">
@@ -208,6 +208,6 @@ export default function SignUpPage() {
           </form>
         </Form>
       </Card>
-    </main>
+    </>
   );
 }
