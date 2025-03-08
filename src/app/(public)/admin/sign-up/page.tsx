@@ -65,9 +65,7 @@ export default function SignUpPage() {
     : "Cadastre-se";
 
   const handleSignUp: SubmitHandler<CreateUserInputDto> = async (values) => {
-    console.log("sign up:", `${process.env.NEXT_PUBLIC_API_URL}/sign-up`);
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-up`, {
+    const response = await fetch("/api/sign-up`", {
       method: "POST",
       body: JSON.stringify(values),
     });

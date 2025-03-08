@@ -43,9 +43,7 @@ export default function SignInPage() {
   const submitButtonText = isSubmitting ? "Autenticando..." : "Entrar";
 
   const handleSignIn: SubmitHandler<SignInInputDto> = async (values) => {
-    console.log("sign in:", `${process.env.NEXT_PUBLIC_API_URL}/sign-in`);
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
+    const response = await fetch("/api/sign-in", {
       method: "POST",
       body: JSON.stringify(values),
     });

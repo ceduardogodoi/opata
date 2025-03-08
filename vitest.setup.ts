@@ -32,8 +32,6 @@ class VitestSetup {
         VERCEL_TOKEN: "vercel_token",
 
         JWT_SECRET: "jwt_secret",
-
-        NEXT_PUBLIC_API_URL: "http://localhost:3000/api",
       });
 
       return;

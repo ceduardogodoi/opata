@@ -6,6 +6,5 @@ declare namespace NodeJS {
     VERCEL_PROJECT_ID: string;
     VERCEL_TOKEN: string;
     JWT_SECRET: string;
-    NEXT_PUBLIC_API_URL: string;
   }
 }
