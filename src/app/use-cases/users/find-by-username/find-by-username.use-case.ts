@@ -3,7 +3,7 @@ import { z } from "zod";
 import type { UseCase } from "../../use-case.interface";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import { InputValidationError } from "@/app/infra/http/errors/input-validation/input-validation.error";
-import {
+import type {
   FindByUsernameInputDto,
   FindByUsernameOutputDto,
 } from "./find-by-username.dto";
