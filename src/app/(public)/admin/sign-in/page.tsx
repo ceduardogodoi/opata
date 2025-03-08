@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -23,9 +25,9 @@ import {
   signInInputSchema,
   type SignInInputDto,
 } from "@/app/use-cases/users/sign-in/sign-in.dto";
-import { useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
 
@@ -37,8 +39,24 @@ export default function SignInPage() {
     },
   });
 
-  const handleSignIn: SubmitHandler<SignInInputDto> = (values) => {
-    console.log(values);
+  const { isSubmitting } = form.formState;
+  const submitButtonText = isSubmitting ? "Autenticando..." : "Entrar";
+
+  const handleSignIn: SubmitHandler<SignInInputDto> = async (values) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sign-in`, {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+
+    if (response.status !== 200) {
+      form.setError("root", {
+        message: "Usuário ou senha inválidos.",
+      });
+
+      return;
+    }
+
+    router.push("/dashboard");
   };
 
   return (
@@ -64,7 +82,7 @@ export default function SignInPage() {
                       type="text"
                       placeholder="msilva"
                       {...field}
-                      // disabled={isSubmitting}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
 
@@ -84,7 +102,7 @@ export default function SignInPage() {
                       id="password"
                       type="password"
                       {...field}
-                      // disabled={isSubmitting}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
 
@@ -92,16 +110,23 @@ export default function SignInPage() {
                 </FormItem>
               )}
             />
+
+            {form.formState.errors.root?.message != null && (
+              <FormMessage data-testid="invalidCredentialsError">
+                {form.formState.errors.root.message}
+              </FormMessage>
+            )}
           </CardContent>
 
           <CardFooter className="flex justify-end">
             <Button
               className="w-full xl:w-max"
               type="submit"
-              // disabled={isSubmitting}
+              disabled={isSubmitting}
             >
-              {/* {isSubmitting && <Loader2 className="animate-spin" />} */}
-              Entrar
+              {isSubmitting && <Loader2 className="animate-spin" />}
+
+              {submitButtonText}
             </Button>
           </CardFooter>
         </form>

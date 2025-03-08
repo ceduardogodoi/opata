@@ -28,6 +28,10 @@ export class SignInUseCase implements UseCase<SignInInputDto, SignInOutputDto> {
     const user = await this.#userRepositoryGateway.findByUsername(
       input.username
     );
+    if (user == null) {
+      throw new InvalidCredentialsError();
+    }
+
     const doesPasswordMatch = await bcrypt.compare(
       input.password,
       user.passwordHash

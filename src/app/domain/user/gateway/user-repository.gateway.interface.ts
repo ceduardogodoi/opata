@@ -20,7 +20,7 @@ export interface UserRepositoryGateway {
    * @param {string} username - The username of the user to find.
    * @returns {Promise<User>} A promise that resolves to the user object if found, or null if not found.
    */
-  findByUsername(username: string): Promise<User>;
+  findByUsername(username: string): Promise<User | null>;
 
   /**
    * Finds a user by their ID.

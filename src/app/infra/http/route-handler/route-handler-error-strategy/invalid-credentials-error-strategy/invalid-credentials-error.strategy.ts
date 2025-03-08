@@ -22,7 +22,7 @@ export class InvalidCredentialsErrorStrategy
     error.instance = pathname;
 
     return Response.json(error, {
-      status: 400,
+      status: 401,
     });
   }
 }
