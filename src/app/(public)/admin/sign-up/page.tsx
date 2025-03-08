@@ -65,7 +65,7 @@ export default function SignUpPage() {
     : "Cadastre-se";
 
   const handleSignUp: SubmitHandler<CreateUserInputDto> = async (values) => {
-    const response = await fetch("/api/sign-up`", {
+    const response = await fetch("/api/sign-up", {
       method: "POST",
       body: JSON.stringify(values),
     });
