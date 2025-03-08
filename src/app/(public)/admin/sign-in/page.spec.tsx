@@ -133,7 +133,7 @@ describe("pages / sign in", () => {
     expect(passwordInput).toBeDisabled();
 
     await waitFor(() => {
-      expect(mockRouterPush).toHaveBeenCalledWith("/dashboard");
+      expect(mockRouterPush).toHaveBeenCalledWith("/admin/dashboard");
     });
   });
 
