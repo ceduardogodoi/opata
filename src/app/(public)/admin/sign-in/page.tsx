@@ -60,7 +60,7 @@ export default function SignInPage() {
   };
 
   return (
-    <Card className="size-full">
+    <Card className="size-full xl:w-96">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSignIn)}>
           <CardHeader>
