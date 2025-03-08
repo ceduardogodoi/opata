@@ -12,7 +12,6 @@ export const envSchema = z.object({
   VERCEL_PROJECT_ID: z.string(),
   VERCEL_TOKEN: z.string(),
   JWT_SECRET: z.string(),
-  NEXT_PUBLIC_API_URL: z.string().default("http://localhost:3000/api"),
 });
 
 export class EnvironmentVariables {

@@ -5,7 +5,6 @@ import { User } from "@/app/domain/user/entity/user";
 import { createUserFixture } from "@/app/fixtures/user.fixture";
 import { FindByUsernameUseCase } from "./find-by-username.use-case";
 import { InputValidationError } from "@/app/infra/http/errors/input-validation/input-validation.error";
-import { NoResourcesFoundError } from "@/app/infra/http/errors/no-resources-found/no-resources-found.error";
 
 describe("use-cases / create user", () => {
   const userRepository = container.resolve<UserRepositoryGateway>(
@@ -44,9 +43,9 @@ describe("use-cases / create user", () => {
     );
   });
 
-  it("should throw when username input is valid, but no user was found", async () => {
-    await expect(() =>
-      findByUsernameUseCase.execute("xpto")
-    ).rejects.toThrowError(NoResourcesFoundError);
+  it("should return null when username input is valid, but no user was found", async () => {
+    const user = await findByUsernameUseCase.execute("xpto");
+
+    expect(user).toBeNull();
   });
 });

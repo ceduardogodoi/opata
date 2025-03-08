@@ -93,10 +93,9 @@ describe("repositories / user", () => {
     );
   });
 
-  it("should throw NoResourcesFoundError when username does not exist", async () => {
-    const invalidUsername = "foobar";
-    await expect(() =>
-      userRepository.findByUsername(invalidUsername)
-    ).rejects.toThrowError(NoResourcesFoundError);
+  it("should return null when username does not exist", async () => {
+    const invalidUsername = "qwerty";
+    const userNotFound = await userRepository.findByUsername(invalidUsername);
+    expect(userNotFound).toBeNull();
   });
 });

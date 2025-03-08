@@ -36,11 +36,8 @@ export class UserInMemoryRepository implements UserRepositoryGateway {
     return user;
   }
 
-  public async findByUsername(username: string): Promise<User> {
-    const user = this.#users.get(username);
-    if (user == null) {
-      throw new NoResourcesFoundError();
-    }
+  public async findByUsername(username: string): Promise<User | null> {
+    const user = this.#users.get(username) ?? null;
 
     return user;
   }

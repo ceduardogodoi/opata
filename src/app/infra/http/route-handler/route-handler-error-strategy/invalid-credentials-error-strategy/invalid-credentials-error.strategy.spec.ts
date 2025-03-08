@@ -19,7 +19,7 @@ describe("error handler strategies / invalid credentials error strategy", () => 
     const output = await response.json();
 
     expect(strategy.canHandle(error)).toBe(true);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(401);
     expect(output).toEqual({
       type: "https://example.com/probs/invalid-credentials",
       title: "Username or password are invalid.",

@@ -42,7 +42,7 @@ describe("routes / sign in user", () => {
     } as Request;
 
     const response = await signInRoute.handle(request);
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(401);
   });
 
   it("should sign in when it is found", async () => {
