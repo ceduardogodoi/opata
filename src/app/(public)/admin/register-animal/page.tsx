@@ -155,6 +155,7 @@ export default function RegisterAnimalPage() {
                         type="text"
                         placeholder="Observações adicionais"
                         {...field}
+                        disabled={isSubmitting}
                       />
                     </FormControl>
                   </FormItem>
