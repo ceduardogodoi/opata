@@ -44,23 +44,20 @@ export default function RegisterAnimalPage() {
   const handleRegisterAnimal: SubmitHandler<CreateAnimalInputDto> = async (
     values
   ) => {
-    try {
-      const response = await fetch("/api/animals", {
-        method: "POST",
-        body: JSON.stringify(values),
+    const response = await fetch("/api/animals", {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      form.setError("root", {
+        message: "Failed to register animal.",
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to register animal");
-      }
-
-      console.log(JSON.stringify(values));
-      console.log(response);
-
-      form.reset();
-    } catch (error) {
-      console.error("Error registering animal:", error);
+      return;
     }
+
+    form.reset();
   };
 
   return (
