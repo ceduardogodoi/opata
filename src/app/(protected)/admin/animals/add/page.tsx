@@ -26,7 +26,7 @@ import {
 } from "@/app/use-cases/animals/create-animal/create-animal.dto";
 import { Loader2 } from "lucide-react";
 
-export default function RegisterAnimalPage() {
+export default function AddAnimalPage() {
   const form = useForm({
     resolver: zodResolver(createAnimalInputSchema),
     defaultValues: {
@@ -41,7 +41,7 @@ export default function RegisterAnimalPage() {
 
   const submitButtonText = isSubmitting ? "Cadastrando..." : "Cadastrar";
 
-  const handleRegisterAnimal: SubmitHandler<CreateAnimalInputDto> = async (
+  const handleAddAnimal: SubmitHandler<CreateAnimalInputDto> = async (
     values
   ) => {
     const response = await fetch("/api/animals", {
@@ -51,7 +51,7 @@ export default function RegisterAnimalPage() {
 
     if (!response.ok) {
       form.setError("root", {
-        message: "Failed to register animal.",
+        message: "Failed to add animal.",
       });
 
       return;
@@ -65,7 +65,7 @@ export default function RegisterAnimalPage() {
       <h1 className="text-4xl xl:text-5xl font-bold">Opata</h1>
       <Card className="xl:w-[768px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleRegisterAnimal)}>
+          <form onSubmit={form.handleSubmit(handleAddAnimal)}>
             <CardHeader>
               <CardTitle>
                 <h2>Cadastrar novo animal</h2>

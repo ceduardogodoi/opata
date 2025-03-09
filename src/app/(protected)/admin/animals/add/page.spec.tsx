@@ -1,16 +1,16 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { describe } from "node:test";
 import { beforeEach, expect, it, vi } from "vitest";
-import RegisterAnimalPage from "./page";
 import userEvent from "@testing-library/user-event";
+import AddAnimalPage from "./page";
 
-describe("pages / register animal", () => {
+describe("pages / add animals", () => {
   beforeEach(() => {
     cleanup();
   });
 
   it("should render page with main content", () => {
-    render(<RegisterAnimalPage />);
+    render(<AddAnimalPage />);
 
     const heading = screen.getByRole<HTMLHeadingElement>("heading", {
       level: 1,
@@ -40,18 +40,18 @@ describe("pages / register animal", () => {
     expect(observations).toBeInTheDocument();
     expect(observations).toHaveValue("");
 
-    const registerButton = screen.getByRole<HTMLButtonElement>("button");
-    expect(registerButton).toBeInTheDocument();
+    const addButton = screen.getByRole<HTMLButtonElement>("button");
+    expect(addButton).toBeInTheDocument();
   });
 
   it("should show error messages when form is not properly filled out", async () => {
     const user = userEvent.setup();
 
-    render(<RegisterAnimalPage />);
+    render(<AddAnimalPage />);
 
-    const registerButton = screen.getByRole<HTMLButtonElement>("button");
+    const addButton = screen.getByRole<HTMLButtonElement>("button");
 
-    await user.click(registerButton);
+    await user.click(addButton);
 
     const nameErrorMessage =
       screen.getByTestId<HTMLParagraphElement>("nameError");
@@ -59,7 +59,7 @@ describe("pages / register animal", () => {
     expect(nameErrorMessage).toBeInTheDocument();
   });
 
-  it("should register a new animal", async () => {
+  it("should add a new animal", async () => {
     const user = userEvent.setup();
 
     vi.stubGlobal(
@@ -87,7 +87,7 @@ describe("pages / register animal", () => {
       })
     );
 
-    render(<RegisterAnimalPage />);
+    render(<AddAnimalPage />);
 
     const name = screen.getByLabelText<HTMLInputElement>("Nome*");
     const age = screen.getByLabelText<HTMLInputElement>("Idade");
@@ -99,13 +99,13 @@ describe("pages / register animal", () => {
     await user.type(history, "Great dog");
     await user.type(observations, "Very friendly");
 
-    const registerButton = screen.getByRole<HTMLButtonElement>("button");
+    const addButton = screen.getByRole<HTMLButtonElement>("button");
 
-    await user.click(registerButton);
-    await user.click(registerButton);
+    await user.click(addButton);
+    await user.click(addButton);
 
-    expect(registerButton).toBeDisabled();
-    expect(registerButton).toHaveTextContent("Cadastrando...");
+    expect(addButton).toBeDisabled();
+    expect(addButton).toHaveTextContent("Cadastrando...");
     expect(name).toBeDisabled();
     expect(age).toBeDisabled();
     expect(history).toBeDisabled();
