@@ -51,7 +51,7 @@ export default function AddAnimalPage() {
 
     if (!response.ok) {
       form.setError("root", {
-        message: "Failed to add animal.",
+        message: "Falha ao adicionar animal.",
       });
 
       return;
