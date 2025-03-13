@@ -49,7 +49,7 @@ export default function AddAnimalPage() {
       body: JSON.stringify(values),
     });
 
-    if (!response.ok) {
+    if (response.status !== 201) {
       form.setError("root", {
         message: "Falha ao adicionar animal.",
       });
@@ -158,6 +158,12 @@ export default function AddAnimalPage() {
                   </FormItem>
                 )}
               />
+
+              {form.formState.errors.root?.message != null && (
+                <FormMessage data-testid="rootError">
+                  {form.formState.errors.root.message}
+                </FormMessage>
+              )}
             </CardContent>
 
             <CardFooter className="flex justify-end">
