@@ -200,4 +200,19 @@ describe("pages / add animals", () => {
 
     expect(nameErrorMessage).toBeInTheDocument();
   });
+
+  it("should update age field correctly", async () => {
+    const user = userEvent.setup();
+
+    render(<AddAnimalPage />);
+
+    const age = screen.getByLabelText<HTMLInputElement>("Idade");
+
+    await user.type(age, "2");
+    expect(age).toHaveValue(2);
+
+    await user.clear(age);
+    await user.type(age, "abc");
+    expect(age).toHaveValue(null);
+  });
 });
