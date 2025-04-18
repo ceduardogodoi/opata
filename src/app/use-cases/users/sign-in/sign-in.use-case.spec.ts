@@ -32,7 +32,7 @@ describe("use-cases / sign in user", () => {
     const output = await signInUseCase.execute(credentials);
     expect(jwtSignSpy.mock.calls[0]).toStrictEqual([
       {
-        id: newUser.id,
+        sub: newUser.id,
         fullName: newUser.fullName,
         username: newUser.username,
         email: newUser.email,
@@ -85,7 +85,7 @@ describe("use-cases / sign in user", () => {
     const payload = JwtService.decode(output.accessToken);
 
     const currentTime = Date.now();
-    expect(payload.exp < currentTime);
+    expect(payload.exp).toBeLessThan(currentTime);
 
     vi.useRealTimers();
   });

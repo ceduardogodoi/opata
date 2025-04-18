@@ -1,27 +1,55 @@
 import { env } from "@/app/env";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { OutputValidationError } from "../http/errors/output-validation/output-validation.error";
 
-const payloadOutputSchema = z.object({
+type PayloadOutput = {
+  sub: string;
+  username: string;
+  email: string;
+  exp: number;
+};
+
+type SanitizedPayload = jwt.JwtPayload & PayloadOutput;
+
+const payloadInputSchema = z.object({
   id: z.string(),
+  fullName: z.string(),
   username: z.string(),
   email: z.string(),
+});
+
+const payloadOutputSchema = z.object({
+  sub: z.string(),
+  username: z.string(),
+  email: z.string(),
+  iat: z.number(),
   exp: z.number(),
 });
 
-type Output = z.infer<typeof payloadOutputSchema>;
-
-type PayloadOutput = jwt.JwtPayload & Output;
-
 export class JwtService {
-  static sign(payload: object): string {
-    const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn: "1h" });
+  static sign(payload: unknown): string {
+    const result = payloadInputSchema.safeParse(payload);
+    if (!result.success) {
+      throw new Error(
+        "Malformed payload: Payload has different data than expected."
+      );
+    }
+
+    const sanitizedPayload = {
+      sub: result.data.id,
+      fullName: result.data.fullName,
+      username: result.data.username,
+      email: result.data.email,
+    };
+
+    const token = jwt.sign(sanitizedPayload, env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     return token;
   }
 
-  static decode(token: string): PayloadOutput {
+  static decode(token: string): SanitizedPayload {
     const payload = jwt.decode(token);
 
     const data = JwtService.#validatePayloadOrThrow(payload);
@@ -46,19 +74,28 @@ export class JwtService {
     return currentTimeInMs > payloadExpirationInMs;
   }
 
-  static #validatePayloadOrThrow(
-    payload: string | jwt.JwtPayload | null
-  ): PayloadOutput {
-    const result = payloadOutputSchema.safeParse(payload);
-    if (payload == null || typeof payload === "string" || !result.success) {
-      throw new OutputValidationError();
+  static isTokenValid(token: string | undefined): token is string {
+    if (token == null) {
+      return false;
     }
 
-    const data: PayloadOutput = {
-      ...payload,
-      ...result.data,
-    };
+    try {
+      JwtService.decode(token);
+    } catch {
+      return false;
+    }
 
-    return data;
+    return true;
+  }
+
+  static #validatePayloadOrThrow(
+    payload: string | jwt.JwtPayload | null
+  ): SanitizedPayload {
+    const result = payloadOutputSchema.safeParse(payload);
+    if (!result.success) {
+      throw new Error("Malformed payload: Payload has different data than expected.");
+    }
+
+    return result.data;
   }
 }
