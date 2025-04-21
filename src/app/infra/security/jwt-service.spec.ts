@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import jwt from "jsonwebtoken";
 import { JwtService } from "./jwt-service";
 import { env } from "@/app/env";
+import { TimeConverter } from "@/utils/time.utils";
 
 describe("security / jwt service", () => {
   vi.stubEnv("JWT_SECRET", "jwt_secret");
@@ -83,7 +84,12 @@ describe("security / jwt service", () => {
     vi.useFakeTimers();
 
     // Advance time in one hour and one second
-    vi.advanceTimersByTime(3600 * 1000 + 1000);
+    const oneHourAndOneSecondInMilliseconds = new TimeConverter({
+      hours: 1,
+      seconds: 1,
+    }).toMilliseconds();
+
+    vi.advanceTimersByTime(oneHourAndOneSecondInMilliseconds);
 
     const isExpired = JwtService.isTokenExpired(token);
 
@@ -98,7 +104,12 @@ describe("security / jwt service", () => {
     vi.useFakeTimers();
 
     // Advance time in one hour and one second
-    vi.advanceTimersByTime(3600 * 1000 + 1000);
+    const oneHourAndOneSecondInMilliseconds = new TimeConverter({
+      hours: 1,
+      seconds: 1,
+    }).toMilliseconds();
+
+    vi.advanceTimersByTime(oneHourAndOneSecondInMilliseconds);
 
     const isValid = JwtService.isTokenValid(token);
     const isExpired = JwtService.isTokenExpired(token);
@@ -115,7 +126,12 @@ describe("security / jwt service", () => {
     vi.useFakeTimers();
 
     // Advance time in one hour and one second
-    vi.advanceTimersByTime(3600 * 1000 + 1000);
+    const oneHourAndOneSecondInMilliseconds = new TimeConverter({
+      hours: 1,
+      seconds: 1,
+    }).toMilliseconds();
+
+    vi.advanceTimersByTime(oneHourAndOneSecondInMilliseconds);
 
     const isValid = JwtService.isTokenValid(token);
 
