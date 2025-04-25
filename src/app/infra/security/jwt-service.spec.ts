@@ -98,7 +98,7 @@ describe("security / jwt service", () => {
     vi.useRealTimers();
   });
 
-  it("should return false when token is valid but expired", () => {
+  it("should return false when validating a token that is expired", () => {
     const token = JwtService.sign(payload);
 
     vi.useFakeTimers();
@@ -112,10 +112,8 @@ describe("security / jwt service", () => {
     vi.advanceTimersByTime(oneHourAndOneSecondInMilliseconds);
 
     const isValid = JwtService.isTokenValid(token);
-    const isExpired = JwtService.isTokenExpired(token);
 
-    expect(isValid).toBe(true);
-    expect(isExpired).toBe(true);
+    expect(isValid).toBe(false);
 
     vi.useRealTimers();
   });

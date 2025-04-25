@@ -43,7 +43,7 @@ export class JwtService {
     };
 
     const token = jwt.sign(sanitizedPayload, env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "1m",
     });
 
     return token;
@@ -82,6 +82,10 @@ export class JwtService {
     try {
       JwtService.decode(token);
     } catch {
+      return false;
+    }
+
+    if (JwtService.isTokenExpired(token)) {
       return false;
     }
 

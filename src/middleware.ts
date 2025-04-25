@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isAuthRoute, isProtectedRoute } from "./app/utils/routes";
+import {
+  isAuthRoute,
+  isProtectedRoute,
+  isPublicRoute,
+} from "./app/utils/routes";
 import { JwtService } from "./app/infra/security/jwt-service";
 
 export function middleware(request: NextRequest): NextResponse {
@@ -13,10 +17,7 @@ export function middleware(request: NextRequest): NextResponse {
     return NextResponse.redirect(url);
   }
 
-  if (
-    JwtService.isTokenValid(accessToken) &&
-    JwtService.isTokenExpired(accessToken)
-  ) {
+  if (!isPublicRoute(url.pathname) && !JwtService.isTokenValid(accessToken)) {
     url.pathname = "/admin/sign-in";
 
     const response = NextResponse.redirect(url);
