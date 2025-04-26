@@ -21,16 +21,16 @@ export class SignInRoute extends RouteHandler {
 
   public async handleImpl(request: Request): Promise<Response> {
     const data = await request.json();
-
     const output = await this.#signInUseCase.execute(data);
 
     const cookieStore = await cookies();
     cookieStore.set("access_token", output.accessToken, {
       secure: env.NODE_ENV === "production",
       httpOnly: env.NODE_ENV === "production",
+      sameSite: "strict",
     });
 
-    return Response.json(output, {
+    return new Response(null, {
       status: 200,
     });
   }

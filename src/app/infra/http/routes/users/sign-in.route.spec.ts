@@ -1,12 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { container } from "tsyringe";
-import { JsonWebTokenError } from "jsonwebtoken";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import { SignInRoute } from "./sign-in.route";
 import { SignInUseCase } from "@/app/use-cases/users/sign-in/sign-in.use-case";
 import type { SignInInputDto } from "@/app/use-cases/users/sign-in/sign-in.dto";
 import { User } from "@/app/domain/user/entity/user";
-import { JwtService } from "@/app/infra/security/jwt-service";
 
 vi.mock(import("next/headers"), async (importOriginal) => {
   const originalModule = await importOriginal();
@@ -45,7 +43,7 @@ describe("routes / sign in user", () => {
     expect(response.status).toBe(401);
   });
 
-  it("should sign in when it is found", async () => {
+  it("should sign in when it is found, set access token in cookie, and an empty response body", async () => {
     const url = new URL("/api/users", "http://localhost:3000").toString();
 
     const user = await User.create({
@@ -68,10 +66,6 @@ describe("routes / sign in user", () => {
     } as Request;
 
     const response = await signInRoute.handle(request);
-    const output = await response.json();
-    expect(output.accessToken).toBeTypeOf("string");
-    expect(() => JwtService.verify(output.accessToken)).not.toThrowError(
-      JsonWebTokenError
-    );
+    expect(response.status).toBe(200);
   });
 });

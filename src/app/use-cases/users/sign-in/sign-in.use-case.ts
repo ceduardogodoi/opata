@@ -1,11 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import type { UseCase } from "../../use-case.interface";
 import type { UserRepositoryGateway } from "@/app/domain/user/gateway/user-repository.gateway.interface";
 import type { SignInInputDto, SignInOutputDto } from "./sign-in.dto";
-import { env } from "@/app/env";
 import { InvalidCredentialsError } from "@/app/infra/http/errors/invalid-credentials/invalid-credentials";
+import { JwtService } from "@/app/infra/security/jwt-service";
 
 @injectable()
 export class SignInUseCase implements UseCase<SignInInputDto, SignInOutputDto> {
@@ -47,9 +46,7 @@ export class SignInUseCase implements UseCase<SignInInputDto, SignInOutputDto> {
       email: user.email,
     };
 
-    const token = jwt.sign(payload, env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = JwtService.sign(payload);
 
     return {
       accessToken: token,
