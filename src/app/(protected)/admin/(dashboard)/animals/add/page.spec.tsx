@@ -13,16 +13,10 @@ describe("pages / add animals", () => {
     render(<AddAnimalPage />);
 
     const heading = screen.getByRole<HTMLHeadingElement>("heading", {
-      level: 1,
-      name: "Opata",
-    });
-    expect(heading).toBeInTheDocument();
-
-    const heading2 = screen.getByRole<HTMLHeadingElement>("heading", {
       level: 2,
       name: "Cadastrar novo animal",
     });
-    expect(heading2).toBeInTheDocument();
+    expect(heading).toBeInTheDocument();
 
     const name = screen.getByLabelText<HTMLInputElement>("Nome*");
     expect(name).toBeInTheDocument();
@@ -101,7 +95,6 @@ describe("pages / add animals", () => {
 
     const addButton = screen.getByRole<HTMLButtonElement>("button");
 
-    await user.click(addButton);
     await user.click(addButton);
 
     expect(addButton).toBeDisabled();

@@ -29,17 +29,14 @@ describe("pages / sign up", () => {
   it("should render page with main content", () => {
     render(<SignUpPage />);
 
-    const heading = screen.getByRole<HTMLHeadingElement>("heading", {
-      level: 1,
-      name: "Opata",
-    });
-    expect(heading).toBeInTheDocument();
+    const logo = screen.getByAltText<HTMLImageElement>("Opata Logo");
+    expect(logo).toBeInTheDocument();
 
-    const heading2 = screen.getByRole<HTMLHeadingElement>("heading", {
+    const heading = screen.getByRole<HTMLHeadingElement>("heading", {
       level: 2,
       name: "Criar nova conta",
     });
-    expect(heading2).toBeInTheDocument();
+    expect(heading).toBeInTheDocument();
 
     const fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
     expect(fullName).toBeInTheDocument();

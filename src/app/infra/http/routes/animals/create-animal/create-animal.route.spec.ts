@@ -24,7 +24,7 @@ describe("routes / create-animal", () => {
       json: async (): Promise<CreateAnimalInputDto> => {
         return Promise.resolve({
           name: "Turtle",
-          age: 10,
+          age: "10",
           history: "Turtle history",
           observations: "Turtle observations",
         });
@@ -37,7 +37,7 @@ describe("routes / create-animal", () => {
     expect(response.status).toBe(201);
     expect(output.id).toMatch(UUID_REGEX);
     expect(output.name).toBe("Turtle");
-    expect(output.age).toBe(10);
+    expect(output.age).toBe("10");
     expect(output.history).toBe("Turtle history");
     expect(output.observations).toBe("Turtle observations");
   });
@@ -49,7 +49,7 @@ describe("routes / create-animal", () => {
       json: async (): Promise<Partial<CreateAnimalInputDto>> => {
         return Promise.resolve({
           name: undefined,
-          age: 10,
+          age: "10",
           history: "Turtle history",
           observations: "Turtle observations",
         });

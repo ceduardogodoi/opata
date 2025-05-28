@@ -7,7 +7,7 @@ export const createAnimalInputSchema = z.object({
       required_error: "Name is required.",
     })
     .min(1, "Name is required."),
-  age: z.number().optional(),
+  age: z.string().optional(),
   history: z.string().optional(),
   observations: z.string().optional(),
 });

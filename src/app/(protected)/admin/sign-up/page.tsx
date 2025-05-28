@@ -10,14 +10,6 @@ import {
 } from "@/app/use-cases/users/sign-up/sign-up.dto";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
   FormControl,
   FormDescription,
@@ -27,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -83,29 +76,38 @@ export default function SignUpPage() {
   };
 
   return (
-    <>
-      <h1 className="text-4xl xl:text-5xl font-bold">Opata</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center p-0 sm:p-4">
+      <Image
+        src="/images/opata-logo.png"
+        alt="Opata Logo"
+        width={160}
+        height={64}
+        className="mb-8"
+        priority
+      />
 
-      <Card className="xl:w-[768px]">
+      <div className="w-full h-screen sm:h-auto sm:w-[480px] md:w-[640px] xl:w-[768px] xl:bg-white xl:shadow-lg p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSignUp)}>
-            <CardHeader>
-              <CardTitle>
-                <h2>Criar nova conta</h2>
-              </CardTitle>
+          <form onSubmit={form.handleSubmit(handleSignUp)} className="h-full flex flex-col">
+            <div className="mb-8">
+              <h2 className="text-opata-green font-heading text-center text-2xl mb-2">
+                Criar nova conta
+              </h2>
 
-              <CardDescription>
+              <p className="text-center text-gray-600">
                 Informe seus dados para criar seu acesso.
-              </CardDescription>
-            </CardHeader>
+              </p>
+            </div>
 
-            <CardContent className="space-y-2">
+            <div className="space-y-4 flex-1">
               <FormField
                 control={form.control}
                 name="fullName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="fullName">Nome completo*</FormLabel>
+                    <FormLabel htmlFor="fullName" className="text-opata-green">
+                      Nome completo*
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="fullName"
@@ -113,6 +115,7 @@ export default function SignUpPage() {
                         placeholder="Maria da Silva"
                         {...field}
                         disabled={isSubmitting}
+                        className="border-opata-gold focus:ring-opata-green"
                       />
                     </FormControl>
 
@@ -128,7 +131,9 @@ export default function SignUpPage() {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="username">Usuário*</FormLabel>
+                    <FormLabel htmlFor="username" className="text-opata-green">
+                      Usuário*
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="username"
@@ -136,6 +141,7 @@ export default function SignUpPage() {
                         placeholder="msilva"
                         {...field}
                         disabled={isSubmitting}
+                        className="border-opata-gold focus:ring-opata-green"
                       />
                     </FormControl>
 
@@ -153,7 +159,9 @@ export default function SignUpPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="email">E-mail*</FormLabel>
+                    <FormLabel htmlFor="email" className="text-opata-green">
+                      E-mail*
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="email"
@@ -161,6 +169,7 @@ export default function SignUpPage() {
                         placeholder="mariasilva@email.com"
                         {...field}
                         disabled={isSubmitting}
+                        className="border-opata-gold focus:ring-opata-green"
                       />
                     </FormControl>
 
@@ -175,13 +184,19 @@ export default function SignUpPage() {
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel htmlFor="password">Senha*</FormLabel>
+                      <FormLabel
+                        htmlFor="password"
+                        className="text-opata-green"
+                      >
+                        Senha*
+                      </FormLabel>
                       <FormControl>
                         <Input
                           id="password"
                           type="password"
                           {...field}
                           disabled={isSubmitting}
+                          className="border-opata-gold focus:ring-opata-green"
                         />
                       </FormControl>
 
@@ -192,22 +207,22 @@ export default function SignUpPage() {
                   );
                 }}
               />
-            </CardContent>
+            </div>
 
-            <CardFooter className="flex justify-end">
+            <div className="flex justify-end mt-8">
               <Button
-                className="w-full xl:w-max"
+                className="w-full xl:w-max bg-opata-green hover:bg-opata-green-hover text-white"
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting && <Loader2 className="animate-spin" />}
+                {isSubmitting && <Loader2 className="animate-spin mr-2" />}
 
                 {submitButtonText}
               </Button>
-            </CardFooter>
+            </div>
           </form>
         </Form>
-      </Card>
-    </>
+      </div>
+    </div>
   );
 }

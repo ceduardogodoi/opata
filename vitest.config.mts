@@ -18,7 +18,6 @@ export default defineConfig({
 
         // shadcn components
         "src/components/ui/*.tsx"
-
       ],
       reporter: ["text", "json", "html", "lcov"],
       thresholds: {
