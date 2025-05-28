@@ -18,17 +18,14 @@ describe("use-cases / create animal", () => {
 
     const createAnimalUsecase = CreateAnimalUseCase.create(animalRepository);
 
-    const animal = await createAnimalUsecase.execute({
-      ...createAnimalFixture,
-      age: createAnimalFixture.age?.toString(),
-    });
+    const animal = await createAnimalUsecase.execute(createAnimalFixture);
     expect(animal).toBeInstanceOf(Animal);
     expect(animal.id).toMatch(UUID_REGEX);
     expect(animal.name).toBe(createAnimalFixture.name);
     expect(animal.isAdopted).toBe(false);
     expect(animal.createdAt).toEqual(mockDate);
     expect(animal.updatedAt).toEqual(mockDate);
-    expect(animal.age).toBe(createAnimalFixture.age?.toString());
+    expect(animal.age).toBe(createAnimalFixture.age);
     expect(animal.history).toBe(createAnimalFixture.history);
     expect(animal.observations).toBe(createAnimalFixture.observations);
 
@@ -43,7 +40,7 @@ describe("use-cases / create animal", () => {
         value: undefined,
       },
       age: {
-        value: "1",
+        value: 1,
       },
     });
 

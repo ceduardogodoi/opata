@@ -26,6 +26,12 @@ export default function SignUpPage() {
 
   const form = useForm({
     resolver: zodResolver(createUserInputSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      username: "",
+      password: "",
+    },
   });
 
   const { isSubmitting } = form.formState;

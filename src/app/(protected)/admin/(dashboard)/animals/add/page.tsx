@@ -23,7 +23,7 @@ export default function AddAnimalPage() {
     resolver: zodResolver(createAnimalInputSchema),
     defaultValues: {
       name: "",
-      age: "",
+      age: 0,
       history: "",
       observations: "",
     },
@@ -107,6 +107,9 @@ export default function AddAnimalPage() {
                         type="number"
                         placeholder="Idade do animal"
                         {...field}
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
+                        }
                         disabled={isSubmitting}
                         className="border-opata-gold focus:ring-opata-green"
                       />

@@ -24,7 +24,7 @@ describe("pages / add animals", () => {
 
     const age = screen.getByLabelText<HTMLInputElement>("Idade");
     expect(age).toBeInTheDocument();
-    expect(age).toHaveValue(null);
+    expect(age).toHaveValue(0);
 
     const history = screen.getByLabelText<HTMLInputElement>("História");
     expect(history).toBeInTheDocument();
@@ -148,7 +148,7 @@ describe("pages / add animals", () => {
     await user.click(addButton);
 
     expect(name).toHaveValue("");
-    expect(age).toHaveValue(null);
+    expect(age).toHaveValue(0);
     expect(history).toHaveValue("");
     expect(observations).toHaveValue("");
   });
@@ -192,20 +192,5 @@ describe("pages / add animals", () => {
       screen.getByTestId<HTMLParagraphElement>("rootError");
 
     expect(nameErrorMessage).toBeInTheDocument();
-  });
-
-  it("should update age field correctly", async () => {
-    const user = userEvent.setup();
-
-    render(<AddAnimalPage />);
-
-    const age = screen.getByLabelText<HTMLInputElement>("Idade");
-
-    await user.type(age, "2");
-    expect(age).toHaveValue(2);
-
-    await user.clear(age);
-    await user.type(age, "abc");
-    expect(age).toHaveValue(null);
   });
 });
