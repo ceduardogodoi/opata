@@ -2,7 +2,7 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import {
   type CreateUserInputDto,
@@ -23,32 +23,9 @@ import Image from "next/image";
 
 export default function SignUpPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const mockParams = searchParams.get("mock");
-
-  const productionDefaultValues = {
-    fullName: "",
-    email: "",
-    username: "",
-    password: "",
-  };
-
-  let defaultValues: CreateUserInputDto;
-  if (process.env.NODE_ENV === "production") {
-    defaultValues = productionDefaultValues;
-  } else {
-    defaultValues = {
-      fullName: mockParams ? "John Doe" : "",
-      email: mockParams ? "jdoe@gmail.com" : "",
-      username: mockParams ? "jdoe" : "",
-      password: mockParams ? "q1w2e3r4" : "",
-    };
-  }
 
   const form = useForm({
     resolver: zodResolver(createUserInputSchema),
-    defaultValues,
   });
 
   const { isSubmitting } = form.formState;
@@ -88,7 +65,10 @@ export default function SignUpPage() {
 
       <div className="w-full h-screen sm:h-auto sm:w-[480px] md:w-[640px] xl:w-[768px] xl:bg-white xl:shadow-lg p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSignUp)} className="h-full flex flex-col">
+          <form
+            onSubmit={form.handleSubmit(handleSignUp)}
+            className="h-full flex flex-col"
+          >
             <div className="mb-8">
               <h2 className="text-opata-green font-heading text-center text-2xl mb-2">
                 Criar nova conta
