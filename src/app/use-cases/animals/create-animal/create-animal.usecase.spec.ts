@@ -39,6 +39,9 @@ describe("use-cases / create animal", () => {
       name: {
         value: undefined,
       },
+      age: {
+        value: 1,
+      },
     });
 
     await expect(() =>

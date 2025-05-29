@@ -4,14 +4,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
   FormControl,
   FormField,
@@ -31,7 +23,7 @@ export default function AddAnimalPage() {
     resolver: zodResolver(createAnimalInputSchema),
     defaultValues: {
       name: "",
-      age: undefined,
+      age: 0,
       history: "",
       observations: "",
     },
@@ -61,28 +53,31 @@ export default function AddAnimalPage() {
   };
 
   return (
-    <>
-      <h1 className="text-4xl xl:text-5xl font-bold">Opata</h1>
-      <Card className="xl:w-[768px]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-0 sm:p-4">
+      <div className="w-full h-screen sm:h-auto sm:w-[480px] md:w-[640px] xl:w-[768px] xl:bg-white xl:shadow-lg p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleAddAnimal)}>
-            <CardHeader>
-              <CardTitle>
-                <h2>Cadastrar novo animal</h2>
-              </CardTitle>
-
-              <CardDescription>
+          <form
+            onSubmit={form.handleSubmit(handleAddAnimal)}
+            className="h-full flex flex-col"
+          >
+            <div className="mb-8">
+              <h2 className="text-opata-green font-heading text-center text-2xl mb-2">
+                Cadastrar novo animal
+              </h2>
+              <p className="text-center text-gray-600">
                 Informe os dados do novo animal a ser cadastrado.
-              </CardDescription>
-            </CardHeader>
+              </p>
+            </div>
 
-            <CardContent className="space-y-2">
+            <div className="space-y-4 flex-1">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="name">Nome*</FormLabel>
+                    <FormLabel htmlFor="name" className="text-opata-green">
+                      Nome*
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="name"
@@ -90,6 +85,7 @@ export default function AddAnimalPage() {
                         placeholder="Nome do animal"
                         {...field}
                         disabled={isSubmitting}
+                        className="border-opata-gold focus:ring-opata-green"
                       />
                     </FormControl>
                     <FormMessage data-testid="nameError" />
@@ -102,21 +98,23 @@ export default function AddAnimalPage() {
                 name="age"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="age">Idade</FormLabel>
+                    <FormLabel htmlFor="age" className="text-opata-green">
+                      Idade
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="age"
                         type="number"
-                        min={0}
                         placeholder="Idade do animal"
                         {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(Number(e.target.value) || undefined)
+                        onChange={(event) =>
+                          field.onChange(event.target.valueAsNumber)
                         }
                         disabled={isSubmitting}
+                        className="border-opata-gold focus:ring-opata-green"
                       />
                     </FormControl>
+                    <FormMessage data-testid="ageError" />
                   </FormItem>
                 )}
               />
@@ -126,16 +124,20 @@ export default function AddAnimalPage() {
                 name="history"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="history">História</FormLabel>
+                    <FormLabel htmlFor="history" className="text-opata-green">
+                      História
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="history"
                         type="text"
-                        placeholder="História do animal"
+                        placeholder="Histórico do animal"
                         {...field}
                         disabled={isSubmitting}
+                        className="border-opata-gold focus:ring-opata-green"
                       />
                     </FormControl>
+                    <FormMessage data-testid="historyError" />
                   </FormItem>
                 )}
               />
@@ -145,16 +147,23 @@ export default function AddAnimalPage() {
                 name="observations"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="observations">Observações</FormLabel>
+                    <FormLabel
+                      htmlFor="observations"
+                      className="text-opata-green"
+                    >
+                      Observações
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="observations"
                         type="text"
-                        placeholder="Observações adicionais"
+                        placeholder="Observações sobre o animal"
                         {...field}
                         disabled={isSubmitting}
+                        className="border-opata-gold focus:ring-opata-green"
                       />
                     </FormControl>
+                    <FormMessage data-testid="observationsError" />
                   </FormItem>
                 )}
               />
@@ -164,22 +173,21 @@ export default function AddAnimalPage() {
                   {form.formState.errors.root.message}
                 </FormMessage>
               )}
-            </CardContent>
+            </div>
 
-            <CardFooter className="flex justify-end">
+            <div className="flex justify-end mt-8">
               <Button
-                className="w-full xl:w-max"
+                className="w-full xl:w-max bg-opata-green hover:bg-opata-green-hover text-white"
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting && <Loader2 className="animate-spin" />}
-
+                {isSubmitting && <Loader2 className="animate-spin mr-2" />}
                 {submitButtonText}
               </Button>
-            </CardFooter>
+            </div>
           </form>
         </Form>
-      </Card>
-    </>
+      </div>
+    </div>
   );
 }

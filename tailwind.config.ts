@@ -11,6 +11,10 @@ export default {
   plugins: [tailwindcssAnimate],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-quicksand)'],
+        heading: ['var(--font-baloo2)'],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -57,6 +61,17 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        opata: {
+          green: {
+            DEFAULT: '#4B7B3F',
+            hover: '#5C9B4F'
+          },
+          gold: {
+            DEFAULT: '#FFD700',
+            hover: '#FFE44D'
+          },
+          beige: '#F5F5DC'
+        }
       },
     },
   },

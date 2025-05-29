@@ -33,7 +33,7 @@ describe("pages / sign in", () => {
     render(<SignInPage />);
 
     const heading = screen.getByRole<HTMLHeadingElement>("heading", {
-      level: 1,
+      level: 2,
       name: "Autenticar",
     });
     expect(heading).toBeInTheDocument();

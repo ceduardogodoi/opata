@@ -1,21 +1,23 @@
-import { describe, expect, it } from "vitest";
-import { screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import RootLayout from "./layout";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderToString } from "react-dom/server";
 
-describe("root layout", () => {
-  it("should render the root layout", () => {
-    const renderedHtml = renderToStaticMarkup(
+vi.mock("next/font/google", () => ({
+  Baloo_2: vi.fn().mockReturnValue({
+    variable: "font-baloo2",
+  }),
+  Quicksand: vi.fn().mockReturnValue({
+    variable: "font-quicksand",
+  }),
+}));
+
+describe("Layout", () => {
+  it("should render the layout", () => {
+    const htmlString = renderToString(
       <RootLayout>
-        <h1>Hello World</h1>
+        <h1>Opata | Joaquim Távora</h1>
       </RootLayout>
     );
-    document.body.innerHTML = renderedHtml;
-
-    const h1 = screen.getByRole<HTMLHeadingElement>("heading", {
-      level: 1,
-      name: "Hello World",
-    });
-    expect(h1).toBeInTheDocument();
+    expect(htmlString).toContain("Opata | Joaquim Távora");
   });
 });

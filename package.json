@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "vitest",
     "coverage": "vitest --coverage",
-    "test:ui": "vitest --ui --coverage.enabled=true"
+    "test:ui": "vitest --ui --coverage.enabled=true",
+    "test:report": "vitest run --coverage.enabled true --coverage.reports html"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",

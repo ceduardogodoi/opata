@@ -1,7 +1,7 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import SignUpPage from "./page";
 
 vi.mock(import("next/navigation"), async (originalImport) => {
@@ -29,17 +29,14 @@ describe("pages / sign up", () => {
   it("should render page with main content", () => {
     render(<SignUpPage />);
 
-    const heading = screen.getByRole<HTMLHeadingElement>("heading", {
-      level: 1,
-      name: "Opata",
-    });
-    expect(heading).toBeInTheDocument();
+    const logo = screen.getByAltText<HTMLImageElement>("Opata Logo");
+    expect(logo).toBeInTheDocument();
 
-    const heading2 = screen.getByRole<HTMLHeadingElement>("heading", {
+    const heading = screen.getByRole<HTMLHeadingElement>("heading", {
       level: 2,
       name: "Criar nova conta",
     });
-    expect(heading2).toBeInTheDocument();
+    expect(heading).toBeInTheDocument();
 
     const fullName = screen.getByLabelText<HTMLInputElement>("Nome completo*");
     expect(fullName).toBeInTheDocument();
@@ -184,54 +181,4 @@ describe("pages / sign up", () => {
     expect(usernameErrorMessage).toBeInTheDocument();
     expect(usernameErrorMessage).toHaveTextContent("Usuário já existe.");
   });
-
-  it.each([
-    {
-      env: "test",
-      inputValues: {
-        fullName: "John Doe",
-        username: "jdoe",
-        email: "jdoe@gmail.com",
-        password: "q1w2e3r4",
-      },
-      renderMessage: "render",
-      mode: "test",
-    },
-    {
-      env: "production",
-      inputValues: { fullName: "", username: "", email: "", password: "" },
-      renderMessage: "not render",
-      mode: "production",
-    },
-  ])(
-    "should $renderMessage filled out form when query param `mock=filled` is present and is $mode mode",
-    ({ env, inputValues }) => {
-      vi.stubEnv("NODE_ENV", env);
-
-      const mockUseSearchParams = vi.mocked(useSearchParams, {
-        partial: true,
-      });
-      mockUseSearchParams.mockReturnValue({
-        get: vi.fn().mockReturnValue("filled"),
-      });
-
-      const url = new URL("/admin/sign-up", "http://localhost:3000");
-      url.searchParams.set("mock", "filled");
-
-      vi.stubGlobal(window.location.href, url.href);
-
-      render(<SignUpPage />);
-
-      const fullName =
-        screen.getByLabelText<HTMLInputElement>("Nome completo*");
-      const username = screen.getByLabelText<HTMLInputElement>("Usuário*");
-      const email = screen.getByLabelText<HTMLInputElement>("E-mail*");
-      const password = screen.getByLabelText<HTMLInputElement>("Senha*");
-
-      expect(fullName).toHaveValue(inputValues.fullName);
-      expect(username).toHaveValue(inputValues.username);
-      expect(email).toHaveValue(inputValues.email);
-      expect(password).toHaveValue(inputValues.password);
-    }
-  );
 });
