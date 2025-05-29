@@ -60,7 +60,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <p className="text-lg mb-6">
-                O Opata é uma ONG sem fins lucrativos dedicada ao
+                A Opata é uma ONG sem fins lucrativos dedicada ao
                 resgate, tratamento e adoção responsável de animais em situação
                 de vulnerabilidade.
               </p>
