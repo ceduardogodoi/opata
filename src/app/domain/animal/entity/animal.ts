@@ -1,13 +1,19 @@
 import crypto from "node:crypto";
 import { AnimalLike, CreateAnimal } from "./animal.types";
+import { DateOfBirth } from "@/app/value-objects/date-of-birth/date-of-birth";
 
+/**
+ * Animal Entity.
+ *
+ * This entity is used to represent an animal.
+ */
 export class Animal {
   readonly #id: string;
   readonly #name: string;
   readonly #isAdopted: boolean;
   readonly #createdAt: Date;
   readonly #updatedAt: Date;
-  readonly #age?: number;
+  readonly #dateOfBirth?: DateOfBirth;
   readonly #history?: string;
   readonly #observations?: string;
 
@@ -17,7 +23,7 @@ export class Animal {
     isAdopted: boolean,
     createdAt: Date,
     updatedAt: Date,
-    age?: number,
+    dateOfBirth?: DateOfBirth,
     history?: string,
     observations?: string
   ) {
@@ -26,43 +32,98 @@ export class Animal {
     this.#isAdopted = isAdopted;
     this.#createdAt = createdAt;
     this.#updatedAt = updatedAt;
-    this.#age = age;
+    this.#dateOfBirth = dateOfBirth;
     this.#history = history;
     this.#observations = observations;
   }
 
+  /**
+   * Get the animal ID.
+   *
+   * @returns The animal ID.
+   */
   public get id(): string {
     return this.#id;
   }
 
+  /**
+   * Get the animal name.
+   *
+   * @returns The animal name.
+   */
   public get name(): string {
     return this.#name;
   }
 
+  /**
+   * Get the animal adoption status.
+   *
+   * @returns The animal adoption status.
+   */
   public get isAdopted(): boolean {
     return this.#isAdopted;
   }
 
+  /**
+   * Get the animal creation date.
+   *
+   * @returns The animal creation date.
+   */
   public get createdAt(): Date {
     return this.#createdAt;
   }
 
+  /**
+   * Get the animal update date.
+   *
+   * @returns The animal update date.
+   */
   public get updatedAt(): Date {
     return this.#updatedAt;
   }
 
-  public get age(): number | undefined {
-    return this.#age;
+  /**
+   * Get the animal date of birth.
+   *
+   * @returns The animal date of birth.
+   */
+  public get dateOfBirth(): DateOfBirth | undefined {
+    return this.#dateOfBirth;
   }
 
+  /**
+   * Get the animal age.
+   *
+   * @returns The animal age.
+   */
+  public get age(): number | undefined {
+    return this.#dateOfBirth?.age;
+  }
+
+  /**
+   * Get the animal history.
+   *
+   * @returns The animal history.
+   */
   public get history(): string | undefined {
     return this.#history;
   }
 
+  /**
+   * Get the animal observations.
+   *
+   * @returns The animal observations.
+   */
   public get observations(): string | undefined {
     return this.#observations;
   }
 
+  /**
+   * Create a new animal.
+   *
+   * @param animal - The animal data.
+   * @returns The new animal.
+   */
   public static create(animal: CreateAnimal): Animal {
     const date = new Date();
 
@@ -72,25 +133,36 @@ export class Animal {
       false,
       date,
       date,
-      animal.age,
+      animal.dateOfBirth,
       animal.history,
       animal.observations
     );
   }
 
-  public static with(animalFixture: AnimalLike): Animal {
+  /**
+   * Create an animal from data.
+   *
+   * @param data - The animal data.
+   * @returns The animal.
+   */
+  public static with(data: AnimalLike): Animal {
     return new Animal(
-      animalFixture.id,
-      animalFixture.name,
-      animalFixture.isAdopted,
-      animalFixture.createdAt,
-      animalFixture.updatedAt,
-      animalFixture.age,
-      animalFixture.history,
-      animalFixture.observations
+      data.id,
+      data.name,
+      data.isAdopted,
+      data.createdAt,
+      data.updatedAt,
+      data.dateOfBirth,
+      data.history,
+      data.observations
     );
   }
 
+  /**
+   * Convert the animal to a JSON object.
+   *
+   * @returns The animal JSON.
+   */
   public toJSON(): AnimalLike {
     return {
       id: this.#id,
@@ -98,7 +170,8 @@ export class Animal {
       isAdopted: this.#isAdopted,
       createdAt: this.#createdAt,
       updatedAt: this.#updatedAt,
-      age: this.#age,
+      dateOfBirth: this.#dateOfBirth,
+      age: this.#dateOfBirth?.age,
       history: this.#history,
       observations: this.#observations,
     };
