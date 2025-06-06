@@ -93,16 +93,4 @@ export class User {
 
     this.#updatedAt = new Date();
   }
-
-  public toJSON(): UserLike {
-    return {
-      id: this.#id,
-      fullName: this.#fullName,
-      email: this.#email,
-      username: this.#username,
-      passwordHash: this.#passwordHash,
-      createdAt: this.#createdAt,
-      updatedAt: this.#updatedAt,
-    };
-  }
 }

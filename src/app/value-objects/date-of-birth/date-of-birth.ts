@@ -10,10 +10,10 @@
 export class DateOfBirth {
   readonly #value: Date;
 
-  constructor(date: Date) {
-    this.#validate(date);
+  constructor(date: string) {
+    const validDate = this.#validate(date);
 
-    this.#value = date;
+    this.#value = validDate;
   }
 
   /**
@@ -33,12 +33,30 @@ export class DateOfBirth {
   public get age(): number {
     const today = new Date();
     const birthDate = this.#value;
-    return today.getFullYear() - birthDate.getFullYear();
+    const age = today.getFullYear() - birthDate.getFullYear();
+
+    return age;
   }
 
-  #validate(date: Date): void {
+  /**
+   * Validate the date of birth.
+   *
+   * @param value - The date of birth.
+   * @returns The validated date of birth.
+   * @throws {Error} If the date is invalid.
+   * @throws {Error} If the date of birth is in the future.
+   */
+  #validate(value: string): Date {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      throw new Error("Data de nascimento inválida.");
+    }
+
     if (date > new Date()) {
       throw new Error("Data de nascimento não pode ser uma data no futuro.");
     }
+
+    return date;
   }
 }

@@ -1,8 +1,6 @@
-import { DateOfBirth } from "@/app/value-objects/date-of-birth/date-of-birth";
-
 export type CreateAnimal = {
   name: string;
-  dateOfBirth?: DateOfBirth;
+  dateOfBirth?: string;
   history?: string;
   observations?: string;
 };
@@ -13,7 +11,7 @@ export type AnimalLike = {
   isAdopted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  dateOfBirth?: DateOfBirth;
+  dateOfBirth?: string;
   age?: number;
   history?: string;
   observations?: string;

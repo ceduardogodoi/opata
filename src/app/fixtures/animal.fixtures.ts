@@ -3,7 +3,6 @@ import type {
   CreateAnimal,
 } from "@/app/domain/animal/entity/animal.types";
 import { Animal } from "@/app/domain/animal/entity/animal";
-import { DateOfBirth } from "../value-objects/date-of-birth/date-of-birth";
 
 /**
  * Fake Data for Create Animal.
@@ -15,7 +14,7 @@ import { DateOfBirth } from "../value-objects/date-of-birth/date-of-birth";
  */
 export const createAnimalFixture: CreateAnimal = {
   name: "Dog",
-  dateOfBirth: new DateOfBirth(new Date("2023-01-01T00:00:00.000Z")),
+  dateOfBirth: "2023-01-01T00:00:00.000Z",
   history: "History Dog lorem ipsum",
   observations: "Observations Dog Lorem ipsum",
 };
@@ -35,7 +34,7 @@ export const animalFixture: AnimalLike = {
   isAdopted: false,
   createdAt: new Date("2025-01-01T00:00:00.000Z"),
   updatedAt: new Date("2025-01-01T00:00:00.000Z"),
-  dateOfBirth: new DateOfBirth(new Date("2023-01-01T00:00:00.000Z")),
+  dateOfBirth: "2023-01-01T00:00:00.000Z",
   history: "History Cat lorem ipsum",
   observations: "Observations Cat Lorem ipsum",
 };

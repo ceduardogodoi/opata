@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { container } from "tsyringe";
 import { CreateAnimalRoute } from "./create-animal.route";
 import type { AnimalRepositoryGateway } from "@/app/domain/animal/gateway/animal-repository.gateway.interface";
@@ -11,10 +11,18 @@ describe("routes / create-animal", () => {
   let animalRepository: AnimalRepositoryGateway;
   let createAnimalUseCase: CreateAnimalUseCase;
   let createAnimalRoute: CreateAnimalRoute;
+
   beforeEach(() => {
     animalRepository = container.resolve("AnimalRepositoryGateway");
     createAnimalUseCase = CreateAnimalUseCase.create(animalRepository);
     createAnimalRoute = CreateAnimalRoute.create(createAnimalUseCase);
+
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2025-01-01T00:00:00.000Z"));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("should create a new animal", async () => {
@@ -22,9 +30,9 @@ describe("routes / create-animal", () => {
 
     const request = {
       json: async (): Promise<CreateAnimalInputDto> => {
-        return Promise.resolve({
+        return Promise.resolve<CreateAnimalInputDto>({
           name: "Turtle",
-          age: 10,
+          dateOfBirth: "2023-01-01T00:00:00.000Z",
           history: "Turtle history",
           observations: "Turtle observations",
         });
@@ -37,7 +45,7 @@ describe("routes / create-animal", () => {
     expect(response.status).toBe(201);
     expect(output.id).toMatch(UUID_REGEX);
     expect(output.name).toBe("Turtle");
-    expect(output.age).toBe(10);
+    expect(output.age).toBe(2);
     expect(output.history).toBe("Turtle history");
     expect(output.observations).toBe("Turtle observations");
   });

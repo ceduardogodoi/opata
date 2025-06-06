@@ -87,8 +87,8 @@ export class Animal {
    *
    * @returns The animal date of birth.
    */
-  public get dateOfBirth(): DateOfBirth | undefined {
-    return this.#dateOfBirth;
+  public get dateOfBirth(): Date | undefined {
+    return this.#dateOfBirth?.value;
   }
 
   /**
@@ -126,17 +126,23 @@ export class Animal {
    */
   public static create(animal: CreateAnimal): Animal {
     const date = new Date();
+    let dateOfBirth: DateOfBirth | undefined;
+    if (animal.dateOfBirth != null) {
+      dateOfBirth = new DateOfBirth(animal.dateOfBirth);
+    }
 
-    return new Animal(
+    const newAnimal = new Animal(
       crypto.randomUUID(),
       animal.name,
       false,
       date,
       date,
-      animal.dateOfBirth,
+      dateOfBirth,
       animal.history,
       animal.observations
     );
+
+    return newAnimal;
   }
 
   /**
@@ -146,34 +152,20 @@ export class Animal {
    * @returns The animal.
    */
   public static with(data: AnimalLike): Animal {
+    let dateOfBirth: DateOfBirth | undefined;
+    if (data.dateOfBirth != null) {
+      dateOfBirth = new DateOfBirth(data.dateOfBirth);
+    }
+
     return new Animal(
       data.id,
       data.name,
       data.isAdopted,
       data.createdAt,
       data.updatedAt,
-      data.dateOfBirth,
+      dateOfBirth,
       data.history,
       data.observations
     );
-  }
-
-  /**
-   * Convert the animal to a JSON object.
-   *
-   * @returns The animal JSON.
-   */
-  public toJSON(): AnimalLike {
-    return {
-      id: this.#id,
-      name: this.#name,
-      isAdopted: this.#isAdopted,
-      createdAt: this.#createdAt,
-      updatedAt: this.#updatedAt,
-      dateOfBirth: this.#dateOfBirth,
-      age: this.#dateOfBirth?.age,
-      history: this.#history,
-      observations: this.#observations,
-    };
   }
 }
