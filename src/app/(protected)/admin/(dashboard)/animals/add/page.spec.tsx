@@ -1,6 +1,5 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { describe } from "node:test";
-import { beforeEach, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import AddAnimalPage from "./page";
 
@@ -22,9 +21,11 @@ describe("pages / add animals", () => {
     expect(name).toBeInTheDocument();
     expect(name).toHaveValue("");
 
-    const age = screen.getByLabelText<HTMLInputElement>("Idade");
-    expect(age).toBeInTheDocument();
-    expect(age).toHaveValue(0);
+    const dateOfBirth = screen.getByLabelText<HTMLButtonElement>(
+      "Data de nascimento (Aproximada:)"
+    );
+    expect(dateOfBirth).toBeInTheDocument();
+    expect(dateOfBirth).toHaveTextContent("01/01/2020");
 
     const history = screen.getByLabelText<HTMLInputElement>("História");
     expect(history).toBeInTheDocument();
@@ -34,7 +35,9 @@ describe("pages / add animals", () => {
     expect(observations).toBeInTheDocument();
     expect(observations).toHaveValue("");
 
-    const addButton = screen.getByRole<HTMLButtonElement>("button");
+    const addButton = screen.getByRole<HTMLButtonElement>("button", {
+      name: "Cadastrar",
+    });
     expect(addButton).toBeInTheDocument();
   });
 
@@ -43,7 +46,9 @@ describe("pages / add animals", () => {
 
     render(<AddAnimalPage />);
 
-    const addButton = screen.getByRole<HTMLButtonElement>("button");
+    const addButton = screen.getByRole<HTMLButtonElement>("button", {
+      name: "Cadastrar",
+    });
 
     await user.click(addButton);
 
@@ -84,23 +89,35 @@ describe("pages / add animals", () => {
     render(<AddAnimalPage />);
 
     const name = screen.getByLabelText<HTMLInputElement>("Nome*");
-    const age = screen.getByLabelText<HTMLInputElement>("Idade");
+    const dateOfBirth = screen.getByLabelText<HTMLButtonElement>(
+      "Data de nascimento (Aproximada:)"
+    );
     const history = screen.getByLabelText<HTMLInputElement>("História");
     const observations = screen.getByLabelText<HTMLInputElement>("Observações");
 
     await user.type(name, "Bidu");
-    await user.type(age, "2");
+    await user.click(dateOfBirth);
+    const calendarDialog = await screen.findByRole<HTMLDivElement>("dialog");
+    // OBSERVE: if this test will fail in the future
+    const firstDayOfMonth = calendarDialog.querySelector<HTMLButtonElement>("button[data-day='7/1/2025']");
+    await user.click(firstDayOfMonth!);
+
+    const dateOfBirthText = screen.getByText<HTMLSpanElement>("01/07/2025");
+    expect(dateOfBirthText).toBeInTheDocument();
+
     await user.type(history, "Great dog");
     await user.type(observations, "Very friendly");
 
-    const addButton = screen.getByRole<HTMLButtonElement>("button");
+    const addButton = screen.getByRole<HTMLButtonElement>("button", {
+      name: "Cadastrar",
+    });
 
     await user.click(addButton);
 
     expect(addButton).toBeDisabled();
     expect(addButton).toHaveTextContent("Cadastrando...");
     expect(name).toBeDisabled();
-    expect(age).toBeDisabled();
+    expect(dateOfBirth).toBeDisabled();
     expect(history).toBeDisabled();
     expect(observations).toBeDisabled();
   });
@@ -111,44 +128,49 @@ describe("pages / add animals", () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockImplementationOnce(() => {
-        return new Promise<Response>((resolve) => {
-          // need to have a delay
-          // to catch form submitting state
-          resolve({
-            status: 201,
-            json: async () => {
-              return {
-                id: "7d78d3c6-f90c-4422-8252-339b8344392b",
-                name: "Bidu",
-                isAdopted: false,
-                age: 2,
-                history: "Great dog",
-                observations: "Very friendly",
-              };
-            },
-          } as Response);
-        });
+        return Promise.resolve<Response>({
+          status: 201,
+          json: async () => {
+            return {
+              id: "7d78d3c6-f90c-4422-8252-339b8344392b",
+              name: "Bidu",
+              isAdopted: false,
+              age: 2,
+              history: "Great dog",
+              observations: "Very friendly",
+            };
+          },
+        } as Response);
       })
     );
 
     render(<AddAnimalPage />);
 
     const name = screen.getByLabelText<HTMLInputElement>("Nome*");
-    const age = screen.getByLabelText<HTMLInputElement>("Idade");
+    const dateOfBirth = screen.getByLabelText<HTMLButtonElement>(
+      "Data de nascimento (Aproximada:)"
+    );
     const history = screen.getByLabelText<HTMLInputElement>("História");
     const observations = screen.getByLabelText<HTMLInputElement>("Observações");
 
     await user.type(name, "Bidu");
-    await user.type(age, "2");
+    await user.click(dateOfBirth);
+    const calendarDialog = await screen.findByRole<HTMLDivElement>("dialog");
+    // OBSERVE: if this test will fail in the future
+    const firstDayOfMonth = calendarDialog.querySelector<HTMLButtonElement>("button[data-day='7/1/2025']");
+    await user.click(firstDayOfMonth!);
+
     await user.type(history, "Great dog");
     await user.type(observations, "Very friendly");
 
-    const addButton = screen.getByRole<HTMLButtonElement>("button");
+    const addButton = screen.getByRole<HTMLButtonElement>("button", {
+      name: "Cadastrar",
+    });
 
     await user.click(addButton);
 
     expect(name).toHaveValue("");
-    expect(age).toHaveValue(0);
+    expect(dateOfBirth).toHaveTextContent("01/01/2020");
     expect(history).toHaveValue("");
     expect(observations).toHaveValue("");
   });
@@ -159,32 +181,36 @@ describe("pages / add animals", () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockImplementationOnce(() => {
-        return new Promise<Response>((resolve) => {
-          // need to have a delay
-          // to catch form submitting state
-          resolve({
-            status: 400,
-            json: async () => {
-              return {};
-            },
-          } as Response);
-        });
+        return Promise.resolve<Response>({
+          status: 400,
+          json: async () => {
+            return {};
+          },
+        } as Response);
       })
     );
 
     render(<AddAnimalPage />);
 
     const name = screen.getByLabelText<HTMLInputElement>("Nome*");
-    const age = screen.getByLabelText<HTMLInputElement>("Idade");
+    const dateOfBirth = screen.getByLabelText<HTMLButtonElement>(
+      "Data de nascimento (Aproximada:)"
+    );
     const history = screen.getByLabelText<HTMLInputElement>("História");
     const observations = screen.getByLabelText<HTMLInputElement>("Observações");
 
     await user.type(name, "Bidu");
-    await user.type(age, "2");
+    await user.click(dateOfBirth);
+    const calendarDialog = await screen.findByRole<HTMLDivElement>("dialog");
+    const firstDayOfMonth = calendarDialog.querySelector<HTMLButtonElement>("button[data-day='7/1/2025']");
+    await user.click(firstDayOfMonth!);
+
     await user.type(history, "Great dog");
     await user.type(observations, "Very friendly");
 
-    const addButton = screen.getByRole<HTMLButtonElement>("button");
+    const addButton = screen.getByRole<HTMLButtonElement>("button", {
+      name: "Cadastrar",
+    });
 
     await user.click(addButton);
 

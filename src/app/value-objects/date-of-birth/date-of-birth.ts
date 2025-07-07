@@ -4,7 +4,7 @@
  * This value object is used to store the date of birth of an animal.
  *
  * @example
- * const dateOfBirth = new DateOfBirth(new Date("2025-01-01T00:00:00.000Z"));
+ * const dateOfBirth = new DateOfBirth("2025-01-01T00:00:00.000Z");
  * console.log(dateOfBirth.value); // 2025-01-01T00:00:00.000Z
  */
 export class DateOfBirth {

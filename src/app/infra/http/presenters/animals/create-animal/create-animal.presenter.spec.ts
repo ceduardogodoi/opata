@@ -17,6 +17,7 @@ describe("presenters / create animal", () => {
       id: animalInstanceFixture.id,
       name: animalInstanceFixture.name,
       isAdopted: animalInstanceFixture.isAdopted,
+      dateOfBirth: animalInstanceFixture.dateOfBirth,
       age: animalInstanceFixture.age,
       history: animalInstanceFixture.history,
       observations: animalInstanceFixture.observations,

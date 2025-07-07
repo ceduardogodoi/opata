@@ -16,6 +16,9 @@ export default defineConfig({
         "**/*.interface.ts",
         "**/*.types.ts",
 
+        // zod schemas
+        "**/schemas.ts",
+
         // shadcn components
         "src/components/ui/*.tsx"
       ],
