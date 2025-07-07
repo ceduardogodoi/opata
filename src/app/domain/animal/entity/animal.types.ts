@@ -1,6 +1,6 @@
 export type CreateAnimal = {
   name: string;
-  age?: number;
+  dateOfBirth?: string;
   history?: string;
   observations?: string;
 };
@@ -11,6 +11,7 @@ export type AnimalLike = {
   isAdopted: boolean;
   createdAt: Date;
   updatedAt: Date;
+  dateOfBirth?: string;
   age?: number;
   history?: string;
   observations?: string;

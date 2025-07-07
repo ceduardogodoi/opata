@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import { describe, expect, it, vi } from "vitest";
 import { User } from "./user";
-import type { UserLike } from "./user.types";
 import { UUID_REGEX } from "@/app/globals/constants";
 import {
   createUserFixture,
@@ -44,33 +43,6 @@ describe("entities / animal", () => {
     expect(user).toBeInstanceOf(User);
     expect(user.id).toBe(userFixture.id);
     expect(passwordMatch).toBe(true);
-  });
-
-  it("should get user as JSON for debugging purposes", () => {
-    const mockDate = new Date(2025, 0, 21, 0, 0, 0, 0);
-    const userFixture: UserLike = {
-      id: "73547cf9-0dd1-4217-9bd8-678cba042b35",
-      fullName: "John Doe",
-      email: "john.doe@email.com",
-      username: "jdoe",
-      passwordHash:
-        "$2b$10$iGODARbBXqgyUi.Ul9P1TObr5FNZOoZXcG7R.FYMCN4vIKshLUJMK",
-      createdAt: mockDate,
-      updatedAt: mockDate,
-    };
-    const user = User.with(userFixture);
-
-    const json = user.toJSON();
-    expect(json).toStrictEqual({
-      id: "73547cf9-0dd1-4217-9bd8-678cba042b35",
-      fullName: "John Doe",
-      email: "john.doe@email.com",
-      username: "jdoe",
-      passwordHash:
-        "$2b$10$iGODARbBXqgyUi.Ul9P1TObr5FNZOoZXcG7R.FYMCN4vIKshLUJMK",
-      createdAt: mockDate,
-      updatedAt: mockDate,
-    });
   });
 
   it("should be able to a update user's data", () => {

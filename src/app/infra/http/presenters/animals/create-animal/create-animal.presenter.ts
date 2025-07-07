@@ -11,6 +11,7 @@ export class CreateAnimalPresenter {
       id: animal.id,
       name: animal.name,
       isAdopted: animal.isAdopted,
+      dateOfBirth: animal.dateOfBirth,
       age: animal.age,
       history: animal.history,
       observations: animal.observations,

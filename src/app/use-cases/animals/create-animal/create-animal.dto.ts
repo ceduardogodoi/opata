@@ -7,7 +7,15 @@ export const createAnimalInputSchema = z.object({
       required_error: "Name is required.",
     })
     .min(1, "Name is required."),
-  age: z.number().optional(),
+  dateOfBirth: z.string().optional().refine((value) => {
+    if (value == null) {
+      return true;
+    }
+
+    const date = new Date(value);
+
+    return !isNaN(date.getTime());
+  }, "Data de nascimento inválida."),
   history: z.string().optional(),
   observations: z.string().optional(),
 });

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { container } from "tsyringe";
 import { CreateAnimalUseCase } from "./create-animal.usecase";
 import { createAnimalFixture } from "@/app/fixtures/animal.fixtures";
@@ -8,28 +8,33 @@ import { Animal } from "@/app/domain/animal/entity/animal";
 
 describe("use-cases / create animal", () => {
   let animalRepository: AnimalRepositoryGateway;
+
+  const mockSystemDate = new Date("2025-01-01T00:00:00.000Z");
+
   beforeEach(() => {
     animalRepository = container.resolve("AnimalRepositoryGateway");
+
+    vi.setSystemTime(mockSystemDate);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("should create an animal and confirm its data", async () => {
-    const mockDate = new Date(2024, 11, 28, 0, 0, 0, 0);
-    vi.setSystemTime(mockDate);
-
     const createAnimalUsecase = CreateAnimalUseCase.create(animalRepository);
 
     const animal = await createAnimalUsecase.execute(createAnimalFixture);
     expect(animal).toBeInstanceOf(Animal);
     expect(animal.id).toMatch(UUID_REGEX);
-    expect(animal.name).toBe(createAnimalFixture.name);
+    expect(animal.name).toBe("Dog");
     expect(animal.isAdopted).toBe(false);
-    expect(animal.createdAt).toEqual(mockDate);
-    expect(animal.updatedAt).toEqual(mockDate);
-    expect(animal.age).toBe(createAnimalFixture.age);
-    expect(animal.history).toBe(createAnimalFixture.history);
-    expect(animal.observations).toBe(createAnimalFixture.observations);
-
-    vi.useRealTimers();
+    expect(animal.createdAt).toEqual(mockSystemDate);
+    expect(animal.updatedAt).toEqual(mockSystemDate);
+    expect(animal.dateOfBirth).toEqual(new Date("2023-01-01T00:00:00.000Z"));
+    expect(animal.age).toBe(2);
+    expect(animal.history).toBe("History Dog lorem ipsum");
+    expect(animal.observations).toBe("Observations Dog Lorem ipsum");
   });
 
   it("should throw when trying to create an animal with invalid data", async () => {
@@ -38,9 +43,6 @@ describe("use-cases / create animal", () => {
     const fixture = Object.create(createAnimalFixture, {
       name: {
         value: undefined,
-      },
-      age: {
-        value: 1,
       },
     });
 
